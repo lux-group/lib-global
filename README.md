@@ -1,8 +1,6 @@
 Lib for expanding functionality and deduplicating code between services
 
-## Examples
-
-SELECT
+## Example
 
 ```js
 const { vendor } = require('lib-global')

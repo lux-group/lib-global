@@ -28,7 +28,7 @@ const ALLOWED_DESTINATION_CODES = ALLOWED_DESTINATIONS.map(
 
 const ALLOWED_DESTINATION_NAMES = ALLOWED_DESTINATIONS.map(
   destination => destination.name
-).sort()
+)
 
 module.exports = {
   ALLOWED_DESTINATIONS: ALLOWED_DESTINATIONS,

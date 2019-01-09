@@ -8,7 +8,7 @@ var ALLOWED_DESTINATION_CODES = ALLOWED_DESTINATIONS.map(function (destination) 
 
 var ALLOWED_DESTINATION_NAMES = ALLOWED_DESTINATIONS.map(function (destination) {
   return destination.name;
-}).sort();
+});
 
 module.exports = {
   ALLOWED_DESTINATIONS: ALLOWED_DESTINATIONS,

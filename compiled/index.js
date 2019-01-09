@@ -1,5 +1,6 @@
 'use strict';
 
 module.exports = {
-  vendor: require('./vendor')
+  vendor: require('./vendor'),
+  flights: require('./flights')
 };

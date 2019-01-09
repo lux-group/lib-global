@@ -1,6 +1,6 @@
 {
   "name": "lib-global",
-  "version": "2.1.0",
+  "version": "2.0.0",
   "description": "Lib for expanding functionality and deduplicating code between services",
   "main": "compiled/index.js",
   "scripts": {

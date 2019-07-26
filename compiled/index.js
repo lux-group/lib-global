@@ -2,5 +2,6 @@
 
 module.exports = {
   vendor: require('./vendor'),
-  flights: require('./flights')
+  flights: require('./flights'),
+  offer: require('./offer')
 };

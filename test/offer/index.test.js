@@ -166,7 +166,7 @@ describe('Offer', () => {
       }
 
       expect(getFromPackages(packages, offer.type, offer.holiday_types)).to.eql(
-        '1, 2 or 5 Nights'
+        '1, 2 or 5 Days'
       )
     })
   })

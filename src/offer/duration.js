@@ -9,11 +9,6 @@ const dayOrNights = {
     plural: 'Days',
     field: 'number_of_days',
   },
-  cruises: {
-    singular: 'Night',
-    plural: 'Nights',
-    field: 'number_of_days',
-  },
 }
 
 const getCounts = (packages, field) => {
@@ -43,8 +38,8 @@ const getCountsString = (packages, field) => {
 const getFromPackages = (packages, offerType, holidayTypes) => {
   let dayOrNightsData = dayOrNights[offerType]
 
-  if (holidayTypes && holidayTypes.includes('Cruises')) {
-    dayOrNightsData = dayOrNights['cruises']
+  if (holidayTypes) {
+    // Block for holidayTypes
   }
 
   const { singular, plural, field } = dayOrNightsData

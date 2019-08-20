@@ -10,11 +10,6 @@ var dayOrNights = {
     singular: 'Day',
     plural: 'Days',
     field: 'number_of_days'
-  },
-  cruises: {
-    singular: 'Night',
-    plural: 'Nights',
-    field: 'number_of_days'
   }
 };
 
@@ -43,14 +38,13 @@ var getCountsString = function getCountsString(packages, field) {
 var getFromPackages = function getFromPackages(packages, offerType, holidayTypes) {
   var dayOrNightsData = dayOrNights[offerType];
 
-  if (holidayTypes && holidayTypes.includes('Cruises')) {
-    dayOrNightsData = dayOrNights['cruises'];
+  if (holidayTypes) {
+    // Block for holidayTypes
   }
 
-  var _dayOrNightsData = dayOrNightsData,
-      singular = _dayOrNightsData.singular,
-      plural = _dayOrNightsData.plural,
-      field = _dayOrNightsData.field;
+  var singular = dayOrNightsData.singular,
+      plural = dayOrNightsData.plural,
+      field = dayOrNightsData.field;
 
   var durationCounts = getCounts(packages, field);
   var durationString = getCountsString(packages, field);

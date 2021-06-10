@@ -5,70 +5,50 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
 
 /**
- * Generate the id of the package option
+ * Generates the JSON format for a package option
  *
  * @param {*} packageOption, a package of an offer
- * @param {*} duration, number of nights
- * @returns the id of the package option
+ * @param {*} numberOfNights, number of nights
+ * @param {*} extraNights, number of extra nights
+ * @returns JSON format of a package option
  */
-var getPackageOptionId = function getPackageOptionId(packageOption, duration) {
-  var packageOptionsId = packageOption.id ? packageOption.id : packageOption.fk_room_rate_id;
-
-  return packageOptionsId + "++" + duration;
-};
-
-/**
- * Generates the JSON format for a package duration
- *
- * @param {*} packageOption, a package of an offer
- * @param {*} duration, number of nights
- * @param {*} packagePrices, the list of prices in the package
- * @returns JSON format of a package duration
- */
-var getPackageDuration = function getPackageDuration(packageOption, duration, packagePrices) {
-  var result = {
+var generatePackageOption = function generatePackageOption(packageOption, numberOfNights, extraNights) {
+  return {
     packageId: packageOption.fk_room_rate_id,
-    packageOptionsId: getPackageOptionId(packageOption, duration),
+    extraNights: extraNights,
     roomRateId: packageOption.fk_room_rate_id,
     name: packageOption.name || undefined,
-    duration: duration
+    duration: numberOfNights + extraNights
   };
-  return packagePrices ? _extends({}, result, { prices: calculatePackageRates(packagePrices, duration) }) : result;
 };
 
 /**
- * Gets the package_options if exists or if not the room rate id
+ * Gets the package_options in the package if exists or if not the room rate id
  *
  * @param {*} offerPackage, a package of an offer
- * @returns package_options if exists and if not the room rate id
+ * @returns package_options in the package if exists and if not the room rate id
  */
-var getPakcageOptions = function getPakcageOptions(offerPackage) {
+var getPackageOptions = function getPackageOptions(offerPackage) {
   return offerPackage.package_options && offerPackage.package_options.length > 0 ? offerPackage.package_options : [{ fk_room_rate_id: offerPackage.fk_room_rate_id }];
 };
 
 /**
- * Generates a list of package options, adding new options for flexible nights
+ * Generates a list of all the packages options, adding new options for flexible nights
  *
  * @param {*} offerPackage, a package of an offer
- * @param {*} addPrices, boolean that indicates if list of prices will
- * be included for each package options
- * @returns a list of package options
+ * @returns a list of all the packages options
  */
-var generatePackageDurations = function generatePackageDurations(offerPackage) {
-  var addPrices = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : undefined;
-
+var generateAllPackagesOptions = function generateAllPackagesOptions(offerPackage) {
   var result = [];
   if (!offerPackage) return result;
 
-  var packageOptions = getPakcageOptions(offerPackage);
-  var packagePrices = addPrices ? [].concat(_toConsumableArray(offerPackage.prices)) : undefined;
+  var packageOptions = getPackageOptions(offerPackage);
 
   var maxExtraNights = offerPackage.flexible_nights && offerPackage.max_extra_nights ? offerPackage.max_extra_nights : 0;
 
   var _loop = function _loop(extraNights) {
-    var duration = offerPackage.number_of_nights + extraNights;
     packageOptions.forEach(function (packageOption) {
-      result.push(getPackageDuration(packageOption, duration, packagePrices));
+      result.push(generatePackageOption(packageOption, offerPackage.number_of_nights, extraNights));
     });
   };
 
@@ -79,13 +59,13 @@ var generatePackageDurations = function generatePackageDurations(offerPackage) {
 };
 
 /**
- * Calculates the rates from number of nights and the package prices list
+ * Calculates the prices based on number of nights and the package prices list
  *
  * @param {*} offerPackagePrices, list of prices of the package
  * @param {*} duration, number of nights
- * @returns a list of prices based on pakcage prices and number of nights
+ * @returns a list of prices based on prices in the package and number of nights
  */
-var calculatePackageRates = function calculatePackageRates(offerPackagePrices, duration) {
+var calculatePackagePrices = function calculatePackagePrices(offerPackagePrices, duration) {
   return offerPackagePrices.map(function (price) {
     return _extends({}, price, {
       price: price.price + duration * price.nightly_price,
@@ -96,8 +76,28 @@ var calculatePackageRates = function calculatePackageRates(offerPackagePrices, d
   });
 };
 
+/**
+ * Generates a list of all the packages options with their prices,
+ * adding new options for flexible nights
+ *
+ * @param {*} offerPackage, a package of an offer
+ * @returns a list of all the packages options with their prices
+ */
+var generateAllPackagesOptionsWithPrices = function generateAllPackagesOptionsWithPrices(offerPackage) {
+  var offerPackagePrices = offerPackage.prices ? [].concat(_toConsumableArray(offerPackage.prices)) : undefined;
+
+  var allPackageOptions = generateAllPackagesOptions(offerPackage);
+  var result = allPackageOptions.map(function (packageOption) {
+    return _extends({}, packageOption, {
+      prices: offerPackagePrices ? calculatePackagePrices(offerPackagePrices, packageOption.duration) : undefined
+    });
+  });
+  return result;
+};
+
 module.exports = {
-  getPackageDuration: getPackageDuration,
-  generatePackageDurations: generatePackageDurations,
-  calculatePackageRates: calculatePackageRates
+  generatePackageOption: generatePackageOption,
+  calculatePackagePrices: calculatePackagePrices,
+  generateAllPackagesOptions: generateAllPackagesOptions,
+  generateAllPackagesOptionsWithPrices: generateAllPackagesOptionsWithPrices
 };

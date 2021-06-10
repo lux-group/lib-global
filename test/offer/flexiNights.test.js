@@ -4,7 +4,8 @@ const expect = chai.expect
 const { offer: offerLib } = require('../../compiled')
 
 const {
-  generatePackageDurations,
+  generateAllPackagesOptions,
+  generateAllPackagesOptionsWithPrices,
 } = offerLib.flexibleNights
 
 const OFFER_TYPE_HOTEL = 'hotel'
@@ -117,49 +118,49 @@ const offer = {
 
 describe('Offer: Flexible nights', () => {
   describe('Flexible nights true', () => {
-    it('should return five extra package options', async() => {
+    it('should return five extra package options, six in total', async() => {
       const offerPackage = offer.packages[0]
-      const result = generatePackageDurations(offerPackage)
+      const result = generateAllPackagesOptions(offerPackage)
 
       const expectedResult = [
         {
           packageId: 'rr1',
-          packageOptionsId: 'rr1++1',
+          extraNights: 0,
           roomRateId: 'rr1',
           name: undefined,
           duration: 1,
         },
         {
           packageId: 'rr1',
-          packageOptionsId: 'rr1++2',
+          extraNights: 1,
           roomRateId: 'rr1',
           name: undefined,
           duration: 2,
         },
         {
           packageId: 'rr1',
-          packageOptionsId: 'rr1++3',
+          extraNights: 2,
           roomRateId: 'rr1',
           name: undefined,
           duration: 3,
         },
         {
           packageId: 'rr1',
-          packageOptionsId: 'rr1++4',
+          extraNights: 3,
           roomRateId: 'rr1',
           name: undefined,
           duration: 4,
         },
         {
           packageId: 'rr1',
-          packageOptionsId: 'rr1++5',
+          extraNights: 4,
           roomRateId: 'rr1',
           name: undefined,
           duration: 5,
         },
         {
           packageId: 'rr1',
-          packageOptionsId: 'rr1++6',
+          extraNights: 5,
           roomRateId: 'rr1',
           name: undefined,
           duration: 6,
@@ -171,12 +172,12 @@ describe('Offer: Flexible nights', () => {
 
     it('should return one package options', async() => {
       const offerPackage = offer.packages[2]
-      const result = generatePackageDurations(offerPackage)
+      const result = generateAllPackagesOptions(offerPackage)
 
       const expectedResult = [
         {
           packageId: 'rr1',
-          packageOptionsId: 'rr1++1',
+          extraNights: 0,
           roomRateId: 'rr1',
           name: undefined,
           duration: 1,
@@ -187,14 +188,14 @@ describe('Offer: Flexible nights', () => {
 
     it('should return empty rates', async() => {
       const offerPackage = offer.packages[1]
-      const result = generatePackageDurations(offerPackage, true)
+      const result = generateAllPackagesOptionsWithPrices(offerPackage)
 
       expect(result[0].prices).to.eql([])
     })
 
     it('should return rates for the extra package options', async() => {
       const offerPackage = offer.packages[0]
-      const result = generatePackageDurations(offerPackage, true)
+      const result = generateAllPackagesOptionsWithPrices(offerPackage)
 
       expect(result[1].prices).to.eql([
         {
@@ -218,12 +219,12 @@ describe('Offer: Flexible nights', () => {
   describe('Flexible nights false', () => {
     it('should return one extra package options', async() => {
       const offerPackage = offer.packages[1]
-      const result = generatePackageDurations(offerPackage)
+      const result = generateAllPackagesOptions(offerPackage)
 
       const expectedResult = [
         {
           packageId: 'rr2',
-          packageOptionsId: 'rr2++3',
+          extraNights: 0,
           roomRateId: 'rr2',
           name: undefined,
           duration: 3,

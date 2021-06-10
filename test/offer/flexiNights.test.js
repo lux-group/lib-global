@@ -118,7 +118,7 @@ const offer = {
 
 describe('Offer: Flexible nights', () => {
   describe('Flexible nights true', () => {
-    it('should return five extra package options, six in total', async() => {
+    it('should add five extra package options', async() => {
       const offerPackage = offer.packages[0]
       const result = generateAllPackageOptions(offerPackage)
 
@@ -186,14 +186,14 @@ describe('Offer: Flexible nights', () => {
       expect(result).to.eql(expectedResult)
     })
 
-    it('should return empty rates', async() => {
+    it('should return empty prices', async() => {
       const offerPackage = offer.packages[1]
       const result = generateAllPackageOptionsWithPrices(offerPackage)
 
       expect(result[0].prices).to.eql([])
     })
 
-    it('should return rates for the extra package options', async() => {
+    it('should return prices for the extra package options', async() => {
       const offerPackage = offer.packages[0]
       const result = generateAllPackageOptionsWithPrices(offerPackage)
 

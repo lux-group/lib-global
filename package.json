@@ -1,5 +1,5 @@
 {
-  "name": "lib-global",
+  "name": "@luxuryescapes/lib-global",
   "version": "2.2.2",
   "description": "Lib for expanding functionality and deduplicating code between services",
   "main": "compiled/index.js",

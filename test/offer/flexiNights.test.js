@@ -4,8 +4,8 @@ const expect = chai.expect
 const { offer: offerLib } = require('../../compiled')
 
 const {
-  generateAllPackagesOptions,
-  generateAllPackagesOptionsWithPrices,
+  generateAllPackageOptions,
+  generateAllPackageOptionsWithPrices,
 } = offerLib.flexibleNights
 
 const OFFER_TYPE_HOTEL = 'hotel'
@@ -120,7 +120,7 @@ describe('Offer: Flexible nights', () => {
   describe('Flexible nights true', () => {
     it('should return five extra package options, six in total', async() => {
       const offerPackage = offer.packages[0]
-      const result = generateAllPackagesOptions(offerPackage)
+      const result = generateAllPackageOptions(offerPackage)
 
       const expectedResult = [
         {
@@ -172,7 +172,7 @@ describe('Offer: Flexible nights', () => {
 
     it('should return one package options', async() => {
       const offerPackage = offer.packages[2]
-      const result = generateAllPackagesOptions(offerPackage)
+      const result = generateAllPackageOptions(offerPackage)
 
       const expectedResult = [
         {
@@ -188,14 +188,14 @@ describe('Offer: Flexible nights', () => {
 
     it('should return empty rates', async() => {
       const offerPackage = offer.packages[1]
-      const result = generateAllPackagesOptionsWithPrices(offerPackage)
+      const result = generateAllPackageOptionsWithPrices(offerPackage)
 
       expect(result[0].prices).to.eql([])
     })
 
     it('should return rates for the extra package options', async() => {
       const offerPackage = offer.packages[0]
-      const result = generateAllPackagesOptionsWithPrices(offerPackage)
+      const result = generateAllPackageOptionsWithPrices(offerPackage)
 
       expect(result[1].prices).to.eql([
         {
@@ -219,7 +219,7 @@ describe('Offer: Flexible nights', () => {
   describe('Flexible nights false', () => {
     it('should return one extra package options', async() => {
       const offerPackage = offer.packages[1]
-      const result = generateAllPackagesOptions(offerPackage)
+      const result = generateAllPackageOptions(offerPackage)
 
       const expectedResult = [
         {

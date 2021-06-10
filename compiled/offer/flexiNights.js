@@ -33,12 +33,12 @@ var getPackageOptions = function getPackageOptions(offerPackage) {
 };
 
 /**
- * Generates a list of all the packages options, adding new options for flexible nights
+ * Generates a list of all the package options, adding new options for flexible nights
  *
  * @param {*} offerPackage, a package of an offer
- * @returns a list of all the packages options
+ * @returns a list of all the package options
  */
-var generateAllPackagesOptions = function generateAllPackagesOptions(offerPackage) {
+var generateAllPackageOptions = function generateAllPackageOptions(offerPackage) {
   var result = [];
   if (!offerPackage) return result;
 
@@ -77,16 +77,16 @@ var calculatePackagePrices = function calculatePackagePrices(offerPackagePrices,
 };
 
 /**
- * Generates a list of all the packages options with their prices,
+ * Generates a list of all the package options with their prices,
  * adding new options for flexible nights
  *
  * @param {*} offerPackage, a package of an offer
- * @returns a list of all the packages options with their prices
+ * @returns a list of all the package options with their prices
  */
-var generateAllPackagesOptionsWithPrices = function generateAllPackagesOptionsWithPrices(offerPackage) {
+var generateAllPackageOptionsWithPrices = function generateAllPackageOptionsWithPrices(offerPackage) {
   var offerPackagePrices = offerPackage.prices ? [].concat(_toConsumableArray(offerPackage.prices)) : undefined;
 
-  var allPackageOptions = generateAllPackagesOptions(offerPackage);
+  var allPackageOptions = generateAllPackageOptions(offerPackage);
   var result = allPackageOptions.map(function (packageOption) {
     return _extends({}, packageOption, {
       prices: offerPackagePrices ? calculatePackagePrices(offerPackagePrices, packageOption.duration) : undefined
@@ -98,6 +98,6 @@ var generateAllPackagesOptionsWithPrices = function generateAllPackagesOptionsWi
 module.exports = {
   generatePackageOption: generatePackageOption,
   calculatePackagePrices: calculatePackagePrices,
-  generateAllPackagesOptions: generateAllPackagesOptions,
-  generateAllPackagesOptionsWithPrices: generateAllPackagesOptionsWithPrices
+  generateAllPackageOptions: generateAllPackageOptions,
+  generateAllPackageOptionsWithPrices: generateAllPackageOptionsWithPrices
 };

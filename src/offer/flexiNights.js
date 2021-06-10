@@ -28,12 +28,12 @@ const getPackageOptions = (offerPackage) => (
     [{ fk_room_rate_id: offerPackage.fk_room_rate_id }])
 
 /**
- * Generates a list of all the packages options, adding new options for flexible nights
+ * Generates a list of all the package options, adding new options for flexible nights
  *
  * @param {*} offerPackage, a package of an offer
- * @returns a list of all the packages options
+ * @returns a list of all the package options
  */
-const generateAllPackagesOptions = (offerPackage) => {
+const generateAllPackageOptions = (offerPackage) => {
   const result = []
   if (!offerPackage) return result
 
@@ -75,16 +75,16 @@ const calculatePackagePrices = (offerPackagePrices, duration) => {
 }
 
 /**
- * Generates a list of all the packages options with their prices,
+ * Generates a list of all the package options with their prices,
  * adding new options for flexible nights
  *
  * @param {*} offerPackage, a package of an offer
- * @returns a list of all the packages options with their prices
+ * @returns a list of all the package options with their prices
  */
-const generateAllPackagesOptionsWithPrices = (offerPackage) => {
+const generateAllPackageOptionsWithPrices = (offerPackage) => {
   const offerPackagePrices = (offerPackage.prices) ? [...offerPackage.prices] : undefined
 
-  const allPackageOptions = generateAllPackagesOptions(offerPackage)
+  const allPackageOptions = generateAllPackageOptions(offerPackage)
   const result = allPackageOptions.map((packageOption) => {
     return {
       ...packageOption,
@@ -99,6 +99,6 @@ const generateAllPackagesOptionsWithPrices = (offerPackage) => {
 module.exports = {
   generatePackageOption,
   calculatePackagePrices,
-  generateAllPackagesOptions,
-  generateAllPackagesOptionsWithPrices,
+  generateAllPackageOptions,
+  generateAllPackageOptionsWithPrices,
 }

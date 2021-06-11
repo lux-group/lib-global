@@ -9,7 +9,11 @@
     "lint:fix": "eslint --fix --ext .js src",
     "test": "mocha test",
     "build": "babel src -d compiled",
-    "release": "yarn lint && yarn clean && yarn build && yarn test"
+    "release": "yarn lint && yarn clean && yarn build && yarn test",
+    "prepare": "yarn run build",
+    "prepublishOnly": "yarn test && yarn run lint",
+    "preversion": "yarn run lint",
+    "postversion": "git push && git push --tags"
   },
   "homepage": "https://github.com/brandsExclusive/lib-global#readme",
   "repository": {
@@ -30,6 +34,9 @@
     "eslint-plugin-node": "^7.0.1",
     "eslint-plugin-promise": "^4.0.0",
     "eslint-plugin-standard": "^3.0.0",
-    "mocha": "^5.2.0"
+    "mocha": "^5.2.0",
+    "eslint-config-prettier": "^8.3.0",
+    "prettier": "^2.3.1",
+    "semantic-release": "^17.4.3"
   }
 }

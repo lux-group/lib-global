@@ -1,5 +1,6 @@
 'use strict';
 
 module.exports = {
-  duration: require('./duration')
+  duration: require('./duration'),
+  flexibleNights: require('./flexiNights')
 };

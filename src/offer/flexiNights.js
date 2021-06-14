@@ -1,10 +1,10 @@
 /**
- * Generates the JSON format for a package option
+ * Generates a package option
  *
  * @param {*} packageOption, a package of an offer
  * @param {*} numberOfNights, number of nights
  * @param {*} extraNights, number of extra nights
- * @returns JSON format of a package option
+ * @returns Generates a package option
  */
 const generatePackageOption = (packageOption, numberOfNights, extraNights) => {
   return {

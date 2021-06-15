@@ -1,6 +1,6 @@
 {
   "name": "@luxuryescapes/lib-global",
-  "version": "2.2.2",
+  "version": "2.2.3",
   "description": "Lib for expanding functionality and deduplicating code between services",
   "main": "compiled/index.js",
   "homepage": "https://github.com/brandsExclusive/lib-global#readme",
@@ -27,13 +27,13 @@
     "babel-preset-stage-0": "^6.24.1",
     "chai": "^4.2.0",
     "eslint": "^4.0.0",
+    "eslint-config-prettier": "^8.3.0",
     "eslint-config-standard": "^11.0.0",
     "eslint-plugin-import": "^2.8.0",
     "eslint-plugin-node": "^7.0.1",
     "eslint-plugin-promise": "^4.0.0",
     "eslint-plugin-standard": "^3.0.0",
     "mocha": "^5.2.0",
-    "eslint-config-prettier": "^8.3.0",
     "prettier": "^2.3.1",
     "semantic-release": "^17.4.3"
   }

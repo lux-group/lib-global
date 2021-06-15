@@ -48,6 +48,9 @@ workflows:
     jobs:
       - build:
           context: LE
+          filters:
+            tags:
+              only: /^v.*/
       - publish:
           requires:
             - build

@@ -5,7 +5,7 @@ defaults: &defaults
   docker:
     - image: circleci/node:14.16.1
 
-    jobs:
+jobs:
   build:
     <<: *defaults
     steps:

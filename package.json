@@ -3,6 +3,9 @@
   "version": "2.2.2",
   "description": "Lib for expanding functionality and deduplicating code between services",
   "main": "compiled/index.js",
+  "homepage": "https://github.com/brandsExclusive/lib-global#readme",
+  "repository": "git@github.com:brandsExclusive/lib-global.git",
+  "license": "UNLICENSED",
   "scripts": {
     "clean": "rm -rf compiled",
     "lint": "eslint --ext .js src",
@@ -12,10 +15,9 @@
     "release": "yarn lint && yarn clean && yarn build && yarn test",
     "prepare": "yarn run build",
     "prepublishOnly": "yarn test && yarn run lint",
-    "preversion": "yarn run lint"
+    "preversion": "yarn run lint",
+    "ci": "yarn test && yarn run lint && yarn build"
   },
-  "homepage": "https://github.com/brandsExclusive/lib-global#readme",
-  "repository": "git@github.com:brandsExclusive/lib-global.git",
   "dependencies": {},
   "devDependencies": {
     "babel-cli": "^6.26.0",

@@ -1,8 +1,11 @@
 version: 2
+
 defaults: &defaults
+  working_directory: ~/repo
   docker:
     - image: circleci/node:14.16.1
-jobs:
+
+    jobs:
   build:
     <<: *defaults
     steps:
@@ -20,15 +23,23 @@ jobs:
           paths:
             - ./node_modules
 
-      - run: yarn test
-      - run: yarn run lint
-      - run: yarn build
+      - run: yarn ci
+      - persist_to_workspace:
+          root: ~/repo
+          paths: .
+
   publish:
     <<: *defaults
     steps:
+      - attach_workspace:
+          at: ~/repo
+      - run:
+          name: Authenticate with registry
+          command: echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" > ~/repo/.npmrc
       - run:
           name: Publish package
-          command: npm publish
+          command: yarn publish
+
 workflows:
   version: 2
   build-publish:
@@ -43,6 +54,7 @@ workflows:
               only: /^v.*/
             branches:
               ignore: /.*/
+
 experimental:
   notify:
     branches:

@@ -26,6 +26,7 @@ jobs:
       - run: yarn test
       - run: yarn run lint
       - run: yarn build
+
       - persist_to_workspace:
           root: ~/repo
           paths: .
@@ -52,6 +53,7 @@ workflows:
             tags:
               only: /^v.*/
       - publish:
+          context: LE
           requires:
             - build
           filters:

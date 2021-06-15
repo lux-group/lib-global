@@ -31,10 +31,18 @@ jobs:
           command: npm publish
 workflows:
   version: 2
-  build-deploy:
+  build-publish:
     jobs:
       - build:
           context: LE
+      - publish:
+          requires:
+            - test
+          filters:
+            tags:
+              only: /^v.*/
+            branches:
+              ignore: /.*/
 experimental:
   notify:
     branches:

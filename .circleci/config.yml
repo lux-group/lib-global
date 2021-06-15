@@ -22,6 +22,7 @@ jobs:
 
       - run: yarn test
       - run: yarn run lint
+      - run: yarn build
   publish:
     <<: *defaults
     steps:

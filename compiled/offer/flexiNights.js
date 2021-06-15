@@ -5,12 +5,12 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
 
 /**
- * Generates the JSON format for a package option
+ * Generates a package option
  *
  * @param {*} packageOption, a package of an offer
  * @param {*} numberOfNights, number of nights
  * @param {*} extraNights, number of extra nights
- * @returns JSON format of a package option
+ * @returns Generates a package option
  */
 var generatePackageOption = function generatePackageOption(packageOption, numberOfNights, extraNights) {
   return {

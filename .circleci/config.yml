@@ -1,8 +1,10 @@
 version: 2
+defaults: &defaults
+  docker:
+    - image: circleci/node:14.16.1
 jobs:
   build:
-    docker:
-      - image: circleci/node:14.16.1
+    <<: *defaults
     steps:
       - checkout
 
@@ -11,15 +13,22 @@ jobs:
             - v1-dependencies-{{ checksum "yarn.lock" }}
             - v1-dependencies
 
-      - run: npm install
+      - run: yarn install
 
       - save_cache:
           key: v1-dependencies-{{ checksum "yarn.lock" }}
           paths:
             - ./node_modules
 
-      - run: npm test
-      - run: npm run lint
+      - run: yarn test
+      - run: yarn run lint
+      - run: yarn build
+  publish:
+    <<: *defaults
+    steps:
+      - run:
+          name: Publish package
+          command: npm publish
 workflows:
   version: 2
   build-deploy:

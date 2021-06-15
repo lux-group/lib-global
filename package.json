@@ -12,8 +12,7 @@
     "release": "yarn lint && yarn clean && yarn build && yarn test",
     "prepare": "yarn run build",
     "prepublishOnly": "yarn test && yarn run lint",
-    "preversion": "yarn run lint",
-    "postversion": "git push && git push --tags"
+    "preversion": "yarn run lint"
   },
   "homepage": "https://github.com/brandsExclusive/lib-global#readme",
   "repository": "git@github.com:brandsExclusive/lib-global.git",

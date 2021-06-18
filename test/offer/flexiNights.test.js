@@ -5,232 +5,416 @@ const { offer: offerLib } = require('../../compiled')
 
 const {
   generateAllPackageOptions,
-  generateAllPackageOptionsWithPrices,
 } = offerLib.flexibleNights
 
-const OFFER_TYPE_HOTEL = 'hotel'
-const TYPE_SCHEDULE_ONLINE_PURCHASE = 'online_purchase'
-
-const prices = [
-  {
-    'currency_code': 'EUR',
-    'price': 74,
-    'value': 124,
-    'nightly_price': 60,
-    'nightly_value': 30,
-  },
-  {
-    'currency_code': 'AUD',
-    'price': 120,
-    'value': 200,
-    'nightly_price': 80,
-    'nightly_value': 50,
-  },
-]
-
-const offer = {
-  type: OFFER_TYPE_HOTEL,
-  schedules: [
-    {
-      type: TYPE_SCHEDULE_ONLINE_PURCHASE,
-      region: 'AU',
-      end: '2260-04-25',
-    },
-  ],
-  packages: [
-    {
-      id_salesforce_external: 'p1',
-      fk_property_id: 'prop1',
-      fk_room_type_id: 'room1',
-      fk_room_rate_id: 'rr1',
-      number_of_nights: 1,
-      max_extra_nights: 5,
-      status: 'content-approved',
-      name: 'Flex Nights Premium',
-      flexible_nights: true,
-      prices,
-      package_options: [ ],
-      rates: [
-        {
-          number_of_nights: 3,
-          duration: 3,
-          duration_label: '3 Nights',
-          fk_room_rate_id: 'rr1',
-          unique_key: 'a0s0T00000064CCQAY',
-          price: 120,
-          value: 200,
-          prices: [],
-        },
-      ],
-    },
-    {
-      id_salesforce_external: 'p1',
-      fk_property_id: 'prop2',
-      fk_room_type_id: 'room2',
-      fk_room_rate_id: 'rr2',
-      number_of_nights: 3,
-      max_extra_nights: 0,
-      status: 'content-approved',
-      name: 'Flex Nights Premium 2',
-      flexible_nights: true,
-      prices: [],
-      package_options: [ ],
-      rates: [
-        {
-          number_of_nights: 3,
-          duration: 3,
-          duration_label: '3 Nights',
-          fk_room_rate_id: 'rr1',
-          unique_key: 'a0s0T00000064CCQAY',
-          price: 120,
-          value: 200,
-          prices: [],
-        },
-      ],
-    },
-    {
-      id_salesforce_external: 'p1',
-      fk_property_id: 'prop1',
-      fk_room_type_id: 'room1',
-      fk_room_rate_id: 'rr1',
-      number_of_nights: 1,
-      max_extra_nights: 5,
-      status: 'content-approved',
-      name: 'Flex Nights Premium',
-      flexible_nights: false,
-      prices,
-      package_options: [ ],
-      rates: [
-        {
-          number_of_nights: 3,
-          duration: 3,
-          duration_label: '3 Nights',
-          fk_room_rate_id: 'rr1',
-          unique_key: 'a0s0T00000064CCQAY',
-          price: 120,
-          value: 200,
-          prices: [],
-        },
-      ],
-    },
-  ],
-}
+const {
+  buildLEOffer,
+  buildLMEOffer,
+  buildTAOOffer,
+  buildTourOffer,
+} = require('../factories/offers/factories')
 
 describe('Offer: Flexible nights', () => {
-  describe('Flexible nights true', () => {
-    it('should add five extra package options', async() => {
-      const offerPackage = offer.packages[0]
+  it('should return empty prices', async() => {
+    const offerPackage = buildLEOffer().packages[1]
+    const result = generateAllPackageOptions(offerPackage)
+
+    expect(result).to.eql([
+      {
+        packageId: 117546,
+        extraNights: 0,
+        roomTypeId: '52a04cb0-3e59-11ea-80f2-ad68d677b787',
+        roomRateId: '198b69a7-2225-4e8f-b7a4-ebe3f4914274',
+        name: '3 nights stay in an upgraded Superior room for two',
+        duration: 3,
+        prices: [],
+      },
+    ])
+  })
+
+  it('should no return any extra package options and empty prices', async() => {
+    const offerPackage = buildLEOffer().packages[7]
+    const result = generateAllPackageOptions(offerPackage)
+
+    expect(result).to.eql([
+      {
+        packageId: 117549,
+        extraNights: 0,
+        roomTypeId: '52a04cb0-3e59-11ea-80f2-ad68d677b787',
+        roomRateId: '198b69a7-2225-4e8f-b7a4-ebe3f4914274',
+        name: '7 nights stay in a Classic Room for two',
+        duration: 7,
+        prices: [],
+      },
+    ])
+  })
+
+  describe('Limited time Offers', () => {
+    it('should not return any extra package options, flexible_nights: false', async() => {
+      const offerPackage = buildLEOffer().packages[0]
       const result = generateAllPackageOptions(offerPackage)
 
-      const expectedResult = [
+      expect(result).to.eql([
         {
-          packageId: 'rr1',
+          packageId: 117551,
           extraNights: 0,
-          roomRateId: 'rr1',
-          name: undefined,
-          duration: 1,
-        },
-        {
-          packageId: 'rr1',
-          extraNights: 1,
-          roomRateId: 'rr1',
-          name: undefined,
-          duration: 2,
-        },
-        {
-          packageId: 'rr1',
-          extraNights: 2,
-          roomRateId: 'rr1',
-          name: undefined,
+          roomTypeId: '52a04cb0-3e59-11ea-80f2-ad68d677b787',
+          roomRateId: '198b69a7-2225-4e8f-b7a4-ebe3f4914274',
+          name: '3 nights stay in a Classic Room for two',
           duration: 3,
+          prices: [{
+            currency_code: 'AUD',
+            price: 1099,
+            value: 2068,
+            nightly_price: 0,
+            nightly_value: 0,
+          }],
         },
-        {
-          packageId: 'rr1',
-          extraNights: 3,
-          roomRateId: 'rr1',
-          name: undefined,
-          duration: 4,
-        },
-        {
-          packageId: 'rr1',
-          extraNights: 4,
-          roomRateId: 'rr1',
-          name: undefined,
-          duration: 5,
-        },
-        {
-          packageId: 'rr1',
-          extraNights: 5,
-          roomRateId: 'rr1',
-          name: undefined,
-          duration: 6,
-        },
-      ]
-
-      expect(result).to.eql(expectedResult)
+      ])
     })
 
-    it('should return one package options', async() => {
-      const offerPackage = offer.packages[2]
+    it('should add extra two extra package options, total 3 package options, flexible_nights: true', async() => {
+      const offerPackage = buildLEOffer().packages[8]
       const result = generateAllPackageOptions(offerPackage)
 
-      const expectedResult = [
+      expect(result).to.eql([
         {
-          packageId: 'rr1',
+          packageId: 117550,
           extraNights: 0,
-          roomRateId: 'rr1',
-          name: undefined,
+          roomTypeId: '52a04cb0-3e59-11ea-80f2-ad68d677b787',
+          roomRateId: '198b69a7-2225-4e8f-b7a4-ebe3f4914274',
+          name: '7 nights stay in an upgraded Superior room for two',
+          duration: 7,
+          prices: [ {
+            currency_code: 'AUD',
+            price: 2899,
+            value: 5137,
+            nightly_price: 0,
+            nightly_value: 0,
+          },
+          ],
+        },
+        {
+          packageId: 117550,
+          extraNights: 1,
+          roomTypeId: '52a04cb0-3e59-11ea-80f2-ad68d677b787',
+          roomRateId: '198b69a7-2225-4e8f-b7a4-ebe3f4914274',
+          name: '7 nights stay in an upgraded Superior room for two',
+          duration: 8,
+          prices: [
+            {
+              currency_code: 'AUD',
+              price: 2899,
+              value: 5137,
+              nightly_price: 0,
+              nightly_value: 0,
+            },
+          ],
+        },
+        {
+          packageId: 117550,
+          extraNights: 2,
+          roomTypeId: '52a04cb0-3e59-11ea-80f2-ad68d677b787',
+          roomRateId: '198b69a7-2225-4e8f-b7a4-ebe3f4914274',
+          name: '7 nights stay in an upgraded Superior room for two',
+          duration: 9,
+          prices: [ {
+            currency_code: 'AUD',
+            price: 2899,
+            value: 5137,
+            nightly_price: 0,
+            nightly_value: 0,
+          } ],
+        },
+      ])
+    })
+  })
+  describe('Last Minute Offers', () => {
+    it('should return one package options and use the info in the package_option, no flexi nights', async() => {
+      const offerPackage = buildLMEOffer().packages[0]
+      const result = generateAllPackageOptions(offerPackage)
+
+      expect(result).to.eql([
+        {
+          packageId: '2c533fd7-85d6-4493-b52a-08fd52a96632',
+          extraNights: 0,
+          roomTypeId: '7227c6c0-8411-11e8-a9a2-0396cc09a4e4',
+          roomRateId: '30192905-0266-47fb-a4f4-62d71dbb8557',
+          name: 'Free drinks',
           duration: 1,
+          prices: [
+            {
+              currency_code: 'AUD',
+              price: 240,
+              value: 300,
+              nightly_price: 0,
+              nightly_value: 0,
+            },
+          ],
         },
-      ]
-      expect(result).to.eql(expectedResult)
+      ])
     })
 
-    it('should return empty prices', async() => {
-      const offerPackage = offer.packages[1]
-      const result = generateAllPackageOptionsWithPrices(offerPackage)
+    it('should return three extra package options, total four package options', async() => {
+      const offerPackage = buildLMEOffer().packages[2]
+      const result = generateAllPackageOptions(offerPackage)
 
-      expect(result[0].prices).to.eql([])
-    })
-
-    it('should return prices for the extra package options', async() => {
-      const offerPackage = offer.packages[0]
-      const result = generateAllPackageOptionsWithPrices(offerPackage)
-
-      expect(result[1].prices).to.eql([
+      expect(result).to.eql([
         {
-          currency_code: 'EUR',
-          price: 194,
-          value: 184,
-          nightly_price: 0,
-          nightly_value: 0,
+          packageId: 117573,
+          extraNights: 0,
+          roomTypeId: '100ebef0-6c1e-11e7-80aa-03af88b051d5',
+          roomRateId: '38b1a1d0-b4e4-11ea-8c2f-09e168d100d1',
+          name: 'Nightly Rates E2E',
+          duration: 1,
+          prices: [
+            {
+              currency_code: 'AUD',
+              price: 120,
+              value: 200,
+              nightly_price: 0,
+              nightly_value: 0,
+            },
+          ],
         },
         {
-          currency_code: 'AUD',
-          price: 280,
-          value: 300,
-          nightly_price: 0,
-          nightly_value: 0,
+          packageId: 117573,
+          extraNights: 1,
+          roomTypeId: '100ebef0-6c1e-11e7-80aa-03af88b051d5',
+          roomRateId: '38b1a1d0-b4e4-11ea-8c2f-09e168d100d1',
+          name: 'Nightly Rates E2E',
+          duration: 2,
+          prices: [
+            {
+              currency_code: 'AUD',
+              price: 120,
+              value: 200,
+              nightly_price: 0,
+              nightly_value: 0,
+            },
+          ],
+        },
+        {
+          packageId: 117573,
+          extraNights: 2,
+          roomTypeId: '100ebef0-6c1e-11e7-80aa-03af88b051d5',
+          roomRateId: '38b1a1d0-b4e4-11ea-8c2f-09e168d100d1',
+          name: 'Nightly Rates E2E',
+          duration: 3,
+          prices: [
+            {
+              currency_code: 'AUD',
+              price: 120,
+              value: 200,
+              nightly_price: 0,
+              nightly_value: 0,
+            },
+          ],
+        },
+        {
+          packageId: 117573,
+          extraNights: 3,
+          roomTypeId: '100ebef0-6c1e-11e7-80aa-03af88b051d5',
+          roomRateId: '38b1a1d0-b4e4-11ea-8c2f-09e168d100d1',
+          name: 'Nightly Rates E2E',
+          duration: 4,
+          prices: [
+            {
+              currency_code: 'AUD',
+              price: 120,
+              value: 200,
+              nightly_price: 0,
+              nightly_value: 0,
+            }],
         },
       ])
     })
   })
 
-  describe('Flexible nights false', () => {
-    it('should return one extra package options', async() => {
-      const offerPackage = offer.packages[1]
+  describe('Tactical Always On Offers', () => {
+    it('should return one package options, no flexi nights', async() => {
+      const offerPackage = buildTAOOffer().packages[0]
       const result = generateAllPackageOptions(offerPackage)
 
-      const expectedResult = [
+      expect(result).to.eql([
         {
-          packageId: 'rr2',
+          packageId: null,
           extraNights: 0,
-          roomRateId: 'rr2',
-          name: undefined,
-          duration: 3,
+          roomTypeId: undefined,
+          roomRateId: undefined,
+          name: '1 Person Quad Share Interior',
+          duration: 4,
+          prices: [
+            {
+              currency_code: 'AUD',
+              price: 299,
+              value: 419,
+              nightly_price: 0,
+              nightly_value: 0,
+            }],
         },
-      ]
-      expect(result).to.eql(expectedResult)
+      ])
+    })
+
+    it('should return three extra package options, generated from package_options', async() => {
+      const offerPackage = buildTAOOffer().packages[6]
+      const result = generateAllPackageOptions(offerPackage)
+
+      expect(result).to.eql([
+        {
+          packageId: 'b38d1f09-9937-4808-b96b-e92d5b3b797c',
+          extraNights: 0,
+          roomTypeId: undefined,
+          roomRateId: undefined,
+          name: 'Standard',
+          duration: 4,
+          prices: [
+            {
+              currency_code: 'AUD',
+              price: 819,
+              value: 1029,
+              nightly_price: 0,
+              nightly_value: 0,
+            }],
+        },
+        {
+          packageId: 'b38d1f09-9937-4808-b96b-e92d5b3b797c',
+          extraNights: 1,
+          roomTypeId: undefined,
+          roomRateId: undefined,
+          name: 'Standard',
+          duration: 5,
+          prices: [
+            {
+              currency_code: 'AUD',
+              price: 819,
+              value: 1029,
+              nightly_price: 0,
+              nightly_value: 0,
+            },
+          ],
+        },
+        {
+          packageId: '51ee2aa2-acdd-4262-ad4b-f8d39406758f',
+          extraNights: 0,
+          roomTypeId: undefined,
+          roomRateId: undefined,
+          name: 'Standard with inclusions',
+          duration: 4,
+          prices: [
+            {
+              currency_code: 'AUD',
+              price: 819,
+              value: 1029,
+              nightly_price: 0,
+              nightly_value: 0,
+            },
+          ],
+        },
+        {
+          packageId: '51ee2aa2-acdd-4262-ad4b-f8d39406758f',
+          extraNights: 1,
+          roomTypeId: undefined,
+          roomRateId: undefined,
+          name: 'Standard with inclusions',
+          duration: 5,
+          prices: [
+            {
+              currency_code: 'AUD',
+              price: 819,
+              value: 1029,
+              nightly_price: 0,
+              nightly_value: 0,
+            },
+          ],
+        },
+        {
+          packageId: 'ddebb810-a89d-42c1-b589-480d59fdd88d',
+          extraNights: 0,
+          roomTypeId: undefined,
+          roomRateId: undefined,
+          name: 'Standard with breakfast',
+          duration: 4,
+          prices: [
+            {
+              currency_code: 'AUD',
+              price: 819,
+              value: 1029,
+              nightly_price: 0,
+              nightly_value: 0,
+            },
+          ],
+        },
+        {
+          packageId: 'ddebb810-a89d-42c1-b589-480d59fdd88d',
+          extraNights: 1,
+          roomTypeId: undefined,
+          roomRateId: undefined,
+          name: 'Standard with breakfast',
+          duration: 5,
+          prices: [
+            {
+              currency_code: 'AUD',
+              price: 819,
+              value: 1029,
+              nightly_price: 0,
+              nightly_value: 0,
+            },
+          ],
+        },
+      ])
+    })
+  })
+
+  describe('Tour Offers', () => {
+    it('should return one package options, no flexi nights', async() => {
+      const offerPackage = buildTourOffer().packages[0]
+      const result = generateAllPackageOptions(offerPackage)
+
+      expect(result).to.eql([
+        {
+          packageId: 117661,
+          extraNights: 0,
+          roomTypeId: undefined,
+          roomRateId: undefined,
+          name: '1 Person Twin Share Balcony Fantastica Low Season',
+          duration: 21,
+          prices: [
+            {
+              currency_code: 'AUD',
+              price: 5099,
+              value: 6168,
+              nightly_price: 0,
+              nightly_value: 0,
+            },
+          ],
+        },
+      ])
+    })
+
+    it('should return six extra package options, six flexi nights', async() => {
+      const offerPackage = buildTourOffer().packages[12]
+      const result = generateAllPackageOptions(offerPackage)
+
+      expect(result).to.eql([
+        {
+          packageId: 117568,
+          extraNights: 0,
+          roomTypeId: undefined,
+          roomRateId: undefined,
+          name: '1 Person Twin Share Interior Fantastica Low Season',
+          duration: 21,
+          prices: [
+            {
+              currency_code: 'AUD',
+              price: 4599,
+              value: 5708,
+              nightly_price: 0,
+              nightly_value: 0,
+            },
+          ],
+        },
+      ])
     })
   })
 })

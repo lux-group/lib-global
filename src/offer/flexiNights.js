@@ -1,18 +1,55 @@
 /**
+ * Calculates the duration based on number of nights/days and extra nights
+ *
+ * @param {*} offerPackageDuration, total number of nights/days for a given package
+ * @param {*} extraNights, number of extra nights
+ * @returns the duration of the package option
+ */
+const calculateDuration = (offerPackageDuration, extraNights) => {
+  return offerPackageDuration + extraNights
+}
+
+/**
+ * Calculates the prices based on number of nights and the package prices list
+ *
+ * @param {*} offerPackagePrices, list of prices of the package
+ * @param {*} extraNights, number of extra nights
+ * @returns a list of prices based on prices in the package and number of nights
+ */
+const calculatePackagePrices = (offerPackagePrices, extraNights) => {
+  return offerPackagePrices.map((price) => {
+    const packagePrice = (extraNights && extraNights > 0) ? price.price + extraNights * price.nightly_price : price.price
+    const packageValue = (extraNights && extraNights > 0) ? price.value + extraNights * price.nightly_value : price.value
+    return {
+      ...price,
+      price: packagePrice,
+      value: packageValue,
+      nightly_price: price.nightly_price,
+      nightly_value: price.nightly_value,
+    }
+  })
+}
+
+/**
  * Generates a package option
  *
- * @param {*} packageOption, a package of an offer
- * @param {*} numberOfNights, number of nights
+ * @param {*} packageOption, a package option of a package in an offer
+ * @param {*} offerPackage, a package of an offer
  * @param {*} extraNights, number of extra nights
  * @returns Generates a package option
  */
-const generatePackageOption = (packageOption, numberOfNights, extraNights) => {
+const generatePackageOption = (packageOption, offerPackage, extraNights) => {
+  const offerPackageDuration = offerPackage.number_of_nights || offerPackage.number_of_days
+  const offerPackagePrices = (offerPackage.prices) ? offerPackage.prices : []
+
   return {
-    packageId: packageOption.fk_room_rate_id,
+    packageId: packageOption.id || offerPackage.id,
     extraNights: extraNights,
-    roomRateId: packageOption.fk_room_rate_id,
-    name: packageOption.name || undefined,
-    duration: numberOfNights + extraNights,
+    roomTypeId: offerPackage.fk_room_type_id || undefined,
+    roomRateId: offerPackage.fk_room_rate_id || undefined,
+    name: packageOption.name || offerPackage.name,
+    duration: calculateDuration(offerPackageDuration, extraNights),
+    prices: calculatePackagePrices(offerPackagePrices, extraNights),
   }
 }
 
@@ -28,6 +65,25 @@ const getPackageOptions = (offerPackage) => (
     [{ fk_room_rate_id: offerPackage.fk_room_rate_id }])
 
 /**
+ * Add the flexible nights package options
+ *
+ * @param {*} offerPackage, a package of an offer
+ * @param {*} packageOption, a package option of a package in an offer
+ * @returns a list of flexible nights package options
+ */
+const generateFlexiNightsPackageOptions = (offerPackage, packageOption) => {
+  const result = []
+  for (
+    let extraNights = 1;
+    extraNights <= offerPackage.max_extra_nights;
+    extraNights++
+  ) {
+    result.push(generatePackageOption(packageOption, offerPackage, extraNights))
+  }
+  return result
+}
+
+/**
  * Generates a list of all the package options, adding new options for flexible nights
  *
  * @param {*} offerPackage, a package of an offer
@@ -39,66 +95,20 @@ const generateAllPackageOptions = (offerPackage) => {
 
   const packageOptions = getPackageOptions(offerPackage)
 
-  const maxExtraNights =
-    (offerPackage.flexible_nights && offerPackage.max_extra_nights) ?
-      offerPackage.max_extra_nights : 0
-
-  for (
-    let extraNights = 0;
-    extraNights <= maxExtraNights;
-    extraNights++
-  ) {
-    packageOptions.forEach(packageOption => {
-      result.push(generatePackageOption(packageOption, offerPackage.number_of_nights, extraNights))
-    })
-  }
-  return result
-}
-
-/**
- * Calculates the prices based on number of nights and the package prices list
- *
- * @param {*} offerPackagePrices, list of prices of the package
- * @param {*} duration, number of nights
- * @returns a list of prices based on prices in the package and number of nights
- */
-const calculatePackagePrices = (offerPackagePrices, duration) => {
-  return offerPackagePrices.map((price) => {
-    return {
-      ...price,
-      price: price.price + duration * price.nightly_price,
-      value: price.value + duration * price.nightly_value,
-      nightly_price: 0,
-      nightly_value: 0,
+  packageOptions.forEach(packageOption => {
+    result.push(generatePackageOption(packageOption, offerPackage, 0))
+    if (offerPackage.flexible_nights && offerPackage.max_extra_nights) {
+      result.push(...generateFlexiNightsPackageOptions(offerPackage, packageOption))
     }
   })
-}
 
-/**
- * Generates a list of all the package options with their prices,
- * adding new options for flexible nights
- *
- * @param {*} offerPackage, a package of an offer
- * @returns a list of all the package options with their prices
- */
-const generateAllPackageOptionsWithPrices = (offerPackage) => {
-  const offerPackagePrices = (offerPackage.prices) ? [...offerPackage.prices] : undefined
-
-  const allPackageOptions = generateAllPackageOptions(offerPackage)
-  const result = allPackageOptions.map((packageOption) => {
-    return {
-      ...packageOption,
-      prices: (offerPackagePrices) ?
-        calculatePackagePrices(offerPackagePrices, packageOption.duration) :
-        undefined,
-    }
-  })
   return result
 }
 
 module.exports = {
+  calculateDuration,
   generatePackageOption,
   calculatePackagePrices,
   generateAllPackageOptions,
-  generateAllPackageOptionsWithPrices,
+  generateFlexiNightsPackageOptions,
 }

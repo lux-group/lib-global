@@ -214,7 +214,7 @@ describe('Offer: Flexible nights', () => {
     })
   
     describe('Last Minute Offers', () => {
-      it('should return three extra package options, total four package options', async() => {
+      it('should return three extra package options, total of four package options', async() => {
         const offerPackage = buildLMEOffer().packages[2]
         const result = generateAllPackageOptions(offerPackage)
 

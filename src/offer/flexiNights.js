@@ -6,7 +6,7 @@
  * @returns the duration of the package option
  */
 const calculateDuration = (offerPackageDuration, extraNights) => {
-  return offerPackageDuration ? offerPackageDuration + extraNights : offerPackageDuration
+  return offerPackageDuration + extraNights
 }
 
 /**
@@ -27,20 +27,20 @@ const calculatePackagePrices = (offerPackagePrices, extraNights) => {
       nightly_price: price.nightly_price,
       nightly_value: price.nightly_value,
     }
-  }, [])
+  })
 }
 
 /**
  * Generates a package option
  *
- * @param {*} packageOption, a package of an offer
+ * @param {*} packageOption, a package option of a package in an offer
  * @param {*} offerPackage, a package of an offer
  * @param {*} extraNights, number of extra nights
  * @returns Generates a package option
  */
 const generatePackageOption = (packageOption, offerPackage, extraNights) => {
   const offerPackageDuration = offerPackage.number_of_nights || offerPackage.number_of_days
-  const offerPackagePrices = (offerPackage.prices) ? [...offerPackage.prices] : []
+  const offerPackagePrices = (offerPackage.prices) ? offerPackage.prices : []
 
   return {
     packageId: packageOption.id || offerPackage.id,
@@ -68,7 +68,7 @@ const getPackageOptions = (offerPackage) => (
  * Add the flexible nights package options
  *
  * @param {*} offerPackage, a package of an offer
- * @param {*} packageOption, a package of an offer
+ * @param {*} packageOption, a package option of a package in an offer
  * @returns a list of flexible nights package options
  */
 const generateFlexiNightsPackageOptions = (offerPackage, packageOption) => {

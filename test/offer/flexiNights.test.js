@@ -50,7 +50,7 @@ describe('Offer: Flexible nights', () => {
   })
 
   describe('Limited time Offers', () => {
-    it('should not return any extra package options, flexible_nights: false', async() => {
+    it('should not return any extra package options, no flexi nights', async() => {
       const offerPackage = buildLEOffer().packages[0]
       const result = generateAllPackageOptions(offerPackage)
 

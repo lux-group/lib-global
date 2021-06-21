@@ -12,7 +12,7 @@ function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
  * @returns the duration of the package option
  */
 var calculateDuration = function calculateDuration(offerPackageDuration, extraNights) {
-  return offerPackageDuration ? offerPackageDuration + extraNights : offerPackageDuration;
+  return offerPackageDuration + extraNights;
 };
 
 /**
@@ -32,20 +32,20 @@ var calculatePackagePrices = function calculatePackagePrices(offerPackagePrices,
       nightly_price: price.nightly_price,
       nightly_value: price.nightly_value
     });
-  }, []);
+  });
 };
 
 /**
  * Generates a package option
  *
- * @param {*} packageOption, a package of an offer
+ * @param {*} packageOption, a package option of a package in an offer
  * @param {*} offerPackage, a package of an offer
  * @param {*} extraNights, number of extra nights
  * @returns Generates a package option
  */
 var generatePackageOption = function generatePackageOption(packageOption, offerPackage, extraNights) {
   var offerPackageDuration = offerPackage.number_of_nights || offerPackage.number_of_days;
-  var offerPackagePrices = offerPackage.prices ? [].concat(_toConsumableArray(offerPackage.prices)) : [];
+  var offerPackagePrices = offerPackage.prices ? offerPackage.prices : [];
 
   return {
     packageId: packageOption.id || offerPackage.id,
@@ -72,7 +72,7 @@ var getPackageOptions = function getPackageOptions(offerPackage) {
  * Add the flexible nights package options
  *
  * @param {*} offerPackage, a package of an offer
- * @param {*} packageOption, a package of an offer
+ * @param {*} packageOption, a package option of a package in an offer
  * @returns a list of flexible nights package options
  */
 var generateFlexiNightsPackageOptions = function generateFlexiNightsPackageOptions(offerPackage, packageOption) {

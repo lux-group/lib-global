@@ -510,7 +510,7 @@ const buildTourOffer = () => {
         sort_order: 2,
         room_occupancy: 'Two Adults',
         deal_option_name: '1 Person Twin Share Interior Fantastica Low Season',
-        flexible_nights: false,
+        flexible_nights: true,
         partnerships: [],
         is_exclusive: false,
         memberships: [],

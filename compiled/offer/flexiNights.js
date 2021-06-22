@@ -1,8 +1,10 @@
-"use strict";
+'use strict';
 
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
 function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
+
+var STATUS_CONTENT_APPROVED = 'content-approved';
 
 /**
  * Calculates the duration based on number of nights/days and extra nights
@@ -51,7 +53,7 @@ var generatePackageOption = function generatePackageOption(packageOption, offerP
     packageId: packageOption.id || offerPackage.id,
     extraNights: extraNights,
     roomTypeId: offerPackage.fk_room_type_id || undefined,
-    roomRateId: offerPackage.fk_room_rate_id || undefined,
+    roomRateId: packageOption.fk_room_rate_id || offerPackage.fk_room_rate_id || undefined,
     name: packageOption.name || offerPackage.name,
     duration: calculateDuration(offerPackageDuration, extraNights),
     prices: calculatePackagePrices(offerPackagePrices, extraNights)
@@ -105,7 +107,79 @@ var generateAllPackageOptions = function generateAllPackageOptions(offerPackage)
   return result;
 };
 
+var parseOffer = function parseOffer(offer) {
+  for (var i = 0; i < offer.packages.length; i++) {
+    var offerPackage = offer.packages[i];
+    var rates = generateAllPackageOptions(offerPackage);
+
+    offerPackage.rates = rates;
+  }
+
+  return offer.packages.reduce(function (acc, p) {
+    if (!p.flexible_nights) {
+      return acc;
+    }
+
+    if (!p.max_extra_nights) {
+      return acc;
+    }
+
+    if (p.status != STATUS_CONTENT_APPROVED) {
+      return acc;
+    }
+
+    var _iteratorNormalCompletion = true;
+    var _didIteratorError = false;
+    var _iteratorError = undefined;
+
+    try {
+      var _loop = function _loop() {
+        var rate = _step.value;
+
+        if (rate.id === p.id_salesforce_external) {
+          return 'continue';
+        }
+
+        acc.push(_extends({}, p, {
+          number_of_nights: rate.number_of_nights,
+          max_extra_nights: 0,
+          memberships: p.memberships.map(function (membership) {
+            return _extends({}, membership, {
+              fk_upgrade_offer_package_unique_key: membership.fk_upgrade_offer_package_salesforce_id ? membership.fk_upgrade_offer_package_salesforce_id + '++' + rate.number_of_nights : null
+            });
+          }),
+          unique_key: rate.unique_key || rate.id,
+          prices: rate.prices,
+          rates: [rate]
+        }));
+      };
+
+      for (var _iterator = p.rates[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+        var _ret = _loop();
+
+        if (_ret === 'continue') continue;
+      }
+    } catch (err) {
+      _didIteratorError = true;
+      _iteratorError = err;
+    } finally {
+      try {
+        if (!_iteratorNormalCompletion && _iterator.return) {
+          _iterator.return();
+        }
+      } finally {
+        if (_didIteratorError) {
+          throw _iteratorError;
+        }
+      }
+    }
+
+    return acc;
+  }, []);
+};
+
 module.exports = {
+  parseOffer: parseOffer,
   calculateDuration: calculateDuration,
   generatePackageOption: generatePackageOption,
   calculatePackagePrices: calculatePackagePrices,

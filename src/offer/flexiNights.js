@@ -1,5 +1,3 @@
-const STATUS_CONTENT_APPROVED = 'content-approved'
-
 /**
  * Calculates the duration based on number of nights/days and extra nights
  *
@@ -107,53 +105,7 @@ const generateAllPackageOptions = (offerPackage) => {
   return result
 }
 
-const parseOffer = (offer) => {
-  for (let i = 0; i < offer.packages.length; i++) {
-    const offerPackage = offer.packages[i]
-    const rates = generateAllPackageOptions(offerPackage)
-
-    offerPackage.rates = rates
-  }
-
-  return offer.packages.reduce((acc, p) => {
-    if (!p.flexible_nights) {
-      return acc
-    }
-
-    if (!p.max_extra_nights) {
-      return acc
-    }
-
-    if (p.status != STATUS_CONTENT_APPROVED) {
-      return acc
-    }
-
-    for (const rate of p.rates) {
-      if (rate.id === p.id_salesforce_external) {
-        continue
-      }
-
-      acc.push({
-        ...p,
-        number_of_nights: rate.number_of_nights,
-        max_extra_nights: 0,
-        memberships: p.memberships.map((membership) => ({
-          ...membership,
-          fk_upgrade_offer_package_unique_key: membership.fk_upgrade_offer_package_salesforce_id ?
-            `${membership.fk_upgrade_offer_package_salesforce_id}++${rate.number_of_nights}` :
-            null,
-        })),
-        unique_key: rate.unique_key || rate.id,
-        prices: rate.prices,
-        rates: [rate],
-      })
-    }
-    return acc
-  }, [])
-}
-
 module.exports = {
-  parseOffer,
   calculateDuration,
   generatePackageOption,
   calculatePackagePrices,

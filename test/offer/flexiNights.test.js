@@ -275,6 +275,11 @@ describe('Offer: Flexible nights', () => {
         },
       ])
     })
+  
+    describe('Last Minute Offers', () => {
+      it('should return three extra package options, total of four package options', async() => {
+        const offerPackage = buildLMEOffer().packages[2]
+        const result = generateAllPackageOptions(offerPackage)
 
     it('should return three extra package options, generated from package_options', async() => {
       const offerPackage = buildTAOOffer().packages[6]

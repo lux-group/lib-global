@@ -51,7 +51,7 @@ var generatePackageOption = function generatePackageOption(packageOption, offerP
     packageId: packageOption.id || offerPackage.id,
     extraNights: extraNights,
     roomTypeId: offerPackage.fk_room_type_id || undefined,
-    roomRateId: offerPackage.fk_room_rate_id || undefined,
+    roomRateId: packageOption.fk_room_rate_id || offerPackage.fk_room_rate_id || undefined,
     name: packageOption.name || offerPackage.name,
     duration: calculateDuration(offerPackageDuration, extraNights),
     prices: calculatePackagePrices(offerPackagePrices, extraNights)

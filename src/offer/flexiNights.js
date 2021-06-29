@@ -1,29 +1,17 @@
 /**
- * Calculates the duration based on number of nights/days and extra nights
- *
- * @param {*} offerPackageDuration, total number of nights/days for a given package
- * @param {*} extraNights, number of extra nights
- * @returns the duration of the package option
- */
-const calculateDuration = (offerPackageDuration, extraNights) => {
-  return offerPackageDuration + extraNights
-}
-
-/**
  * Calculates the prices based on number of nights and the package prices list
  *
- * @param {*} offerPackagePrices, list of prices of the package
- * @param {*} extraNights, number of extra nights
+ * @param {*} offerPackagePrices list of prices of the package
+ * @param {*} extraNights number of extra nights
  * @returns a list of prices based on prices in the package and number of nights
  */
-const calculatePackagePrices = (offerPackagePrices, extraNights) => {
-  return offerPackagePrices.map((price) => {
-    const packagePrice = (extraNights && extraNights > 0) ? price.price + extraNights * price.nightly_price : price.price
-    const packageValue = (extraNights && extraNights > 0) ? price.value + extraNights * price.nightly_value : price.value
+function calculatePackagePrices(offerPackagePrices, extraNights = 0) {
+  // null comes through, can't use default props for package prices
+  return (offerPackagePrices ?? []).map((price) => {
     return {
       ...price,
-      price: packagePrice,
-      value: packageValue,
+      price: price.price + extraNights * price.nightly_price,
+      value: price.value + extraNights * price.nightly_value,
       nightly_price: price.nightly_price,
       nightly_value: price.nightly_value,
     }
@@ -31,84 +19,47 @@ const calculatePackagePrices = (offerPackagePrices, extraNights) => {
 }
 
 /**
- * Generates a package option
+ * Generates a single option for combination of package/package option/extra nights given 
  *
- * @param {*} packageOption, a package option of a package in an offer
- * @param {*} offerPackage, a package of an offer
- * @param {*} extraNights, number of extra nights
- * @returns Generates a package option
+ * @param {*} offerPackage a package of an offer
+ * @param {*} packageOption a package option of a package in an offer, optional
+ * @param {*} extraNights number of extra nights, optional
+ * @returns The new option
  */
-const generatePackageOption = (packageOption, offerPackage, extraNights) => {
-  const offerPackageDuration = offerPackage.number_of_nights || offerPackage.number_of_days
-  const offerPackagePrices = (offerPackage.prices) ? offerPackage.prices : []
-
+function generateOption(offerPackage, packageOption, extraNights = 0) {
   return {
-    packageId: packageOption.id || offerPackage.id,
+    packageId: packageOption.id || offerPackage.id_salesforce_external,
     extraNights: extraNights,
     roomTypeId: offerPackage.fk_room_type_id || undefined,
     roomRateId: packageOption.fk_room_rate_id || offerPackage.fk_room_rate_id || undefined,
     name: packageOption.name || offerPackage.name,
-    duration: calculateDuration(offerPackageDuration, extraNights),
-    prices: calculatePackagePrices(offerPackagePrices, extraNights),
+    duration: (offerPackage.number_of_nights || offerPackage.number_of_days) + extraNights,
+    prices: calculatePackagePrices(offerPackage.prices, extraNights),
   }
 }
 
 /**
- * Gets the package_options in the package if exists or if not the room rate id
+ * Generates a list of all the options a user can purchase for a package, 
+ * including all options available from the flexible nights configuration
  *
- * @param {*} offerPackage, a package of an offer
- * @returns package_options in the package if exists and if not the room rate id
+ * @param {*} pkg a package of an offer
+ * @returns a list of all the options for that package
  */
-const getPackageOptions = (offerPackage) => (
-  (offerPackage.package_options && offerPackage.package_options.length > 0) ?
-    offerPackage.package_options :
-    [{ fk_room_rate_id: offerPackage.fk_room_rate_id }])
+function generateAllOptions(pkg) {
+  const extraNightsCount = (pkg.flexible_nights && pkg.max_extra_nights) || 0
+  // package options are optionally setup, so fallback to base package if no options
+  const packageOptions = !!pkg.package_options?.length ? pkg.package_options : [{ fk_room_rate_id: pkg.fk_room_rate_id }]
 
-/**
- * Add the flexible nights package options
- *
- * @param {*} offerPackage, a package of an offer
- * @param {*} packageOption, a package option of a package in an offer
- * @returns a list of flexible nights package options
- */
-const generateFlexiNightsPackageOptions = (offerPackage, packageOption) => {
-  const result = []
-  for (
-    let extraNights = 1;
-    extraNights <= offerPackage.max_extra_nights;
-    extraNights++
-  ) {
-    result.push(generatePackageOption(packageOption, offerPackage, extraNights))
-  }
-  return result
-}
-
-/**
- * Generates a list of all the package options, adding new options for flexible nights
- *
- * @param {*} offerPackage, a package of an offer
- * @returns a list of all the package options
- */
-const generateAllPackageOptions = (offerPackage) => {
-  const result = []
-  if (!offerPackage) return result
-
-  const packageOptions = getPackageOptions(offerPackage)
-
-  packageOptions.forEach(packageOption => {
-    result.push(generatePackageOption(packageOption, offerPackage, 0))
-    if (offerPackage.flexible_nights && offerPackage.max_extra_nights) {
-      result.push(...generateFlexiNightsPackageOptions(offerPackage, packageOption))
-    }
+  return packageOptions.flatMap(packageOption => {
+    return [
+      // base option at base duration
+      generateOption(pkg, packageOption),
+      // all extra options that we generate from the flexible nights setup
+      ...Array.from({ length: extraNightsCount }, ((_, extraNights) => generateOption(pkg, packageOption, extraNights + 1))),
+    ]
   })
-
-  return result
 }
 
 module.exports = {
-  calculateDuration,
-  generatePackageOption,
-  calculatePackagePrices,
-  generateAllPackageOptions,
-  generateFlexiNightsPackageOptions,
+  generateAllOptions,
 }

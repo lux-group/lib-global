@@ -1,114 +1,91 @@
 "use strict";
 
-var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
 
-function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
+function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
 
-/**
- * Calculates the duration based on number of nights/days and extra nights
- *
- * @param {*} offerPackageDuration, total number of nights/days for a given package
- * @param {*} extraNights, number of extra nights
- * @returns the duration of the package option
- */
-var calculateDuration = function calculateDuration(offerPackageDuration, extraNights) {
-  return offerPackageDuration + extraNights;
-};
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+
+function _iterableToArray(iter) { if (typeof Symbol !== "undefined" && iter[Symbol.iterator] != null || iter["@@iterator"] != null) return Array.from(iter); }
+
+function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) return _arrayLikeToArray(arr); }
+
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
+
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) { symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); } keys.push.apply(keys, symbols); } return keys; }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
 /**
  * Calculates the prices based on number of nights and the package prices list
  *
- * @param {*} offerPackagePrices, list of prices of the package
- * @param {*} extraNights, number of extra nights
+ * @param {*} offerPackagePrices list of prices of the package
+ * @param {*} extraNights number of extra nights
  * @returns a list of prices based on prices in the package and number of nights
  */
-var calculatePackagePrices = function calculatePackagePrices(offerPackagePrices, extraNights) {
-  return offerPackagePrices.map(function (price) {
-    var packagePrice = extraNights && extraNights > 0 ? price.price + extraNights * price.nightly_price : price.price;
-    var packageValue = extraNights && extraNights > 0 ? price.value + extraNights * price.nightly_value : price.value;
-    return _extends({}, price, {
-      price: packagePrice,
-      value: packageValue,
+function calculatePackagePrices(offerPackagePrices) {
+  var extraNights = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 0;
+  // null comes through, can't use default props for package prices
+  return (offerPackagePrices !== null && offerPackagePrices !== void 0 ? offerPackagePrices : []).map(function (price) {
+    return _objectSpread(_objectSpread({}, price), {}, {
+      price: price.price + extraNights * price.nightly_price,
+      value: price.value + extraNights * price.nightly_value,
       nightly_price: price.nightly_price,
       nightly_value: price.nightly_value
     });
   });
-};
-
+}
 /**
- * Generates a package option
+ * Generates a single option for combination of package/package option/extra nights given 
  *
- * @param {*} packageOption, a package option of a package in an offer
- * @param {*} offerPackage, a package of an offer
- * @param {*} extraNights, number of extra nights
- * @returns Generates a package option
+ * @param {*} offerPackage a package of an offer
+ * @param {*} packageOption a package option of a package in an offer, optional
+ * @param {*} extraNights number of extra nights, optional
+ * @returns The new option
  */
-var generatePackageOption = function generatePackageOption(packageOption, offerPackage, extraNights) {
-  var offerPackageDuration = offerPackage.number_of_nights || offerPackage.number_of_days;
-  var offerPackagePrices = offerPackage.prices ? offerPackage.prices : [];
 
+
+function generateOption(offerPackage, packageOption) {
+  var extraNights = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 0;
   return {
-    packageId: packageOption.id || offerPackage.id,
+    packageId: packageOption.id || offerPackage.id_salesforce_external,
     extraNights: extraNights,
     roomTypeId: offerPackage.fk_room_type_id || undefined,
     roomRateId: packageOption.fk_room_rate_id || offerPackage.fk_room_rate_id || undefined,
     name: packageOption.name || offerPackage.name,
-    duration: calculateDuration(offerPackageDuration, extraNights),
-    prices: calculatePackagePrices(offerPackagePrices, extraNights)
+    duration: (offerPackage.number_of_nights || offerPackage.number_of_days) + extraNights,
+    prices: calculatePackagePrices(offerPackage.prices, extraNights)
   };
-};
-
+}
 /**
- * Gets the package_options in the package if exists or if not the room rate id
+ * Generates a list of all the options a user can purchase for a package, 
+ * including all options available from the flexible nights configuration
  *
- * @param {*} offerPackage, a package of an offer
- * @returns package_options in the package if exists and if not the room rate id
+ * @param {*} pkg a package of an offer
+ * @returns a list of all the options for that package
  */
-var getPackageOptions = function getPackageOptions(offerPackage) {
-  return offerPackage.package_options && offerPackage.package_options.length > 0 ? offerPackage.package_options : [{ fk_room_rate_id: offerPackage.fk_room_rate_id }];
-};
 
-/**
- * Add the flexible nights package options
- *
- * @param {*} offerPackage, a package of an offer
- * @param {*} packageOption, a package option of a package in an offer
- * @returns a list of flexible nights package options
- */
-var generateFlexiNightsPackageOptions = function generateFlexiNightsPackageOptions(offerPackage, packageOption) {
-  var result = [];
-  for (var extraNights = 1; extraNights <= offerPackage.max_extra_nights; extraNights++) {
-    result.push(generatePackageOption(packageOption, offerPackage, extraNights));
-  }
-  return result;
-};
 
-/**
- * Generates a list of all the package options, adding new options for flexible nights
- *
- * @param {*} offerPackage, a package of an offer
- * @returns a list of all the package options
- */
-var generateAllPackageOptions = function generateAllPackageOptions(offerPackage) {
-  var result = [];
-  if (!offerPackage) return result;
+function generateAllOptions(pkg) {
+  var _pkg$package_options;
 
-  var packageOptions = getPackageOptions(offerPackage);
+  var extraNightsCount = pkg.flexible_nights && pkg.max_extra_nights || 0; // package options are optionally setup, so fallback to base package if no options
 
-  packageOptions.forEach(function (packageOption) {
-    result.push(generatePackageOption(packageOption, offerPackage, 0));
-    if (offerPackage.flexible_nights && offerPackage.max_extra_nights) {
-      result.push.apply(result, _toConsumableArray(generateFlexiNightsPackageOptions(offerPackage, packageOption)));
-    }
+  var packageOptions = !!((_pkg$package_options = pkg.package_options) !== null && _pkg$package_options !== void 0 && _pkg$package_options.length) ? pkg.package_options : [{
+    fk_room_rate_id: pkg.fk_room_rate_id
+  }];
+  return packageOptions.flatMap(function (packageOption) {
+    return [// base option at base duration
+    generateOption(pkg, packageOption)].concat(_toConsumableArray(Array.from({
+      length: extraNightsCount
+    }, function (_, extraNights) {
+      return generateOption(pkg, packageOption, extraNights + 1);
+    })));
   });
-
-  return result;
-};
+}
 
 module.exports = {
-  calculateDuration: calculateDuration,
-  generatePackageOption: generatePackageOption,
-  calculatePackagePrices: calculatePackagePrices,
-  generateAllPackageOptions: generateAllPackageOptions,
-  generateFlexiNightsPackageOptions: generateFlexiNightsPackageOptions
+  generateAllOptions: generateAllOptions
 };

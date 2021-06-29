@@ -4,7 +4,7 @@ const expect = chai.expect
 const { offer: offerLib } = require('../../compiled')
 
 const {
-  generateAllPackageOptions,
+  generateAllOptions,
 } = offerLib.flexibleNights
 
 const {
@@ -16,13 +16,13 @@ const {
 
 describe('Offer: Flexible nights', () => {
   describe('Flexible_nights: false', () => {
-    it('should return the same prices and duration, when no flexi nights and prices are empty', async() => {
+    it('should return the same prices and duration, when no flexi nights and prices are empty', () => {
       const offerPackage = buildLEOffer().packages[1]
-      const result = generateAllPackageOptions(offerPackage)
+      const result = generateAllOptions(offerPackage)
 
       expect(result).to.eql([
         {
-          packageId: 117546,
+          packageId: 'a0s0I000007Sj5KQAS',
           extraNights: 0,
           roomTypeId: '52a04cb0-3e59-11ea-80f2-ad68d677b787',
           roomRateId: '198b69a7-2225-4e8f-b7a4-ebe3f4914274',
@@ -33,13 +33,13 @@ describe('Offer: Flexible nights', () => {
       ])
     })
 
-    it('should no return any extra package options and the same prices, when no flexi nights and prices are empty', async() => {
+    it('should no return any extra package options and the same prices, when no flexi nights and prices are empty', () => {
       const offerPackage = buildLEOffer().packages[7]
-      const result = generateAllPackageOptions(offerPackage)
+      const result = generateAllOptions(offerPackage)
 
       expect(result).to.eql([
         {
-          packageId: 117549,
+          packageId: 'a0s0I000007Sj5QQAS',
           extraNights: 0,
           roomTypeId: '52a04cb0-3e59-11ea-80f2-ad68d677b787',
           roomRateId: '198b69a7-2225-4e8f-b7a4-ebe3f4914274',
@@ -50,13 +50,13 @@ describe('Offer: Flexible nights', () => {
       ])
     })
 
-    it('should return the package with no flexi nights and with prices', async() => {
+    it('should return the package with no flexi nights and with prices', () => {
       const offerPackage = buildLEOffer().packages[0]
-      const result = generateAllPackageOptions(offerPackage)
+      const result = generateAllOptions(offerPackage)
 
       expect(result).to.eql([
         {
-          packageId: 117551,
+          packageId: 'a0s0I000007Sj5JQAS',
           extraNights: 0,
           roomTypeId: '52a04cb0-3e59-11ea-80f2-ad68d677b787',
           roomRateId: '198b69a7-2225-4e8f-b7a4-ebe3f4914274',
@@ -73,9 +73,9 @@ describe('Offer: Flexible nights', () => {
       ])
     })
 
-    it('should not return any extra package and use the info in the package_option', async() => {
+    it('should not return any extra package and use the info in the package_option', () => {
       const leOfferPackage = buildLMEOffer().packages[0]
-      const leResult = generateAllPackageOptions(leOfferPackage)
+      const leResult = generateAllOptions(leOfferPackage)
 
       expect(leResult).to.eql([
         {
@@ -98,11 +98,11 @@ describe('Offer: Flexible nights', () => {
       ])
 
       const taoOfferPackage = buildTAOOffer().packages[0]
-      const taoResult = generateAllPackageOptions(taoOfferPackage)
+      const taoResult = generateAllOptions(taoOfferPackage)
 
       expect(taoResult).to.eql([
         {
-          packageId: null,
+          packageId: 'a0s0I000005o8d3QAA',
           extraNights: 0,
           roomTypeId: undefined,
           roomRateId: undefined,
@@ -120,11 +120,11 @@ describe('Offer: Flexible nights', () => {
       ])
 
       const tourOfferPackage = buildTourOffer().packages[0]
-      const tourResult = generateAllPackageOptions(tourOfferPackage)
+      const tourResult = generateAllOptions(tourOfferPackage)
 
       expect(tourResult).to.eql([
         {
-          packageId: 117661,
+          packageId: 'a0s0I000006zVg2QAE',
           extraNights: 0,
           roomTypeId: undefined,
           roomRateId: undefined,
@@ -145,13 +145,13 @@ describe('Offer: Flexible nights', () => {
   })
 
   describe('Flexible_nights: true', () => {
-    it('should add two extra package options, total three package options', async() => {
+    it('should add two extra package options, total three package options', () => {
       const offerPackage = buildLEOffer().packages[8]
-      const result = generateAllPackageOptions(offerPackage)
+      const result = generateAllOptions(offerPackage)
 
       expect(result).to.eql([
         {
-          packageId: 117550,
+          packageId: 'a0s0I000007Sj5RQAS',
           extraNights: 0,
           roomTypeId: '52a04cb0-3e59-11ea-80f2-ad68d677b787',
           roomRateId: '198b69a7-2225-4e8f-b7a4-ebe3f4914274',
@@ -167,7 +167,7 @@ describe('Offer: Flexible nights', () => {
           ],
         },
         {
-          packageId: 117550,
+          packageId: 'a0s0I000007Sj5RQAS',
           extraNights: 1,
           roomTypeId: '52a04cb0-3e59-11ea-80f2-ad68d677b787',
           roomRateId: '198b69a7-2225-4e8f-b7a4-ebe3f4914274',
@@ -184,7 +184,7 @@ describe('Offer: Flexible nights', () => {
           ],
         },
         {
-          packageId: 117550,
+          packageId: 'a0s0I000007Sj5RQAS',
           extraNights: 2,
           roomTypeId: '52a04cb0-3e59-11ea-80f2-ad68d677b787',
           roomRateId: '198b69a7-2225-4e8f-b7a4-ebe3f4914274',
@@ -201,13 +201,13 @@ describe('Offer: Flexible nights', () => {
       ])
     })
 
-    it('should return three extra package options, total of four package options', async() => {
+    it('should return three extra package options, total of four package options', () => {
       const offerPackage = buildLMEOffer().packages[2]
-      const result = generateAllPackageOptions(offerPackage)
+      const result = generateAllOptions(offerPackage)
 
       expect(result).to.eql([
         {
-          packageId: 117573,
+          packageId: 'a0s0T0000006xx6QAA',
           extraNights: 0,
           roomTypeId: '100ebef0-6c1e-11e7-80aa-03af88b051d5',
           roomRateId: '38b1a1d0-b4e4-11ea-8c2f-09e168d100d1',
@@ -224,7 +224,7 @@ describe('Offer: Flexible nights', () => {
           ],
         },
         {
-          packageId: 117573,
+          packageId: 'a0s0T0000006xx6QAA',
           extraNights: 1,
           roomTypeId: '100ebef0-6c1e-11e7-80aa-03af88b051d5',
           roomRateId: '38b1a1d0-b4e4-11ea-8c2f-09e168d100d1',
@@ -241,7 +241,7 @@ describe('Offer: Flexible nights', () => {
           ],
         },
         {
-          packageId: 117573,
+          packageId: 'a0s0T0000006xx6QAA',
           extraNights: 2,
           roomTypeId: '100ebef0-6c1e-11e7-80aa-03af88b051d5',
           roomRateId: '38b1a1d0-b4e4-11ea-8c2f-09e168d100d1',
@@ -258,7 +258,7 @@ describe('Offer: Flexible nights', () => {
           ],
         },
         {
-          packageId: 117573,
+          packageId: 'a0s0T0000006xx6QAA',
           extraNights: 3,
           roomTypeId: '100ebef0-6c1e-11e7-80aa-03af88b051d5',
           roomRateId: '38b1a1d0-b4e4-11ea-8c2f-09e168d100d1',
@@ -277,9 +277,9 @@ describe('Offer: Flexible nights', () => {
 
     })
   
-    it('should return three extra package options, generated from package_options', async() => {
+    it('should return three extra package options, generated from package_options', () => {
       const offerPackage = buildTAOOffer().packages[6]
-      const result = generateAllPackageOptions(offerPackage)
+      const result = generateAllOptions(offerPackage)
 
       expect(result).to.eql([
         {
@@ -386,14 +386,14 @@ describe('Offer: Flexible nights', () => {
       ])
     })
 
-    it('should not return any extra package options for tour offers', async() => {
+    it('should not return any extra package options for tour offers', () => {
       const offerPackage = buildTourOffer().packages[12]
-      const result = generateAllPackageOptions(offerPackage)
+      const result = generateAllOptions(offerPackage)
 
       expect(result.length).to.eql(1)
       expect(result).to.eql([
         {
-          packageId: 117568,
+          packageId: 'a0s0I000006zVGsQAM',
           extraNights: 0,
           roomTypeId: undefined,
           roomRateId: undefined,

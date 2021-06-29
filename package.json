@@ -18,13 +18,15 @@
     "preversion": "yarn run lint",
     "ci": "yarn test && yarn run lint && yarn build"
   },
-  "dependencies": {},
+  "dependencies": {
+    "@babel/preset-env": "^7.14.7"
+  },
   "devDependencies": {
-    "babel-cli": "^6.26.0",
-    "babel-core": "^6.26.0",
-    "babel-eslint": "^10.0.1",
-    "babel-preset-es2015": "^6.24.1",
-    "babel-preset-stage-0": "^6.24.1",
+    "@babel/cli": "7.14.3",
+    "@babel/core": "7.14.3",
+    "@babel/eslint-parser": "7.14.7",
+    "@babel/plugin-proposal-nullish-coalescing-operator": "7.14.2",
+    "@babel/plugin-proposal-optional-chaining": "7.14.2",
     "chai": "^4.2.0",
     "eslint": "^4.0.0",
     "eslint-config-prettier": "^8.3.0",

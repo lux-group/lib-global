@@ -1,4 +1,4 @@
-'use strict';
+"use strict";
 
 var dollarPrefixes = {
   'AUD': 'A',
@@ -12,7 +12,7 @@ var dollarPrefixes = {
 };
 
 function addDollarType(formattedAmount, currencyCode) {
-  return formattedAmount.match(/^\$/) ? '' + (dollarPrefixes[currencyCode] || '') + formattedAmount : formattedAmount;
+  return formattedAmount.match(/^\$/) ? "".concat(dollarPrefixes[currencyCode] || '').concat(formattedAmount) : formattedAmount;
 }
 
 module.exports = {

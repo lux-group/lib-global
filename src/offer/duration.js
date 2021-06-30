@@ -36,7 +36,7 @@ const getCountsString = (packages, field) => {
 }
 
 const getFromPackages = (packages, offerType, holidayTypes) => {
-  let dayOrNightsData = dayOrNights[offerType]
+  const dayOrNightsData = dayOrNights[offerType]
 
   if (holidayTypes) {
     // Block for holidayTypes

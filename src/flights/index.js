@@ -23,11 +23,11 @@ const ALLOWED_DESTINATIONS = [
 ]
 
 const ALLOWED_DESTINATION_CODES = ALLOWED_DESTINATIONS.map(
-  destination => destination.code
+  destination => destination.code,
 )
 
 const ALLOWED_DESTINATION_NAMES = ALLOWED_DESTINATIONS.map(
-  destination => destination.name
+  destination => destination.name,
 )
 
 module.exports = {

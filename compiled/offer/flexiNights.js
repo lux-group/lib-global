@@ -38,7 +38,7 @@ function calculatePackagePrices(offerPackagePrices) {
   });
 }
 /**
- * Generates a single option for combination of package/package option/extra nights given 
+ * Generates a single option for combination of package/package option/extra nights given
  *
  * @param {*} offerPackage a package of an offer
  * @param {*} packageOption a package option of a package in an offer, optional
@@ -60,7 +60,7 @@ function generateOption(offerPackage, packageOption) {
   };
 }
 /**
- * Generates a list of all the options a user can purchase for a package, 
+ * Generates a list of all the options a user can purchase for a package,
  * including all options available from the flexible nights configuration
  *
  * @param {*} pkg a package of an offer
@@ -73,7 +73,7 @@ function generateAllOptions(pkg) {
 
   var extraNightsCount = pkg.flexible_nights && pkg.max_extra_nights || 0; // package options are optionally setup, so fallback to base package if no options
 
-  var packageOptions = !!((_pkg$package_options = pkg.package_options) !== null && _pkg$package_options !== void 0 && _pkg$package_options.length) ? pkg.package_options : [{
+  var packageOptions = (_pkg$package_options = pkg.package_options) !== null && _pkg$package_options !== void 0 && _pkg$package_options.length ? pkg.package_options : [{
     fk_room_rate_id: pkg.fk_room_rate_id
   }];
   return packageOptions.flatMap(function (packageOption) {

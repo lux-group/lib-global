@@ -1,14 +1,14 @@
 "use strict";
 
 var dollarPrefixes = {
-  'AUD': 'A',
-  'CAD': 'CA',
-  'HKD': 'HK',
-  'MOP': 'MOP',
-  'NZD': 'NZ',
-  'SGD': 'S',
-  'TWD': 'NT',
-  'USD': 'US'
+  AUD: 'A',
+  CAD: 'CA',
+  HKD: 'HK',
+  MOP: 'MOP',
+  NZD: 'NZ',
+  SGD: 'S',
+  TWD: 'NT',
+  USD: 'US'
 };
 
 function addDollarType(formattedAmount, currencyCode) {

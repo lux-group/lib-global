@@ -1,8 +1,9 @@
 {
   "name": "@luxuryescapes/lib-global",
-  "version": "2.2.10",
+  "version": "2.3.0",
   "description": "Lib for expanding functionality and deduplicating code between services",
   "main": "compiled/index.js",
+  "types": "index.d.ts",
   "homepage": "https://github.com/brandsExclusive/lib-global#readme",
   "repository": "git@github.com:brandsExclusive/lib-global.git",
   "license": "UNLICENSED",
@@ -34,7 +35,7 @@
     "eslint-plugin-import": "^2.8.0",
     "eslint-plugin-node": "^11.1.0",
     "eslint-plugin-promise": "^5.1.0",
-    "mocha": "^5.2.0",
+    "mocha": "^6.2.3",
     "prettier": "^2.3.2"
   }
 }

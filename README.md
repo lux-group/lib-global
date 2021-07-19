@@ -10,14 +10,7 @@ if (vendor.requiresTravellerDetails('00128000018BZkIAAW')) {
 }
        
 ```
-## Release
+## Publishing
 
-Use `npm` to patch, minor or whatever version:
-
-```
-npm version patch -m "release version %s"
-git push && git push --tags
-```
-
-https://docs.npmjs.com/cli/version
+Update the version in package.json as part of your PR and CircleCI will do the rest.
 

@@ -1,7 +1,7 @@
 const moment = require('moment')
 const {
   OFFER_TYPE_LAST_MINUTE_HOTEL,
-  LAST_MINUTE_CHECK_IN_LIMIT,
+  LAST_MINUTE_CHECK_IN_LIMIT_DEFAULT,
 } = require('./constants')
 
 const format = (date) => date.format('YYYY-MM-DD')
@@ -25,7 +25,7 @@ const checkInClosesLastMinute = (
   travelToDate,
   numberOfNights,
   timezoneOffset = 0,
-  checkInLimit = LAST_MINUTE_CHECK_IN_LIMIT,
+  checkInLimit = LAST_MINUTE_CHECK_IN_LIMIT_DEFAULT,
 ) => {
   let addDays = checkInLimit
 

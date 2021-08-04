@@ -4,7 +4,7 @@ var moment = require('moment');
 
 var _require = require('./constants'),
     OFFER_TYPE_LAST_MINUTE_HOTEL = _require.OFFER_TYPE_LAST_MINUTE_HOTEL,
-    LAST_MINUTE_CHECK_IN_LIMIT = _require.LAST_MINUTE_CHECK_IN_LIMIT;
+    LAST_MINUTE_CHECK_IN_LIMIT_DEFAULT = _require.LAST_MINUTE_CHECK_IN_LIMIT_DEFAULT;
 
 var format = function format(date) {
   return date.format('YYYY-MM-DD');
@@ -27,7 +27,7 @@ var checkInClosesFlash = function checkInClosesFlash(travelToDate, numberOfNight
 
 var checkInClosesLastMinute = function checkInClosesLastMinute(travelToDate, numberOfNights) {
   var timezoneOffset = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 0;
-  var checkInLimit = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : LAST_MINUTE_CHECK_IN_LIMIT;
+  var checkInLimit = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : LAST_MINUTE_CHECK_IN_LIMIT_DEFAULT;
   var addDays = checkInLimit;
   var nowDate = moment.utc().utcOffset(timezoneOffset);
   var nowHours = parseInt(nowDate.format('HH'));

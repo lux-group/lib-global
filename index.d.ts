@@ -14,7 +14,21 @@ declare module "@luxuryescapes/lib-global" {
     };
   }
 
+  export type LeHotelOfferType =
+    | "hotel"
+    | "last_minute_hotel"
+    | "tactical_ao_hotel"
+
   const offer: {
+    dates: {
+      checkInCloses: (
+        offerType: LeHotelOfferType,
+        travelToDate: string,
+        numberOfNights: number,
+        timezoneOffset: number,
+        checkInLimit?: number
+      ) => string
+    },
     flexibleNights: {
       generateAllOptions: (pkg: any) => Array<PackageNightOption>;
     };

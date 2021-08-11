@@ -23,7 +23,7 @@ declare module "@luxuryescapes/lib-global" {
     dates: {
       checkInCloses: (
         offerType: LeHotelOfferType,
-        travelToDate: string,
+        travelToDate: string | null,
         numberOfNights: number,
         timezoneOffset: number,
         checkInLimit?: number

@@ -10,6 +10,7 @@ function calculatePackagePrices(offerPackagePrices, extraNights = 0) {
   return (offerPackagePrices ?? []).map((price) => {
     return {
       ...price,
+      currency_code: price.currency_code,
       price: price.price + extraNights * price.nightly_price,
       value: price.value + extraNights * price.nightly_value,
       nightly_price: price.nightly_price,

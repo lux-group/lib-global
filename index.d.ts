@@ -6,12 +6,13 @@ declare module "@luxuryescapes/lib-global" {
     roomRateId: string;
     name: string;
     duration: number;
-    prices: {
+    prices: Array<{
+      currency_code: string;
       price: number;
       value: number;
       nightly_price: number;
       nightly_value: number;
-    };
+    }>;
   }
 
   export type LeHotelOfferType =

@@ -33,4 +33,10 @@ declare module "@luxuryescapes/lib-global" {
       generateAllOptions: (pkg: any) => Array<PackageNightOption>;
     };
   };
+  const currency: {
+    addDollarType: (
+      formattedAmount: string,
+      currencyCode: string
+    ) => string
+  };
 }

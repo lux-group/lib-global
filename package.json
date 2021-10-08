@@ -20,6 +20,7 @@
     "ci": "yarn test && yarn run lint && yarn build"
   },
   "dependencies": {
+    "airline-codes": "^1.0.2",
     "moment": "^2.29.1"
   },
   "devDependencies": {

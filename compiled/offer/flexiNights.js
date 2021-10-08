@@ -30,6 +30,7 @@ function calculatePackagePrices(offerPackagePrices) {
   // null comes through, can't use default props for package prices
   return (offerPackagePrices !== null && offerPackagePrices !== void 0 ? offerPackagePrices : []).map(function (price) {
     return _objectSpread(_objectSpread({}, price), {}, {
+      currency_code: price.currency_code,
       price: price.price + extraNights * price.nightly_price,
       value: price.value + extraNights * price.nightly_value,
       nightly_price: price.nightly_price,

@@ -49,7 +49,7 @@ const getAirlineName = carrierCode => {
 }
 
 const getAllCarriers = () => {
-  Object.keys(AIRLINE_MAP).sort().map(code => { return { code: code, name: getAirlineName(code) } })
+  return Object.keys(AIRLINE_MAP).sort().map(code => { return { code: code, name: getAirlineName(code) } })
 }
 
 module.exports = {

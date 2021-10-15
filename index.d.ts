@@ -21,6 +21,13 @@ declare module "@luxuryescapes/lib-global" {
     | "tactical_ao_hotel"
 
   const offer: {
+    constants: {
+      OFFER_TYPE_HOTEL: string;
+      OFFER_TYPE_TOUR: string;
+      OFFER_TYPE_LAST_MINUTE_HOTEL: string;
+      OFFER_TYPE_TACTICAL_AO_HOTEL: string;
+      LAST_MINUTE_CHECK_IN_LIMIT_DEFAULT: number;
+    };
     dates: {
       checkInCloses: (
         offerType: LeHotelOfferType,
@@ -29,9 +36,14 @@ declare module "@luxuryescapes/lib-global" {
         timezoneOffset: number,
         checkInLimit?: number
       ) => string
-    },
+    };
     flexibleNights: {
       generateAllOptions: (pkg: any) => Array<PackageNightOption>;
+    };
+    duration: {
+      getCounts: (packages: Array<object>, field: string) => Array<number>;
+      getCountsString: (packages: Array<object>, field: string) => string;
+      getFromPackages: (packages: Array<object>, offerType: string, holidayTypes: Array<string>) => string;
     };
   };
   const currency: {
@@ -39,5 +51,13 @@ declare module "@luxuryescapes/lib-global" {
       formattedAmount: string,
       currencyCode: string
     ) => string
+  };
+  const vendor: {
+    requiresTravellerDetails: (vendorId: string) => boolean;
+  };
+  const flights: {
+    ALLOWED_DESTINATIONS: Array<{ code: string, name: string }>;
+    ALLOWED_DESTINATION_CODES: Array<string>;
+    ALLOWED_DESTINATION_NAMES: Array<string>;
   };
 }

@@ -22,10 +22,10 @@ declare module "@luxuryescapes/lib-global" {
 
   const offer: {
     constants: {
-      OFFER_TYPE_HOTEL: string;
-      OFFER_TYPE_TOUR: string;
-      OFFER_TYPE_LAST_MINUTE_HOTEL: string;
-      OFFER_TYPE_TACTICAL_AO_HOTEL: string;
+      OFFER_TYPE_HOTEL: 'hotel';
+      OFFER_TYPE_TOUR: 'tour';
+      OFFER_TYPE_LAST_MINUTE_HOTEL: 'last_minute_hotel';
+      OFFER_TYPE_TACTICAL_AO_HOTEL: 'tactical_ao_hotel';
       LAST_MINUTE_CHECK_IN_LIMIT_DEFAULT: number;
     };
     dates: {

@@ -170,4 +170,34 @@ describe('Offer', () => {
       )
     })
   })
+
+  describe("calculateTaxAmount()", function () {
+    it("returns the tax is calculated by percentage", function () {
+      expect(
+        offer.finance.calculateTaxAmount({
+          numberOfNights: 1,
+          price: 102,
+          taxesAndFees: [{ name: "Test", unit: "percentage", value: 10 }],
+        })
+      ).to.eql(10)
+
+      expect(
+        offer.finance.calculateTaxAmount({
+          numberOfNights: 5,
+          price: 102,
+          taxesAndFees: [{ name: "Test", unit: "percentage", value: 10 }],
+        })
+      ).to.eql(10)
+    })
+
+    it("returns the tax is calculated by amount", function () {
+      expect(
+        offer.finance.calculateTaxAmount({
+          numberOfNights: 2,
+          price: 100,
+          taxesAndFees: [{ name: "Test", unit: "amount", value: 10 }],
+        })
+      ).to.eql(20)
+    })
+  })
 })

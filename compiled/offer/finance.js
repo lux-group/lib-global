@@ -9,7 +9,7 @@ var calculateTaxAmount = function calculateTaxAmount(_ref) {
     return Math.floor(taxesAndFees.reduce(function (acc, item) {
       var tax = 0;
 
-      if (item.unit === "percentage") {
+      if (item.unit === 'percentage') {
         tax = price / 100 * item.value;
       } else {
         tax = item.value * numberOfNights;

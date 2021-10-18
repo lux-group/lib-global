@@ -180,6 +180,14 @@ describe('Offer', () => {
           taxesAndFees: [{ name: "Test", unit: "percentage", value: 10 }],
         })
       ).to.eql(10)
+
+      expect(
+        offer.finance.calculateTaxAmount({
+          numberOfNights: 5,
+          price: 102,
+          taxesAndFees: [{ name: "Test", unit: "percentage", value: 10 }],
+        })
+      ).to.eql(10)
     })
 
     it("returns the tax is calculated by amount", function () {

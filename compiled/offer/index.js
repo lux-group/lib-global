@@ -4,5 +4,6 @@ module.exports = {
   constants: require('./constants'),
   dates: require('./dates'),
   duration: require('./duration'),
-  flexibleNights: require('./flexiNights')
+  flexibleNights: require('./flexiNights'),
+  finance: require('./finance')
 };

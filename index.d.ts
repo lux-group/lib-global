@@ -51,7 +51,7 @@ declare module "@luxuryescapes/lib-global" {
       getCountsString: (packages: Array<object>, field: string) => string;
       getFromPackages: (packages: Array<object>, offerType: string, holidayTypes: Array<string>) => string;
     };
-    finance: {
+    pricing: {
       calculateTaxAmount: ({ price, taxesAndFees, numberOfNights }: { price: number, taxesAndFees: TaxesAndFees[], numberOfNights: number }) => number;
     };
   };

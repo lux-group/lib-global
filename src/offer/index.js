@@ -3,5 +3,5 @@ module.exports = {
   dates: require('./dates'),
   duration: require('./duration'),
   flexibleNights: require('./flexiNights'),
-  finance: require('./finance'),
+  pricing: require('./pricing'),
 }

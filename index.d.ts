@@ -63,6 +63,12 @@ declare module "@luxuryescapes/lib-global" {
     pricing: {
       calculateTaxAmount: ({ total, taxesAndFees, nights, occupancies }: { total: number, taxesAndFees: TaxesAndFees[], nights: number, occupancies?: Occupants[] }) => number;
     };
+    occupancy: {
+      get: (occupancy: string | string[]) => Occupants[];
+      parse: (occupancy: string) => Occupants;
+      match: (occupancy: string) => boolean;
+      toString: (occupancy: Occupants) => string;
+    };
   };
   const currency: {
     addDollarType: (

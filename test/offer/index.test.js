@@ -220,12 +220,12 @@ describe('Offer', () => {
       ).to.eql(100)
     })
 
-    it("returns the tax is calculated by percentage and type per person", function () {
+    it("returns the tax is calculated by percentage and type stay - per person", function () {
       expect(
         offer.pricing.calculateTaxAmount({
           nights: 5,
           total: 100 * 5,
-          taxesAndFees: [{ name: "Test", unit: "percentage", value: 5, type: "person" }],
+          taxesAndFees: [{ name: "Test", unit: "percentage", value: 5, type: "stay", per_person: true }],
           occupancies: [{
             adults: 5,
           }],
@@ -233,17 +233,43 @@ describe('Offer', () => {
       ).to.eql(125)
     })
 
-    it("returns the tax is calculated by amount and type per person", function () {
+    it("returns the tax is calculated by amount and type stay - per person", function () {
       expect(
         offer.pricing.calculateTaxAmount({
           nights: 5,
           total: 100 * 5,
-          taxesAndFees: [{ name: "Test", unit: "amount", value: 5, type: "person" }],
+          taxesAndFees: [{ name: "Test", unit: "amount", value: 5, type: "stay", per_person: true }],
           occupancies: [{
             adults: 5,
           }],
         })
       ).to.eql(25)
+    })
+
+    it("returns the tax is calculated by percentage and type night - per person", function () {
+      expect(
+        offer.pricing.calculateTaxAmount({
+          nights: 5,
+          total: 100 * 5,
+          taxesAndFees: [{ name: "Test", unit: "percentage", value: 5, type: "night", per_person: true }],
+          occupancies: [{
+            adults: 5,
+          }],
+        })
+      ).to.eql(25)
+    })
+
+    it("returns the tax is calculated by amount and type night - per person", function () {
+      expect(
+        offer.pricing.calculateTaxAmount({
+          nights: 5,
+          total: 100 * 5,
+          taxesAndFees: [{ name: "Test", unit: "amount", value: 5, type: "night", per_person: true }],
+          occupancies: [{
+            adults: 5,
+          }],
+        })
+      ).to.eql(125)
     })
   })
 })

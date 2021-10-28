@@ -1,28 +1,26 @@
-const perNight = ({ total, unit, value, nights }) => {
-  if (unit === 'percentage') {
-    return ((total / nights) / 100) * value
-  } else {
-    return value * nights
-  }
-}
-
-const perStay = ({ total, unit, value }) => {
-  if (unit === 'percentage') {
-    return (total / 100) * value
-  } else {
-    return value
-  }
-}
-
-const perPerson = ({ total, unit, value, occupancies }) => {
-  const members = (occupancies || []).reduce((acc, occupancy) => {
+const countOfMembers = (occupancies) => {
+  return (occupancies || []).reduce((acc, occupancy) => {
     return acc + occupancy.adults + (occupancy.children || 0) + (occupancy.infants || 0)
   }, 0) || 2
+}
+
+const perNight = ({ total, unit, value, nights, perPerson, occupancies }) => {
+  const members = perPerson ? countOfMembers(occupancies) : 1
 
   if (unit === 'percentage') {
-    return members * ((total / 100) * value)
+    return (((total / nights) / 100) * value) * members
   } else {
-    return members * value
+    return (value * nights) * members
+  }
+}
+
+const perStay = ({ total, unit, value, perPerson, occupancies }) => {
+  const members = perPerson ? countOfMembers(occupancies) : 1
+
+  if (unit === 'percentage') {
+    return ((total / 100) * value) * members
+  } else {
+    return value * members
   }
 }
 
@@ -32,7 +30,8 @@ const perPerson = ({ total, unit, value, occupancies }) => {
  * interface TaxesAndFees {
  *   name: string;
  *   unit: "percentage" | "amount";
- *   type: "night" | "stay" | "person";
+ *   type: "night" | "stay";
+ *   per_person: boolean;
  *   value: number;
  * }
  *
@@ -57,11 +56,9 @@ const calculateTaxAmount = ({ total, taxesAndFees, nights, occupancies }) => {
         let tax = 0
 
         if (item.type === 'stay') {
-          tax = perStay({ total, unit: item.unit, value: item.value })
-        } else if (item.type === 'person') {
-          tax = perPerson({ total, unit: item.unit, value: item.value, occupancies })
+          tax = perStay({ total, unit: item.unit, value: item.value, perPerson: item.per_person, occupancies })
         } else {
-          tax = perNight({ total, unit: item.unit, value: item.value, nights })
+          tax = perNight({ total, unit: item.unit, value: item.value, nights, perPerson: item.per_person, occupancies })
         }
 
         return acc + tax

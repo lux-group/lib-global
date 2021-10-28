@@ -1,43 +1,39 @@
 "use strict";
 
+var countOfMembers = function countOfMembers(occupancies) {
+  return (occupancies || []).reduce(function (acc, occupancy) {
+    return acc + occupancy.adults + (occupancy.children || 0) + (occupancy.infants || 0);
+  }, 0) || 2;
+};
+
 var perNight = function perNight(_ref) {
   var total = _ref.total,
       unit = _ref.unit,
       value = _ref.value,
-      nights = _ref.nights;
+      nights = _ref.nights,
+      perPerson = _ref.perPerson,
+      occupancies = _ref.occupancies;
+  var members = perPerson ? countOfMembers(occupancies) : 1;
 
   if (unit === 'percentage') {
-    return total / nights / 100 * value;
+    return total / nights / 100 * value * members;
   } else {
-    return value * nights;
+    return value * nights * members;
   }
 };
 
 var perStay = function perStay(_ref2) {
   var total = _ref2.total,
       unit = _ref2.unit,
-      value = _ref2.value;
+      value = _ref2.value,
+      perPerson = _ref2.perPerson,
+      occupancies = _ref2.occupancies;
+  var members = perPerson ? countOfMembers(occupancies) : 1;
 
   if (unit === 'percentage') {
-    return total / 100 * value;
+    return total / 100 * value * members;
   } else {
-    return value;
-  }
-};
-
-var perPerson = function perPerson(_ref3) {
-  var total = _ref3.total,
-      unit = _ref3.unit,
-      value = _ref3.value,
-      occupancies = _ref3.occupancies;
-  var members = (occupancies || []).reduce(function (acc, occupancy) {
-    return acc + occupancy.adults + (occupancy.children || 0) + (occupancy.infants || 0);
-  }, 0) || 2;
-
-  if (unit === 'percentage') {
-    return members * (total / 100 * value);
-  } else {
-    return members * value;
+    return value * members;
   }
 };
 /**
@@ -46,7 +42,8 @@ var perPerson = function perPerson(_ref3) {
  * interface TaxesAndFees {
  *   name: string;
  *   unit: "percentage" | "amount";
- *   type: "night" | "stay" | "person";
+ *   type: "night" | "stay";
+ *   per_person: boolean;
  *   value: number;
  * }
  *
@@ -66,11 +63,11 @@ var perPerson = function perPerson(_ref3) {
  */
 
 
-var calculateTaxAmount = function calculateTaxAmount(_ref4) {
-  var total = _ref4.total,
-      taxesAndFees = _ref4.taxesAndFees,
-      nights = _ref4.nights,
-      occupancies = _ref4.occupancies;
+var calculateTaxAmount = function calculateTaxAmount(_ref3) {
+  var total = _ref3.total,
+      taxesAndFees = _ref3.taxesAndFees,
+      nights = _ref3.nights,
+      occupancies = _ref3.occupancies;
 
   if (taxesAndFees && total) {
     return Math.floor(taxesAndFees.reduce(function (acc, item) {
@@ -80,13 +77,8 @@ var calculateTaxAmount = function calculateTaxAmount(_ref4) {
         tax = perStay({
           total: total,
           unit: item.unit,
-          value: item.value
-        });
-      } else if (item.type === 'person') {
-        tax = perPerson({
-          total: total,
-          unit: item.unit,
           value: item.value,
+          perPerson: item.per_person,
           occupancies: occupancies
         });
       } else {
@@ -94,7 +86,9 @@ var calculateTaxAmount = function calculateTaxAmount(_ref4) {
           total: total,
           unit: item.unit,
           value: item.value,
-          nights: nights
+          nights: nights,
+          perPerson: item.per_person,
+          occupancies: occupancies
         });
       }
 

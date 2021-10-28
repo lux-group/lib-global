@@ -8,7 +8,7 @@ const perNight = ({ total, unit, value, nights, perPerson, occupancies }) => {
   const members = perPerson ? countOfMembers(occupancies) : 1
 
   if (unit === 'percentage') {
-    return (((total / nights) / 100) * value) * members
+    return ((total / 100) * value) * members
   } else {
     return (value * nights) * members
   }

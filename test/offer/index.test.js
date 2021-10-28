@@ -187,7 +187,7 @@ describe('Offer', () => {
           total: 102 * 5,
           taxesAndFees: [{ name: "Test", unit: "percentage", value: 10 }],
         })
-      ).to.eql(10)
+      ).to.eql(51)
     })
 
     it("returns the tax is calculated by amount and type per night", function () {
@@ -256,7 +256,7 @@ describe('Offer', () => {
             adults: 5,
           }],
         })
-      ).to.eql(25)
+      ).to.eql(125)
     })
 
     it("returns the tax is calculated by amount and type night - per person", function () {

@@ -54,7 +54,7 @@ const get = occupancy => {
   return occupancies
 }
 
-const strummerMatcher = () => ({
+const strummerMatcher = {
   match: (path, value) => {
     let dataCheck = value
     if (typeof value === 'string') {
@@ -73,7 +73,7 @@ const strummerMatcher = () => ({
     return null
   },
   toJSONSchema: () => ({ type: 'string', properties: {} }),
-})
+}
 
 module.exports = {
   parse: parse,

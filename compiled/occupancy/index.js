@@ -83,49 +83,46 @@ var get = function get(occupancy) {
   return occupancies;
 };
 
-var strummerMatcher = function strummerMatcher() {
-  return {
-    match: function match(path, value) {
-      var dataCheck = value;
+var strummerMatcher = {
+  match: function match(path, value) {
+    var dataCheck = value;
 
-      if (typeof value === 'string') {
-        if (value.split(',').every(function (occupancy) {
-          return !!occupancy.match(/^[0-9]{1,2}-[0-9]{1,2}-[0-9]{1,2}?$/gi);
-        })) {
-          dataCheck = [value.split(',')].flat();
-        } else {
-          dataCheck = [value];
-        }
+    if (typeof value === 'string') {
+      if (value.split(',').every(function (occupancy) {
+        return !!occupancy.match(/^[0-9]{1,2}-[0-9]{1,2}-[0-9]{1,2}?$/gi);
+      })) {
+        dataCheck = [value.split(',')].flat();
+      } else {
+        dataCheck = [value];
       }
-
-      var _iterator = _createForOfIteratorHelper(dataCheck),
-          _step;
-
-      try {
-        for (_iterator.s(); !(_step = _iterator.n()).done;) {
-          var occupancy = _step.value;
-
-          if (!_match(occupancy)) {
-            return 'Invalid occupancy format';
-          }
-        }
-      } catch (err) {
-        _iterator.e(err);
-      } finally {
-        _iterator.f();
-      }
-
-      return null;
-    },
-    toJSONSchema: function toJSONSchema() {
-      return {
-        type: 'string',
-        properties: {}
-      };
     }
-  };
-};
 
+    var _iterator = _createForOfIteratorHelper(dataCheck),
+        _step;
+
+    try {
+      for (_iterator.s(); !(_step = _iterator.n()).done;) {
+        var occupancy = _step.value;
+
+        if (!_match(occupancy)) {
+          return 'Invalid occupancy format';
+        }
+      }
+    } catch (err) {
+      _iterator.e(err);
+    } finally {
+      _iterator.f();
+    }
+
+    return null;
+  },
+  toJSONSchema: function toJSONSchema() {
+    return {
+      type: 'string',
+      properties: {}
+    };
+  }
+};
 module.exports = {
   parse: parse,
   get: get,

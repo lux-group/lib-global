@@ -18,7 +18,16 @@ declare module "@luxuryescapes/lib-global" {
   interface TaxesAndFees {
     name: string;
     unit: "percentage" | "amount";
+    type: "night" | "stay";
+    per_person: boolean;
     value: number;
+  }
+  
+  interface Occupants {
+    adults: number;
+    children?: number;
+    infants?: number;
+    childrenAge?: Array<number>;
   }
 
   export type LeHotelOfferType =
@@ -52,8 +61,14 @@ declare module "@luxuryescapes/lib-global" {
       getFromPackages: (packages: Array<object>, offerType: string, holidayTypes: Array<string>) => string;
     };
     pricing: {
-      calculateTaxAmount: ({ price, taxesAndFees, numberOfNights }: { price: number, taxesAndFees: TaxesAndFees[], numberOfNights: number }) => number;
+      calculateTaxAmount: ({ total, taxesAndFees, nights, occupancies }: { total: number, taxesAndFees: TaxesAndFees[], nights: number, occupancies?: Occupants[] }) => number;
     };
+  };
+  const occupancy: {
+    get: (occupancy: string | string[]) => Occupants[];
+    parse: (occupancy: string) => Occupants;
+    match: (occupancy: string) => boolean;
+    toString: (occupancy: Occupants) => string;
   };
   const currency: {
     addDollarType: (

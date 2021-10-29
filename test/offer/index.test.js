@@ -172,32 +172,104 @@ describe('Offer', () => {
   })
 
   describe("calculateTaxAmount()", function () {
-    it("returns the tax is calculated by percentage", function () {
+    it("returns the tax is calculated by percentage and type per night", function () {
       expect(
         offer.pricing.calculateTaxAmount({
-          numberOfNights: 1,
-          price: 102,
+          nights: 1,
+          total: 102,
           taxesAndFees: [{ name: "Test", unit: "percentage", value: 10 }],
         })
       ).to.eql(10)
 
       expect(
         offer.pricing.calculateTaxAmount({
-          numberOfNights: 5,
-          price: 102,
+          nights: 5,
+          total: 102 * 5,
           taxesAndFees: [{ name: "Test", unit: "percentage", value: 10 }],
         })
-      ).to.eql(10)
+      ).to.eql(51)
     })
 
-    it("returns the tax is calculated by amount", function () {
+    it("returns the tax is calculated by amount and type per night", function () {
       expect(
         offer.pricing.calculateTaxAmount({
-          numberOfNights: 2,
-          price: 100,
+          nights: 2,
+          total: 100 * 2,
           taxesAndFees: [{ name: "Test", unit: "amount", value: 10 }],
         })
       ).to.eql(20)
+    })
+
+    it("returns the tax is calculated by percentage and type per stay", function () {
+      expect(
+        offer.pricing.calculateTaxAmount({
+          nights: 5,
+          total: 100 * 5,
+          taxesAndFees: [{ name: "Test", unit: "percentage", value: 10, type: "stay" }],
+        })
+      ).to.eql(50)
+    })
+
+    it("returns the tax is calculated by amount and type per stay", function () {
+      expect(
+        offer.pricing.calculateTaxAmount({
+          nights: 5,
+          total: 100 * 5,
+          taxesAndFees: [{ name: "Test", unit: "amount", value: 100, type: "stay" }],
+        })
+      ).to.eql(100)
+    })
+
+    it("returns the tax is calculated by percentage and type stay - per person", function () {
+      expect(
+        offer.pricing.calculateTaxAmount({
+          nights: 5,
+          total: 100 * 5,
+          taxesAndFees: [{ name: "Test", unit: "percentage", value: 5, type: "stay", per_person: true }],
+          occupancies: [{
+            adults: 5,
+          }],
+        })
+      ).to.eql(125)
+    })
+
+    it("returns the tax is calculated by amount and type stay - per person", function () {
+      expect(
+        offer.pricing.calculateTaxAmount({
+          nights: 5,
+          total: 100 * 5,
+          taxesAndFees: [{ name: "Test", unit: "amount", value: 5, type: "stay", per_person: true }],
+          occupancies: [{
+            adults: 5,
+          }],
+        })
+      ).to.eql(25)
+    })
+
+    it("returns the tax is calculated by percentage and type night - per person", function () {
+      expect(
+        offer.pricing.calculateTaxAmount({
+          nights: 5,
+          total: 100 * 5,
+          taxesAndFees: [{ name: "Test", unit: "percentage", value: 5, type: "night", per_person: true }],
+          occupancies: [{
+            adults: 5,
+          }],
+        })
+      ).to.eql(125)
+    })
+
+    it("returns the tax is calculated by amount and type night - per person", function () {
+      expect(
+        offer.pricing.calculateTaxAmount({
+          nights: 5,
+          total: 100 * 5,
+          taxesAndFees: [{ name: "Test", unit: "amount", value: 5, type: "night", per_person: true }],
+          occupancies: [{
+            adults: 5,
+          }],
+        })
+      ).to.eql(125)
     })
   })
 })

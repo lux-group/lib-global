@@ -76,5 +76,23 @@ describe('Occupancy', () => {
         childrenAges: [],
       })).to.eql('4-2-1')
     })
+
+    describe('occupancy.strummerMatcher', () => {
+      it('allows an valid occupancy', () => {
+        expect(occupancy.strummerMatcher.match('', '2')).to.eql(undefined)
+      })
+
+      it('allows multiple occupancies', () => {
+        expect(occupancy.strummerMatcher.match('', ['2', '3-1'])).to.eql(undefined)
+      })
+
+      it('detects an invalid occupancy', () => {
+        expect(occupancy.strummerMatcher.match('', 'x')).to.eql('Invalid occupancy format')
+      })
+
+      it('detects an invalid occupancy in an array', () => {
+        expect(occupancy.strummerMatcher.match('', ['2', 'x', '3-1'])).to.eql('Invalid occupancy format')
+      })
+    })
   })
 })

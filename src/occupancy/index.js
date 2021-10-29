@@ -63,14 +63,14 @@ const strummerMatcher = {
       } else {
         dataCheck = [value]
       }
+    } else if (typeof value === 'undefined') {
+      dataCheck = []
     }
     for (const occupancy of dataCheck) {
       if (!match(occupancy)) {
         return 'Invalid occupancy format'
       }
     }
-
-    return null
   },
   toJSONSchema: () => ({ type: 'string', properties: {} }),
 }

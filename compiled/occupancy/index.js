@@ -95,6 +95,8 @@ var strummerMatcher = {
       } else {
         dataCheck = [value];
       }
+    } else if (typeof value === 'undefined') {
+      dataCheck = [];
     }
 
     var _iterator = _createForOfIteratorHelper(dataCheck),
@@ -113,8 +115,6 @@ var strummerMatcher = {
     } finally {
       _iterator.f();
     }
-
-    return null;
   },
   toJSONSchema: function toJSONSchema() {
     return {

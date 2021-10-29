@@ -63,7 +63,7 @@ const strummerMatcher = {
       } else {
         dataCheck = [value]
       }
-    } else if (typeof value === 'undefined') {
+    } else if (typeof value === 'undefined' || !value) {
       dataCheck = []
     }
     for (const occupancy of dataCheck) {

@@ -95,7 +95,7 @@ var strummerMatcher = {
       } else {
         dataCheck = [value];
       }
-    } else if (typeof value === 'undefined') {
+    } else if (typeof value === 'undefined' || !value) {
       dataCheck = [];
     }
 

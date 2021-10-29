@@ -87,7 +87,7 @@ var strummerMatcher = {
   match: function match(path, value) {
     var dataCheck = value;
 
-    if (typeof value === 'string') {
+    if (typeof value === 'string' && value) {
       if (value.split(',').every(function (occupancy) {
         return !!occupancy.match(/^[0-9]{1,2}-[0-9]{1,2}-[0-9]{1,2}?$/gi);
       })) {

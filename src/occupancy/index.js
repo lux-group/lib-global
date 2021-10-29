@@ -57,7 +57,7 @@ const get = occupancy => {
 const strummerMatcher = {
   match: (path, value) => {
     let dataCheck = value
-    if (typeof value === 'string') {
+    if (typeof value === 'string' && value) {
       if (value.split(',').every(occupancy => !!occupancy.match(/^[0-9]{1,2}-[0-9]{1,2}-[0-9]{1,2}?$/gi))) {
         dataCheck = [value.split(',')].flat()
       } else {

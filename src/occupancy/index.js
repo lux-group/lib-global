@@ -54,9 +54,31 @@ const get = occupancy => {
   return occupancies
 }
 
+const strummerMatcher = () => ({
+  match: (path, value) => {
+    let dataCheck = value
+    if (typeof value === 'string') {
+      if (value.split(',').every(occupancy => !!occupancy.match(/^[0-9]{1,2}-[0-9]{1,2}-[0-9]{1,2}?$/gi))) {
+        dataCheck = [value.split(',')].flat()
+      } else {
+        dataCheck = [value]
+      }
+    }
+    for (const occupancy of dataCheck) {
+      if (!match(occupancy)) {
+        return 'Invalid occupancy format'
+      }
+    }
+
+    return null
+  },
+  toJSONSchema: () => ({ type: 'string', properties: {} }),
+})
+
 module.exports = {
   parse: parse,
   get: get,
   match: match,
   toString: toString,
+  strummerMatcher: strummerMatcher,
 }

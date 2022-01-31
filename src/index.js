@@ -5,4 +5,5 @@ module.exports = {
   currency: require('./currency'),
   occupancy: require('./occupancy'),
   date: require('./date'),
+  calendar: require('./calendar'),
 }

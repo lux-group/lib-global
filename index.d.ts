@@ -130,4 +130,28 @@ declare module "@luxuryescapes/lib-global" {
       including?: boolean
     ) => Date[];
   };
+  const calendar: {
+    getMonthsToRequest: (
+      maxDate: string
+    ) => number;
+    getMaxCheckInCloseDate: (
+      checkInCloses?: string,
+      defaultMonths?: number
+    ) => string;
+    getStartDate: (
+      minDate?: string, 
+      travelFromDate?: string
+    ) => string;
+    getDateFloorOffset: ({
+      timezoneOffset,
+      dateFloorOffset,
+      hourOfDayThreshold,
+      enquiryType
+    }: {
+      timezoneOffset: number,
+      dateFloorOffset: number,
+      hourOfDayThreshold: number,
+      enquiryType: 'customer' | 'admin'
+    }) => string;
+  };
 }

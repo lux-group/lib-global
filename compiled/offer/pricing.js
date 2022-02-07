@@ -6,35 +6,20 @@ var countOfMembers = function countOfMembers(occupancies) {
   }, 0) || 2;
 };
 
-var perNight = function perNight(_ref) {
-  var total = _ref.total,
-      unit = _ref.unit,
+var getTaxTotal = function getTaxTotal(_ref) {
+  var type = _ref.type,
       value = _ref.value,
       nights = _ref.nights,
       perPerson = _ref.perPerson,
       occupancies = _ref.occupancies;
   var members = perPerson ? countOfMembers(occupancies) : 1;
+  var total = value * members;
 
-  if (unit === 'percentage') {
-    return total / 100 * value * members;
-  } else {
-    return value * nights * members;
+  if (type === 'night') {
+    total = total * nights;
   }
-};
 
-var perStay = function perStay(_ref2) {
-  var total = _ref2.total,
-      unit = _ref2.unit,
-      value = _ref2.value,
-      perPerson = _ref2.perPerson,
-      occupancies = _ref2.occupancies;
-  var members = perPerson ? countOfMembers(occupancies) : 1;
-
-  if (unit === 'percentage') {
-    return total / 100 * value * members;
-  } else {
-    return value * members;
-  }
+  return total;
 };
 /**
  * Extract and validate the offer and offer package for an order
@@ -63,37 +48,50 @@ var perStay = function perStay(_ref2) {
  */
 
 
-var calculateTaxAmount = function calculateTaxAmount(_ref3) {
-  var total = _ref3.total,
-      taxesAndFees = _ref3.taxesAndFees,
-      nights = _ref3.nights,
-      occupancies = _ref3.occupancies;
+var calculateTaxAmount = function calculateTaxAmount(_ref2) {
+  var total = _ref2.total,
+      taxesAndFees = _ref2.taxesAndFees,
+      nights = _ref2.nights,
+      occupancies = _ref2.occupancies;
 
   if (taxesAndFees && total) {
-    return Math.floor(taxesAndFees.reduce(function (acc, item) {
-      var tax = 0;
-
-      if (item.type === 'stay') {
-        tax = perStay({
-          total: total,
-          unit: item.unit,
-          value: item.value,
-          perPerson: item.per_person,
-          occupancies: occupancies
-        });
+    // Group the taxes by unit
+    var groupedTaxes = taxesAndFees.reduce(function (acc, tax) {
+      if (tax.unit === 'percentage') {
+        acc.percentage.push(tax);
       } else {
-        tax = perNight({
-          total: total,
-          unit: item.unit,
-          value: item.value,
-          nights: nights,
-          perPerson: item.per_person,
-          occupancies: occupancies
-        });
+        acc.amount.push(tax);
       }
 
-      return acc + tax;
-    }, 0));
+      return acc;
+    }, {
+      amount: [],
+      percentage: []
+    }); // Calculate the amount taxes
+
+    var amountTaxes = groupedTaxes.amount.reduce(function (acc, tax) {
+      return acc + getTaxTotal({
+        type: tax.type,
+        value: tax.value,
+        nights: nights,
+        perPerson: tax.per_person,
+        occupancies: occupancies
+      });
+    }, 0); // Calculate the percentage taxes
+
+    var totalExcludingAmountTaxes = total - amountTaxes;
+    var totalTaxPercentage = groupedTaxes.percentage.reduce(function (acc, tax) {
+      return acc + getTaxTotal({
+        type: tax.type,
+        value: tax.value,
+        nights: nights,
+        perPerson: tax.per_person,
+        occupancies: occupancies
+      });
+    }, 0);
+    var percentageTaxes = totalExcludingAmountTaxes - totalExcludingAmountTaxes / (totalTaxPercentage / 100 + 1); // Sum the taxes
+
+    return Math.floor(amountTaxes + percentageTaxes);
   }
 
   return 0;

@@ -4,28 +4,19 @@ const countOfMembers = (occupancies) => {
   }, 0) || 2
 }
 
-const perNight = ({ total, unit, value, nights, perPerson, occupancies }) => {
+const getTaxTotal = ({ type, value, nights, perPerson, occupancies }) => {
   const members = perPerson ? countOfMembers(occupancies) : 1
+  let total = value * members
 
-  if (unit === 'percentage') {
-    return ((total / 100) * value) * members
-  } else {
-    return (value * nights) * members
+  if (type === 'night') {
+    total = total * nights
   }
-}
 
-const perStay = ({ total, unit, value, perPerson, occupancies }) => {
-  const members = perPerson ? countOfMembers(occupancies) : 1
-
-  if (unit === 'percentage') {
-    return ((total / 100) * value) * members
-  } else {
-    return value * members
-  }
+  return total
 }
 
 /**
- * Extract and validate the offer and offer package for an order
+ * Calculate the taxes included into the total amount for an offer/order
  *
  * interface TaxesAndFees {
  *   name: string;
@@ -44,26 +35,49 @@ const perStay = ({ total, unit, value, perPerson, occupancies }) => {
  *
  * @param {object} params - All params
  * @param {number} params.total - The total amount of booking period
- * @param {Array<TaxesAndFees>} params.taxesAndFees - The orders currency code
+ * @param {Array<TaxesAndFees>} params.taxesAndFees - The list of taxes
  * @param {number} params.nights - The number of nights
  * @param {Array<Occupants>} params.occupancies - The occupancies
  * @returns {number} Sum of taxes and fees
  */
 const calculateTaxAmount = ({ total, taxesAndFees, nights, occupancies }) => {
   if (taxesAndFees && total) {
-    return Math.floor(
-      taxesAndFees.reduce((acc, item) => {
-        let tax = 0
+    // Group the taxes by unit
+    const groupedTaxes = taxesAndFees.reduce((acc, tax) => {
+      if (tax.unit === 'percentage') {
+        acc.percentage.push(tax)
+      } else {
+        acc.amount.push(tax)
+      }
+      return acc
+    }, { amount: [], percentage: [] })
 
-        if (item.type === 'stay') {
-          tax = perStay({ total, unit: item.unit, value: item.value, perPerson: item.per_person, occupancies })
-        } else {
-          tax = perNight({ total, unit: item.unit, value: item.value, nights, perPerson: item.per_person, occupancies })
-        }
+    // Calculate the amount taxes
+    const amountTaxes = groupedTaxes.amount.reduce((acc, tax) => {
+      return acc + getTaxTotal({
+        type: tax.type,
+        value: tax.value,
+        nights,
+        perPerson: tax.per_person,
+        occupancies,
+      })
+    }, 0)
 
-        return acc + tax
-      }, 0),
-    )
+    // Calculate the percentage taxes
+    const totalExcludingAmountTaxes = total - amountTaxes
+    const totalTaxPercentage = groupedTaxes.percentage.reduce((acc, tax) => {
+      return acc + getTaxTotal({
+        type: tax.type,
+        value: tax.value,
+        nights,
+        perPerson: tax.per_person,
+        occupancies,
+      })
+    }, 0)
+    const percentageTaxes = totalExcludingAmountTaxes - (totalExcludingAmountTaxes / ((totalTaxPercentage / 100) + 1))
+
+    // Sum the taxes
+    return Math.floor(amountTaxes + percentageTaxes)
   }
 
   return 0

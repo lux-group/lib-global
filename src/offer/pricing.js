@@ -16,7 +16,7 @@ const getTaxTotal = ({ type, value, nights, perPerson, occupancies }) => {
 }
 
 /**
- * Extract and validate the offer and offer package for an order
+ * Calculate the taxes included into the total amount for an offer/order
  *
  * interface TaxesAndFees {
  *   name: string;
@@ -35,7 +35,7 @@ const getTaxTotal = ({ type, value, nights, perPerson, occupancies }) => {
  *
  * @param {object} params - All params
  * @param {number} params.total - The total amount of booking period
- * @param {Array<TaxesAndFees>} params.taxesAndFees - The orders currency code
+ * @param {Array<TaxesAndFees>} params.taxesAndFees - The list of taxes
  * @param {number} params.nights - The number of nights
  * @param {Array<Occupants>} params.occupancies - The occupancies
  * @returns {number} Sum of taxes and fees
@@ -59,7 +59,7 @@ const calculateTaxAmount = ({ total, taxesAndFees, nights, occupancies }) => {
         value: tax.value,
         nights,
         perPerson: tax.per_person,
-        occupancies
+        occupancies,
       })
     }, 0)
 
@@ -71,7 +71,7 @@ const calculateTaxAmount = ({ total, taxesAndFees, nights, occupancies }) => {
         value: tax.value,
         nights,
         perPerson: tax.per_person,
-        occupancies
+        occupancies,
       })
     }, 0)
     const percentageTaxes = totalExcludingAmountTaxes - (totalExcludingAmountTaxes / ((totalTaxPercentage / 100) + 1))

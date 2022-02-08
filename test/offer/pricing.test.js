@@ -6,6 +6,14 @@ const { calculateTaxAmount } = offerLib.pricing
 
 describe('calculateTaxAmount', () => {
   const tests = {
+    'default types are amount, per stay and per group (not per person)': {
+      params: {
+        total: 100,
+        taxesAndFees: [{ name: 'Tax1', value: 10 }],
+        nights: 3,
+      },
+      expected: 30,
+    },
     'percentage per night for a single night': {
       params: {
         total: 100,

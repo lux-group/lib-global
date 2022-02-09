@@ -8,7 +8,7 @@ const getTaxTotal = ({ type, value, nights, perPerson, occupancies }) => {
   const members = perPerson ? countOfMembers(occupancies) : 1
   let total = value * members
 
-  if (type === 'night') {
+  if (type !== 'stay') { // Default to nightly tax
     total = total * nights
   }
 

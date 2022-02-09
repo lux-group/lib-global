@@ -15,14 +15,15 @@ var getTaxTotal = function getTaxTotal(_ref) {
   var members = perPerson ? countOfMembers(occupancies) : 1;
   var total = value * members;
 
-  if (type === 'night') {
+  if (type !== 'stay') {
+    // Default to nightly tax
     total = total * nights;
   }
 
   return total;
 };
 /**
- * Extract and validate the offer and offer package for an order
+ * Calculate the taxes included into the total amount for an offer/order
  *
  * interface TaxesAndFees {
  *   name: string;
@@ -41,7 +42,7 @@ var getTaxTotal = function getTaxTotal(_ref) {
  *
  * @param {object} params - All params
  * @param {number} params.total - The total amount of booking period
- * @param {Array<TaxesAndFees>} params.taxesAndFees - The orders currency code
+ * @param {Array<TaxesAndFees>} params.taxesAndFees - The list of taxes
  * @param {number} params.nights - The number of nights
  * @param {Array<Occupants>} params.occupancies - The occupancies
  * @returns {number} Sum of taxes and fees

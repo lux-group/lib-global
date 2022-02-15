@@ -63,6 +63,16 @@ const calculateTaxAmount = ({ total, taxesAndFees, nights, occupancies }) => {
   return 0
 }
 
+/**
+ * Calculate the taxes total amount and inject total of each tax
+ *
+ * @param {object} params - All params
+ * @param {number} params.total - The total amount of booking period
+ * @param {Array<TaxesAndFees>} params.taxesAndFees - The list of taxes
+ * @param {number} params.nights - The number of nights
+ * @param {Array<Occupants>} params.occupancies - The occupancies
+ * @returns Sum of taxes and fees (taxesAndFeesTotal) and taxesAndFees with total injected (taxesAndFeesWithTotalForEach)
+ */
 const calculateAmountForEachTax = ({
   total,
   taxesAndFees,

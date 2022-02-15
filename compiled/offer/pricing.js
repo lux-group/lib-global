@@ -101,7 +101,7 @@ var calculateTaxAmount = function calculateTaxAmount(_ref2) {
  * @param {Array<TaxesAndFees>} params.taxesAndFees - The list of taxes
  * @param {number} params.nights - The number of nights
  * @param {Array<Occupants>} params.occupancies - The occupancies
- * @returns Sum of taxes and fees taxesAndFeesTotal and taxesAndFees with total injected taxesAndFeesWithTotalForEach
+ * @returns Sum of taxes and fees (taxesAndFeesTotal) and taxesAndFees with total injected (taxesAndFeesWithTotalForEach)
  */
 
 
@@ -171,6 +171,7 @@ var calculateAmountForEachTax = function calculateAmountForEachTax(_ref3) {
   return {
     // Sum the taxes
     taxesAndFeesTotal: Math.floor(amountTaxes + percentageTaxes),
+    // TaxesAndFees with total for each injected
     taxesAndFeesWithTotalForEach: taxesAndFeesWithTotalForEach
   };
 };

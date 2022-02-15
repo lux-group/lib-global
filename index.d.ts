@@ -34,6 +34,15 @@ declare module "@luxuryescapes/lib-global" {
     type: "string";
   }
 
+  interface TaxesAndFeesWithTotal extends TaxesAndFees {
+    total: number;
+  }
+
+  interface CalculateAmountForEachTaxResult {
+    taxesAndFeesTotal: number;
+    taxesAndFeesWithTotalForEach: Array<TaxesAndFeesWithTotal>
+  }
+
   export type LeHotelOfferType =
     | "hotel"
     | "last_minute_hotel"
@@ -66,6 +75,7 @@ declare module "@luxuryescapes/lib-global" {
     };
     pricing: {
       calculateTaxAmount: ({ total, taxesAndFees, nights, occupancies }: { total: number, taxesAndFees: TaxesAndFees[], nights: number, occupancies?: Occupants[] }) => number;
+      calculateAmountForEachTax: ({ total, taxesAndFees, nights, occupancies }: { total: number, taxesAndFees: TaxesAndFees[], nights: number, occupancies?: Occupants[] }) => CalculateAmountForEachTaxResult;
     };
   };
   const occupancy: {

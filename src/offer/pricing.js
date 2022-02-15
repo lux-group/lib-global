@@ -140,6 +140,7 @@ const calculateAmountForEachTax = ({
   return {
     // Sum the taxes
     taxesAndFeesTotal: Math.floor(amountTaxes + percentageTaxes),
+    // TaxesAndFees with total for each injected
     taxesAndFeesWithTotalForEach,
   }
 }

@@ -1,14 +1,22 @@
 const countOfMembers = (occupancies) => {
-  return (occupancies || []).reduce((acc, occupancy) => {
-    return acc + occupancy.adults + (occupancy.children || 0) + (occupancy.infants || 0)
-  }, 0) || 2
+  return (
+    (occupancies || []).reduce((acc, occupancy) => {
+      return (
+        acc +
+        occupancy.adults +
+        (occupancy.children || 0) +
+        (occupancy.infants || 0)
+      )
+    }, 0) || 2
+  )
 }
 
 const getTaxTotal = ({ type, value, nights, perPerson, occupancies }) => {
   const members = perPerson ? countOfMembers(occupancies) : 1
   let total = value * members
 
-  if (type !== 'stay') { // Default to nightly tax
+  if (type !== 'stay') {
+    // Default to nightly tax
     total = total * nights
   }
 
@@ -42,47 +50,102 @@ const getTaxTotal = ({ type, value, nights, perPerson, occupancies }) => {
  */
 const calculateTaxAmount = ({ total, taxesAndFees, nights, occupancies }) => {
   if (taxesAndFees && total) {
-    // Group the taxes by unit
-    const groupedTaxes = taxesAndFees.reduce((acc, tax) => {
+    const { taxesAndFeesTotal } = calculateAmountForEachTax({
+      total,
+      taxesAndFees,
+      nights,
+      occupancies,
+    })
+
+    return taxesAndFeesTotal
+  }
+
+  return 0
+}
+
+/**
+ * Calculate the taxes total amount and inject total of each tax
+ *
+ * @param {object} params - All params
+ * @param {number} params.total - The total amount of booking period
+ * @param {Array<TaxesAndFees>} params.taxesAndFees - The list of taxes
+ * @param {number} params.nights - The number of nights
+ * @param {Array<Occupants>} params.occupancies - The occupancies
+ * @returns Sum of taxes and fees (taxesAndFeesTotal) and taxesAndFees with total injected (taxesAndFeesWithTotalForEach)
+ */
+const calculateAmountForEachTax = ({
+  total,
+  taxesAndFees,
+  nights,
+  occupancies,
+}) => {
+  let taxesAndFeesWithTotalForEach = []
+  const percentageTaxesAndFees = []
+  // Group the taxes by unit
+  const groupedTaxes = taxesAndFees.reduce(
+    (acc, tax) => {
       if (tax.unit === 'percentage') {
         acc.percentage.push(tax)
       } else {
         acc.amount.push(tax)
       }
       return acc
-    }, { amount: [], percentage: [] })
+    },
+    { amount: [], percentage: [] },
+  )
 
-    // Calculate the amount taxes
-    const amountTaxes = groupedTaxes.amount.reduce((acc, tax) => {
-      return acc + getTaxTotal({
-        type: tax.type,
-        value: tax.value,
-        nights,
-        perPerson: tax.per_person,
-        occupancies,
-      })
-    }, 0)
+  // Calculate the amount taxes
+  const amountTaxes = groupedTaxes.amount.reduce((acc, tax) => {
+    const taxAmount = getTaxTotal({
+      type: tax.type,
+      value: tax.value,
+      nights,
+      perPerson: tax.per_person,
+      occupancies,
+    })
 
-    // Calculate the percentage taxes
-    const totalExcludingAmountTaxes = total - amountTaxes
-    const totalTaxPercentage = groupedTaxes.percentage.reduce((acc, tax) => {
-      return acc + getTaxTotal({
-        type: tax.type,
-        value: tax.value,
-        nights,
-        perPerson: tax.per_person,
-        occupancies,
-      })
-    }, 0)
-    const percentageTaxes = totalExcludingAmountTaxes - (totalExcludingAmountTaxes / ((totalTaxPercentage / 100) + 1))
+    // Include total for each taxesAndFees
+    taxesAndFeesWithTotalForEach.push({ ...tax, total: taxAmount })
+    return acc + taxAmount
+  }, 0)
 
-    // Sum the taxes
-    return Math.floor(amountTaxes + percentageTaxes)
+  // Calculate the percentage taxes
+  const totalExcludingAmountTaxes = total - amountTaxes
+  const totalTaxPercentage = groupedTaxes.percentage.reduce((acc, tax) => {
+    const taxPercent = getTaxTotal({
+      type: tax.type,
+      value: tax.value,
+      nights,
+      perPerson: tax.per_person,
+      occupancies,
+    })
+    percentageTaxesAndFees.push({ ...tax, percentage: taxPercent })
+    return acc + taxPercent
+  }, 0)
+  const percentageTaxes =
+    totalExcludingAmountTaxes -
+    totalExcludingAmountTaxes / (totalTaxPercentage / 100 + 1)
+
+  // Include taxesAndFees with total calculated for percentage taxesAndFees
+  if (percentageTaxesAndFees.length > 0) {
+    taxesAndFeesWithTotalForEach = [
+      ...taxesAndFeesWithTotalForEach,
+      ...percentageTaxesAndFees.map(({ percentage, ...taxDetails }) => ({
+        ...taxDetails,
+        total: percentageTaxes * (percentage / totalTaxPercentage),
+      })),
+    ]
   }
 
-  return 0
+  return {
+    // Sum the taxes
+    taxesAndFeesTotal: Math.floor(amountTaxes + percentageTaxes),
+    // TaxesAndFees with total for each injected
+    taxesAndFeesWithTotalForEach,
+  }
 }
 
 module.exports = {
   calculateTaxAmount,
+  calculateAmountForEachTax,
 }

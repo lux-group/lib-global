@@ -32,6 +32,7 @@ var countOfMembers = function countOfMembers(occupancies) {
 
 var getTaxTotal = function getTaxTotal(_ref) {
   var type = _ref.type,
+      unit = _ref.unit,
       value = _ref.value,
       nights = _ref.nights,
       perPerson = _ref.perPerson,
@@ -39,7 +40,7 @@ var getTaxTotal = function getTaxTotal(_ref) {
   var members = perPerson ? countOfMembers(occupancies) : 1;
   var total = value * members;
 
-  if (type !== 'stay') {
+  if (type !== 'stay' && unit !== 'percentage') {
     // Default to nightly tax
     total = total * nights;
   }
@@ -129,6 +130,7 @@ var calculateAmountForEachTax = function calculateAmountForEachTax(_ref3) {
   var amountTaxes = groupedTaxes.amount.reduce(function (acc, tax) {
     var taxAmount = getTaxTotal({
       type: tax.type,
+      unit: tax.unit,
       value: tax.value,
       nights: nights,
       perPerson: tax.per_person,
@@ -145,6 +147,7 @@ var calculateAmountForEachTax = function calculateAmountForEachTax(_ref3) {
   var totalTaxPercentage = groupedTaxes.percentage.reduce(function (acc, tax) {
     var taxPercent = getTaxTotal({
       type: tax.type,
+      unit: tax.unit,
       value: tax.value,
       nights: nights,
       perPerson: tax.per_person,

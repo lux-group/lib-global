@@ -11,11 +11,11 @@ const countOfMembers = (occupancies) => {
   )
 }
 
-const getTaxTotal = ({ type, value, nights, perPerson, occupancies }) => {
+const getTaxTotal = ({ type, unit, value, nights, perPerson, occupancies }) => {
   const members = perPerson ? countOfMembers(occupancies) : 1
   let total = value * members
 
-  if (type !== 'stay') {
+  if (type !== 'stay' && unit !== 'percentage') {
     // Default to nightly tax
     total = total * nights
   }
@@ -98,6 +98,7 @@ const calculateAmountForEachTax = ({
   const amountTaxes = groupedTaxes.amount.reduce((acc, tax) => {
     const taxAmount = getTaxTotal({
       type: tax.type,
+      unit: tax.unit,
       value: tax.value,
       nights,
       perPerson: tax.per_person,
@@ -114,6 +115,7 @@ const calculateAmountForEachTax = ({
   const totalTaxPercentage = groupedTaxes.percentage.reduce((acc, tax) => {
     const taxPercent = getTaxTotal({
       type: tax.type,
+      unit: tax.unit,
       value: tax.value,
       nights,
       perPerson: tax.per_person,

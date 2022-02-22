@@ -10,9 +10,13 @@ const dollarPrefixes = {
 }
 
 function addDollarType(formattedAmount, currencyCode) {
-  return formattedAmount.match(/^\$/) ?
-    `${dollarPrefixes[currencyCode] || ''}${formattedAmount}` :
-    formattedAmount
+  if (formattedAmount.match(/^\$/)) {
+    return `${dollarPrefixes[currencyCode] || ''}${formattedAmount}`
+  }
+  if (formattedAmount.match(/^\-\$/)) {
+    return `-${dollarPrefixes[currencyCode] || ''}${formattedAmount.slice(1)}`
+  }
+  return formattedAmount
 }
 
 module.exports = {

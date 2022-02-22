@@ -12,7 +12,15 @@ var dollarPrefixes = {
 };
 
 function addDollarType(formattedAmount, currencyCode) {
-  return formattedAmount.match(/^\$/) ? "".concat(dollarPrefixes[currencyCode] || '').concat(formattedAmount) : formattedAmount;
+  if (formattedAmount.match(/^\$/)) {
+    return "".concat(dollarPrefixes[currencyCode] || '').concat(formattedAmount);
+  }
+
+  if (formattedAmount.match(/^\-\$/)) {
+    return "-".concat(dollarPrefixes[currencyCode] || '').concat(formattedAmount.slice(1));
+  }
+
+  return formattedAmount;
 }
 
 module.exports = {

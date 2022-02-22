@@ -1,10 +1,20 @@
 const chai = require('chai')
+const MockDate = require('mockdate')
 
 const { date } = require('../../compiled')
 
 const expect = chai.expect
 
 describe('Date', () => {
+  beforeEach(() => {
+    const currentDate = '2019-12-22T23:59:00.000Z'
+    MockDate.set(currentDate)
+  })
+
+  afterEach(() => {
+    MockDate.reset()
+  })
+
   describe('getDays', function() {
     it('should get pool of days', function() {
       const result = date.getDays(new Date('2020-10-03'), new Date('2020-10-07'))

@@ -68,15 +68,18 @@ describe('Date', () => {
 
   describe('format', function() {
     it('should handle date format: yy-m-d', () => {
-      expect(date.format(new Date(), 'yy-m-d')).to.deep.equal('19-12-23')
+      const d = date.convertTZ(new Date(), 'UTC')
+      expect(date.format(d, 'yy-m-d')).to.deep.equal('19-12-22')
     })
 
     it('should handle date format: yyyy-mm-dd', () => {
-      expect(date.format(new Date(), 'yyyy-mm-dd')).to.deep.equal('2019-12-23')
+      const d = date.convertTZ(new Date(), 'UTC')
+      expect(date.format(d, 'yyyy-mm-dd')).to.deep.equal('2019-12-22')
     })
 
     it('should handle date format: ddd, dd mmm, yyyy - h:MM:sstt', () => {
-      expect(date.format(new Date(), 'ddd, dd mmm, yyyy - h:MM:sstt')).to.deep.equal('Mon, 23 Dec, 2019 - 1:59:00am')
+      const d = date.convertTZ(new Date(), 'UTC')
+      expect(date.format(d, 'ddd, dd mmm, yyyy - h:MM:sstt')).to.deep.equal('Sun, 22 Dec, 2019 - 11:59:00pm')
     })
 
     it('should handle date converting timezone', () => {

@@ -5,5 +5,6 @@ module.exports = {
   flights: require('./flights'),
   offer: require('./offer'),
   currency: require('./currency'),
-  occupancy: require('./occupancy')
+  occupancy: require('./occupancy'),
+  date: require('./date')
 };

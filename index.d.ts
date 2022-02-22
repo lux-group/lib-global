@@ -99,4 +99,35 @@ declare module "@luxuryescapes/lib-global" {
     ALLOWED_DESTINATION_CODES: Array<string>;
     ALLOWED_DESTINATION_NAMES: Array<string>;
   };
+  const date: {
+    format: (
+      date: Date,
+      mask: string
+    ) => string;
+    convertTZ: (
+      date: Date,
+      tzString: string
+    ) => Date;
+    addDays: (
+      date: Date,
+      days: number
+    ) => Date;
+    subDays: (
+      date: Date,
+      days: number
+    ) => Date;
+    diffInDays: (
+      date1: Date,
+      date2: Date
+    ) => number;
+    calculateTimezoneOffset: (
+      date1: Date,
+      date2: Date
+    ) => number;
+    getDays: (
+      floorDate: Date,
+      ceilingDate: Date,
+      including?: boolean
+    ) => Date;
+  };
 }

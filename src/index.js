@@ -4,4 +4,5 @@ module.exports = {
   offer: require('./offer'),
   currency: require('./currency'),
   occupancy: require('./occupancy'),
+  date: require('./date'),
 }

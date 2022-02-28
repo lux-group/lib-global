@@ -128,6 +128,6 @@ declare module "@luxuryescapes/lib-global" {
       floorDate: Date,
       ceilingDate: Date,
       including?: boolean
-    ) => Date;
+    ) => Date[];
   };
 }

@@ -87,19 +87,14 @@ describe('Calendar', () => {
   })
 
   describe('getMonthsToRequest()', () => {
-    it('get return 1 month', () => {
+    it('get return 14 month', () => {
       MockDate.set('2022-01-31 12:22:47')
-      expect(calendar.getMonthsToRequest('2023-02-28')).to.eql(1)
+      expect(calendar.getMonthsToRequest(0, '2023-02-28')).to.eql(14)
     })
 
-    it('get return 2 month', () => {
+    it('get return 16 month', () => {
       MockDate.set('2022-01-31 12:22:47')
-      expect(calendar.getMonthsToRequest('2023-03-31')).to.eql(2)
-    })
-
-    it('get return 1 month if date is not valid', () => {
-      MockDate.set('2022-01-31 12:22:47')
-      expect(calendar.getMonthsToRequest('2023-02-31')).to.eql(1)
+      expect(calendar.getMonthsToRequest(0, '2023-04-30')).to.eql(16)
     })
   })
 })

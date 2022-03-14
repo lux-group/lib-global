@@ -2,40 +2,41 @@
 
 var moment = require('moment');
 
-var CEILING_YEARS = 3;
-var DEFAULT_MONTHS_FALLBACK = 18;
-var DATE_FORMAT = 'YYYY-MM-DD';
+var constants = require('./constants');
 
-var getMonthsToRequest = function getMonthsToRequest(maxDate) {
-  var now = moment();
-  var diff = moment.duration(moment(maxDate).diff(now));
-
-  if (isNaN(diff.months())) {
-    return 1;
+var getTimezoneOffset = function getTimezoneOffset(offerPackageTimezoneOffset, offerType, requestTimezoneOffset) {
+  if (!requestTimezoneOffset && constants.OFFERS[offerType].useTimezoneOffset) {
+    return parseInt(offerPackageTimezoneOffset || 0);
   }
 
-  return diff.months() + 1;
+  return requestTimezoneOffset;
+};
+
+var getMonthsToRequest = function getMonthsToRequest(timezoneOffset, maxDate) {
+  var now = moment().utcOffset(timezoneOffset);
+  var diff = moment.duration(moment(maxDate).diff(now));
+  return diff.months() + 12 * diff.years() + 2; // Add 1 month for current month, add 1 month for end month
 };
 
 var getMaxCheckInCloseDate = function getMaxCheckInCloseDate(checkInCloses) {
-  var defaultMonths = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : DEFAULT_MONTHS_FALLBACK;
-  return checkInCloses ? moment.min(moment(checkInCloses), moment().add(CEILING_YEARS, 'years')).format(DATE_FORMAT) : moment().add(defaultMonths, 'months').format(DATE_FORMAT);
+  var defaultMonths = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : constants.DEFAULT_MONTHS_FALLBACK;
+  return checkInCloses ? moment.min(moment(checkInCloses), moment().add(constants.CEILING_YEARS, 'years')).format(constants.DATE_FORMAT) : moment().add(defaultMonths, 'months').format(constants.DATE_FORMAT);
 };
 
 var getStartDate = function getStartDate(minDate, travelFromDate) {
   if (minDate && travelFromDate) {
     if (moment(travelFromDate).isAfter(moment(minDate))) {
-      return moment(travelFromDate).format(DATE_FORMAT);
+      return moment(travelFromDate).format(constants.DATE_FORMAT);
     } else {
-      return moment(minDate).format(DATE_FORMAT);
+      return moment(minDate).format(constants.DATE_FORMAT);
     }
   }
 
   if (travelFromDate) {
-    return moment(travelFromDate).format(DATE_FORMAT);
+    return moment(travelFromDate).format(constants.DATE_FORMAT);
   }
 
-  return moment(minDate).format(DATE_FORMAT);
+  return moment(minDate).format(constants.DATE_FORMAT);
 };
 
 var getDateFloorOffset = function getDateFloorOffset(_ref) {
@@ -58,6 +59,8 @@ var getDateFloorOffset = function getDateFloorOffset(_ref) {
 };
 
 module.exports = {
+  constants: constants,
+  getTimezoneOffset: getTimezoneOffset,
   getMonthsToRequest: getMonthsToRequest,
   getMaxCheckInCloseDate: getMaxCheckInCloseDate,
   getStartDate: getStartDate,

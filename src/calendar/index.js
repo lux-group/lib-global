@@ -12,8 +12,7 @@ const getTimezoneOffset = (offerPackageTimezoneOffset, offerType, requestTimezon
 
 const getMonthsToRequest = (timezoneOffset, maxDate) => {
   const now = moment().utcOffset(timezoneOffset)
-  const diff = moment.duration(moment(maxDate).diff(now))
-  return diff.months() + (12 * diff.years()) + 2 // Add 1 month for current month, add 1 month for end month
+  return moment(maxDate).diff(now, 'months') + 2
 }
 
 const getMaxCheckInCloseDate = (

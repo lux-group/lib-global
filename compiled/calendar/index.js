@@ -14,8 +14,7 @@ var getTimezoneOffset = function getTimezoneOffset(offerPackageTimezoneOffset, o
 
 var getMonthsToRequest = function getMonthsToRequest(timezoneOffset, maxDate) {
   var now = moment().utcOffset(timezoneOffset);
-  var diff = moment.duration(moment(maxDate).diff(now));
-  return diff.months() + 12 * diff.years() + 2; // Add 1 month for current month, add 1 month for end month
+  return moment(maxDate).diff(now, 'months') + 2;
 };
 
 var getMaxCheckInCloseDate = function getMaxCheckInCloseDate(checkInCloses) {

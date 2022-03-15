@@ -6,5 +6,6 @@ module.exports = {
   offer: require('./offer'),
   currency: require('./currency'),
   occupancy: require('./occupancy'),
-  date: require('./date')
+  date: require('./date'),
+  calendar: require('./calendar')
 };

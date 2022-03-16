@@ -163,16 +163,10 @@ declare module "@luxuryescapes/lib-global" {
       minDate?: string, 
       travelFromDate?: string
     ) => string;
-    getDateFloorOffset: ({
-      timezoneOffset,
-      dateFloorOffset,
-      hourOfDayThreshold,
-      enquiryType
-    }: {
+    getDateFloorOffset: (
       timezoneOffset: number,
-      dateFloorOffset: number,
-      hourOfDayThreshold: number,
+      offerType: string,
       enquiryType: 'customer' | 'admin'
-    }) => string;
+    ) => string;
   };
 }

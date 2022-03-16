@@ -49,40 +49,20 @@ describe('Calendar', () => {
 
   describe('getDateFloorOffset()', () => {
     it('get return default date floor offset', () => {
-      expect(calendar.getDateFloorOffset({
-        timezoneOffset: 0,
-        dateFloorOffset: 2,
-        hourOfDayThreshold: 0,
-        enquiryType: 'customer',
-      })).to.eql(2)
+      expect(calendar.getDateFloorOffset(0, 'hotel', 'customer')).to.eql(2)
     })
 
     it('get return zero date floor offset', () => {
-      expect(calendar.getDateFloorOffset({
-        timezoneOffset: 600,
-        dateFloorOffset: 0,
-        hourOfDayThreshold: 15,
-        enquiryType: 'customer',
-      })).to.eql(0)
+      expect(calendar.getDateFloorOffset(600, 'last_minute_hotel', 'customer')).to.eql(0)
     })
 
     it('get return one date floor offset', () => {
       MockDate.set('2022-01-31 12:22:47')
-      expect(calendar.getDateFloorOffset({
-        timezoneOffset: 600,
-        dateFloorOffset: 0,
-        hourOfDayThreshold: 15,
-        enquiryType: 'customer',
-      })).to.eql(1)
+      expect(calendar.getDateFloorOffset(600, 'last_minute_hotel', 'customer')).to.eql(1)
     })
 
     it('get return 0 date floor offset for admin', () => {
-      expect(calendar.getDateFloorOffset({
-        timezoneOffset: 0,
-        dateFloorOffset: 2,
-        hourOfDayThreshold: 0,
-        enquiryType: 'admin',
-      })).to.eql(0)
+      expect(calendar.getDateFloorOffset(0, 'hotel', 'admin')).to.eql(0)
     })
   })
 

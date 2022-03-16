@@ -38,18 +38,15 @@ var getStartDate = function getStartDate(minDate, travelFromDate) {
   return moment(minDate).format(constants.DATE_FORMAT);
 };
 
-var getDateFloorOffset = function getDateFloorOffset(_ref) {
-  var timezoneOffset = _ref.timezoneOffset,
-      dateFloorOffset = _ref.dateFloorOffset,
-      hourOfDayThreshold = _ref.hourOfDayThreshold,
-      _ref$enquiryType = _ref.enquiryType,
-      enquiryType = _ref$enquiryType === void 0 ? 'customer' : _ref$enquiryType;
+var getDateFloorOffset = function getDateFloorOffset(timezoneOffset, offerType) {
+  var enquiryType = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 'customer';
+  var dateFloorOffset = constants.OFFERS[offerType].dateFloorOffset;
   if (enquiryType === 'admin') return 0;
 
   if (dateFloorOffset === 0) {
-    var nowHours = parseInt(moment().utcOffset(timezoneOffset).format('HH'));
+    var nowHours = parseInt(moment.utc().utcOffset(timezoneOffset).format('HH'));
 
-    if (nowHours >= hourOfDayThreshold) {
+    if (nowHours >= constants.OFFERS[offerType].hourOfDayThreshold) {
       return 1;
     }
   }

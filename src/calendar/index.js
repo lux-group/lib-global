@@ -40,17 +40,14 @@ const getStartDate = (minDate, travelFromDate) => {
   return moment(minDate).format(constants.DATE_FORMAT)
 }
 
-const getDateFloorOffset = ({
-  timezoneOffset,
-  dateFloorOffset,
-  hourOfDayThreshold,
-  enquiryType = 'customer',
-}) => {
+const getDateFloorOffset = (timezoneOffset, offerType, enquiryType = 'customer') => {
+  const dateFloorOffset = constants.OFFERS[offerType].dateFloorOffset
+
   if (enquiryType === 'admin') return 0
 
   if (dateFloorOffset === 0) {
-    const nowHours = parseInt(moment().utcOffset(timezoneOffset).format('HH'))
-    if (nowHours >= hourOfDayThreshold) {
+    const nowHours = parseInt(moment.utc().utcOffset(timezoneOffset).format('HH'))
+    if (nowHours >= constants.OFFERS[offerType].hourOfDayThreshold) {
       return 1
     }
   }

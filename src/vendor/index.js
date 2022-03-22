@@ -3,6 +3,7 @@ const LE_TOURS_VENDOR_IDS = [
   '0010I00001ba7JdQAI',
   '0010I00001f6bHvQAI',
   '0010I000028DrsxQAC',
+  '0012y00000LHHZoAAP',
 ]
 
 function requiresTravellerDetails(vendorId) {

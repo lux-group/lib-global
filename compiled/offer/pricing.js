@@ -56,6 +56,7 @@ var getTaxTotal = function getTaxTotal(_ref) {
  *   type: "night" | "stay";
  *   per_person: boolean;
  *   value: number;
+ *   payable_at_property: boolean;
  * }
  *
  * interface Occupants {
@@ -70,7 +71,7 @@ var getTaxTotal = function getTaxTotal(_ref) {
  * @param {Array<TaxesAndFees>} params.taxesAndFees - The list of taxes
  * @param {number} params.nights - The number of nights
  * @param {Array<Occupants>} params.occupancies - The occupancies
- * @returns {number} Sum of taxes and fees
+ * @returns {{taxesAndFees: number, propertyFees: number}} Sum of taxes and fees
  */
 
 
@@ -79,23 +80,46 @@ var calculateTaxAmount = function calculateTaxAmount(_ref2) {
       taxesAndFees = _ref2.taxesAndFees,
       nights = _ref2.nights,
       occupancies = _ref2.occupancies;
+  var commonTaxesAndFees = [];
+  var propertyTaxesAndFees = [];
 
   if (taxesAndFees && total) {
+    taxesAndFees.forEach(function (tax) {
+      if (!tax.payable_at_property) {
+        commonTaxesAndFees.push(tax);
+      } else {
+        propertyTaxesAndFees.push(tax);
+      }
+    });
+
     var _calculateAmountForEa = calculateAmountForEachTax({
       total: total,
-      taxesAndFees: taxesAndFees,
+      taxesAndFees: commonTaxesAndFees,
       nights: nights,
       occupancies: occupancies
     }),
-        taxesAndFeesTotal = _calculateAmountForEa.taxesAndFeesTotal;
+        commonTaxesAndFeesTotal = _calculateAmountForEa.taxesAndFeesTotal;
 
-    return taxesAndFeesTotal;
+    var propertyTaxesAndFeesTotal = _calculateAmountForPayableAtProperty({
+      total: commonTaxesAndFeesTotal,
+      taxesAndFees: propertyTaxesAndFees,
+      nights: nights,
+      occupancies: occupancies
+    });
+
+    return {
+      taxesAndFees: commonTaxesAndFeesTotal,
+      propertyFees: propertyTaxesAndFeesTotal
+    };
   }
 
-  return 0;
+  return {
+    taxesAndFees: 0,
+    propertyFees: 0
+  };
 };
 /**
- * Calculate the taxes total amount and inject total of each tax
+ * Calculate the taxes total amount and inject total for 'Taxes & fees' tax
  *
  * @param {object} params - All params
  * @param {number} params.total - The total amount of booking period
@@ -177,6 +201,60 @@ var calculateAmountForEachTax = function calculateAmountForEachTax(_ref3) {
     // TaxesAndFees with total for each injected
     taxesAndFeesWithTotalForEach: taxesAndFeesWithTotalForEach
   };
+};
+/**
+ * Calculate the taxes total amount and inject total for 'Due at property' tax
+ *
+ * @param {object} params - All params
+ * @param {number} params.total - The total amount of booking period
+ * @param {Array<TaxesAndFees>} params.taxesAndFees - The list of taxes
+ * @param {number} params.nights - The number of nights
+ * @param {Array<Occupants>} params.occupancies - The occupancies
+ * @returns {number} - The total amount of Due at property Tax
+ */
+
+
+var _calculateAmountForPayableAtProperty = function _calculateAmountForPayableAtProperty(_ref5) {
+  var total = _ref5.total,
+      taxesAndFees = _ref5.taxesAndFees,
+      nights = _ref5.nights,
+      occupancies = _ref5.occupancies;
+  var groupedTaxes = taxesAndFees.reduce(function (acc, tax) {
+    if (tax.unit === 'percentage') {
+      acc.percentage.push(tax);
+    } else {
+      acc.amount.push(tax);
+    }
+
+    return acc;
+  }, {
+    amount: [],
+    percentage: []
+  });
+  var amountTaxes = groupedTaxes.amount.reduce(function (acc, tax) {
+    var taxAmount = getTaxTotal({
+      type: tax.type,
+      unit: tax.unit,
+      value: tax.value,
+      nights: nights,
+      perPerson: tax.per_person,
+      occupancies: occupancies
+    });
+    return acc + taxAmount;
+  }, 0);
+  var totalTaxPercentage = groupedTaxes.percentage.reduce(function (acc, tax) {
+    var taxPercent = getTaxTotal({
+      type: tax.type,
+      unit: tax.unit,
+      value: tax.value,
+      nights: nights,
+      perPerson: tax.per_person,
+      occupancies: occupancies
+    });
+    return acc + taxPercent;
+  }, 0);
+  var percentageTaxes = (total - amountTaxes) / 100 * totalTaxPercentage;
+  return Math.floor(amountTaxes + percentageTaxes);
 };
 
 module.exports = {

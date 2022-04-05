@@ -32,7 +32,6 @@ const getTaxTotal = ({ type, unit, value, nights, perPerson, occupancies }) => {
  *   type: "night" | "stay";
  *   per_person: boolean;
  *   value: number;
- *   payable_at_property: boolean;
  * }
  *
  * interface Occupants {
@@ -47,43 +46,25 @@ const getTaxTotal = ({ type, unit, value, nights, perPerson, occupancies }) => {
  * @param {Array<TaxesAndFees>} params.taxesAndFees - The list of taxes
  * @param {number} params.nights - The number of nights
  * @param {Array<Occupants>} params.occupancies - The occupancies
- * @returns {{taxesAndFees: number, propertyFees: number}} Sum of taxes and fees
+ * @returns {number} Sum of taxes and fees
  */
 const calculateTaxAmount = ({ total, taxesAndFees, nights, occupancies }) => {
-  const commonTaxesAndFees = []
-  const propertyTaxesAndFees = []
-
   if (taxesAndFees && total) {
-    taxesAndFees.forEach(tax => {
-      if (!tax.payable_at_property) {
-        commonTaxesAndFees.push(tax)
-      } else {
-        propertyTaxesAndFees.push(tax)
-      }
-    })
-
-    const { taxesAndFeesTotal: commonTaxesAndFeesTotal } = calculateAmountForEachTax({
+    const { taxesAndFeesTotal } = calculateAmountForEachTax({
       total,
-      taxesAndFees: commonTaxesAndFees,
+      taxesAndFees,
       nights,
       occupancies,
     })
 
-    const propertyTaxesAndFeesTotal = _calculateAmountForPayableAtProperty({
-      total: commonTaxesAndFeesTotal,
-      taxesAndFees: propertyTaxesAndFees,
-      nights,
-      occupancies,
-    })
-
-    return { taxesAndFees: commonTaxesAndFeesTotal, propertyFees: propertyTaxesAndFeesTotal }
+    return taxesAndFeesTotal
   }
 
-  return { taxesAndFees: 0, propertyFees: 0 }
+  return 0
 }
 
 /**
- * Calculate the taxes total amount and inject total for 'Taxes & fees' tax
+ * Calculate the taxes total amount and inject total of each tax
  *
  * @param {object} params - All params
  * @param {number} params.total - The total amount of booking period
@@ -164,64 +145,6 @@ const calculateAmountForEachTax = ({
     // TaxesAndFees with total for each injected
     taxesAndFeesWithTotalForEach,
   }
-}
-
-/**
- * Calculate the taxes total amount and inject total for 'Due at property' tax
- *
- * @param {object} params - All params
- * @param {number} params.total - The total amount of booking period
- * @param {Array<TaxesAndFees>} params.taxesAndFees - The list of taxes
- * @param {number} params.nights - The number of nights
- * @param {Array<Occupants>} params.occupancies - The occupancies
- * @returns {number} - The total amount of Due at property Tax
- */
-const _calculateAmountForPayableAtProperty = ({
-  total,
-  taxesAndFees,
-  nights,
-  occupancies,
-}) => {
-  const groupedTaxes = taxesAndFees.reduce(
-    (acc, tax) => {
-      if (tax.unit === 'percentage') {
-        acc.percentage.push(tax)
-      } else {
-        acc.amount.push(tax)
-      }
-      return acc
-    },
-    { amount: [], percentage: [] },
-  )
-
-  const amountTaxes = groupedTaxes.amount.reduce((acc, tax) => {
-    const taxAmount = getTaxTotal({
-      type: tax.type,
-      unit: tax.unit,
-      value: tax.value,
-      nights,
-      perPerson: tax.per_person,
-      occupancies,
-    })
-
-    return acc + taxAmount
-  }, 0)
-
-  const totalTaxPercentage = groupedTaxes.percentage.reduce((acc, tax) => {
-    const taxPercent = getTaxTotal({
-      type: tax.type,
-      unit: tax.unit,
-      value: tax.value,
-      nights,
-      perPerson: tax.per_person,
-      occupancies,
-    })
-    return acc + taxPercent
-  }, 0)
-
-  const percentageTaxes = (total - amountTaxes)  / 100 * totalTaxPercentage
-
-  return Math.floor(amountTaxes + percentageTaxes)
 }
 
 module.exports = {

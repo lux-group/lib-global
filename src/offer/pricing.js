@@ -70,7 +70,7 @@ const calculateTaxAmount = ({ total, taxesAndFees, nights, occupancies }) => {
     })
 
     const propertyTaxesAndFeesTotal = _calculateAmountForPayableAtProperty({
-      total: commonTaxesAndFeesTotal,
+      total: (total - commonTaxesAndFeesTotal),
       taxesAndFees: propertyTaxesAndFees,
       nights,
       occupancies,

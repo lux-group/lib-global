@@ -793,11 +793,14 @@ describe('calculateTaxAmount', () => {
         { name: 'Tax1', unit: 'percentage', type: 'night', per_person: true, value: 2 },
         { name: 'Tax2', unit: 'percentage', type: 'stay', per_person: false, value: 5 },
         { name: 'Tax3', unit: 'amount', type: 'night', per_person: false, value: 10 },
-        { name: 'Tax4', unit: 'amount', type: 'stay', per_person: true, value: 26 },
+        { name: 'Tax4', unit: 'amount', type: 'stay', per_person: true, value: 26, payable_at_property: false },
+
+        { name: 'Tax5', unit: 'percentage', type: 'stay', per_person: false, value: 10, payable_at_property: true },
+        { name: 'Tax6', unit: 'amount', type: 'stay', per_person: false, value: 5, payable_at_property: true },
       ],
       nights: 4,
       occupancies: [{ adults: 3, children: 1, infants: 0 }],
     })
-    expect(result).to.equal(242)
+    expect(result).to.deep.equal({ taxesAndFees: 242, propertyFees: 28 })
   })
 })

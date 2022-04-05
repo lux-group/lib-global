@@ -21,8 +21,11 @@ declare module "@luxuryescapes/lib-global" {
     type: "night" | "stay";
     per_person: boolean;
     value: number;
+    payable_at_property?: boolean;
+    currency?: string;
+    additional_tax?: boolean;
   }
-  
+
   interface Occupants {
     adults: number;
     children?: number;
@@ -74,7 +77,7 @@ declare module "@luxuryescapes/lib-global" {
       getFromPackages: (packages: Array<object>, offerType: string, holidayTypes: Array<string>) => string;
     };
     pricing: {
-      calculateTaxAmount: ({ total, taxesAndFees, nights, occupancies }: { total: number, taxesAndFees: TaxesAndFees[], nights: number, occupancies?: Occupants[] }) => number;
+      calculateTaxAmount: ({ total, taxesAndFees, nights, occupancies }: { total: number, taxesAndFees: TaxesAndFees[], nights: number, occupancies?: Occupants[] }) => {taxesAndFees: number, propertyFees: number};
       calculateAmountForEachTax: ({ total, taxesAndFees, nights, occupancies }: { total: number, taxesAndFees: TaxesAndFees[], nights: number, occupancies?: Occupants[] }) => CalculateAmountForEachTaxResult;
     };
   };
@@ -148,7 +151,7 @@ declare module "@luxuryescapes/lib-global" {
     };
     getTimezoneOffset: (
       offerPackageTimezoneOffset: number,
-      offerType: string, 
+      offerType: string,
       requestTimezoneOffset: number
     ) => number;
     getMonthsToRequest: (
@@ -160,7 +163,7 @@ declare module "@luxuryescapes/lib-global" {
       defaultMonths?: number
     ) => string;
     getStartDate: (
-      minDate?: string, 
+      minDate?: string,
       travelFromDate?: string
     ) => string;
     getDateFloorOffset: (

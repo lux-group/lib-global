@@ -101,7 +101,7 @@ var calculateTaxAmount = function calculateTaxAmount(_ref2) {
         commonTaxesAndFeesTotal = _calculateAmountForEa.taxesAndFeesTotal;
 
     var propertyTaxesAndFeesTotal = _calculateAmountForPayableAtProperty({
-      total: commonTaxesAndFeesTotal,
+      total: total - commonTaxesAndFeesTotal,
       taxesAndFees: propertyTaxesAndFees,
       nights: nights,
       occupancies: occupancies

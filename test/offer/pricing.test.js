@@ -801,6 +801,6 @@ describe('calculateTaxAmount', () => {
       nights: 4,
       occupancies: [{ adults: 3, children: 1, infants: 0 }],
     })
-    expect(result).to.deep.equal({ taxesAndFees: 242, propertyFees: 28 })
+    expect(result).to.deep.equal({ taxesAndFees: 242, propertyFees: 80 })
   })
 })

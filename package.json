@@ -20,7 +20,7 @@
     "ci": "yarn test && yarn run lint && yarn build"
   },
   "dependencies": {
-    "moment": "^2.29.1"
+    "moment": "^2.29.2"
   },
   "devDependencies": {
     "@babel/cli": "7.14.5",

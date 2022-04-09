@@ -62,18 +62,25 @@ const calculateTaxAmount = ({ total, taxesAndFees, nights, occupancies }) => {
       }
     })
 
-    const { taxesAndFeesTotal: commonTaxesAndFeesTotal } = calculateAmountForEachTax({
+    const { taxesAndFeesTotal: commonTaxesAndFeesTotal } = _calculateForEachAmount({
       total,
       taxesAndFees: commonTaxesAndFees,
       nights,
       occupancies,
+      percentageCalculationFormula: function(totalExcludingAmountTaxes, totalTaxPercentage) {
+        return totalExcludingAmountTaxes -
+      totalExcludingAmountTaxes / (totalTaxPercentage / 100 + 1)
+      },
     })
 
-    const propertyTaxesAndFeesTotal = _calculateAmountForPayableAtProperty({
+    const { taxesAndFeesTotal: propertyTaxesAndFeesTotal } = _calculateForEachAmount({
       total: (total - commonTaxesAndFeesTotal),
       taxesAndFees: propertyTaxesAndFees,
       nights,
       occupancies,
+      percentageCalculationFormula: function(totalExcludingAmountTaxes, totalTaxPercentage) {
+        return totalExcludingAmountTaxes / 100 * totalTaxPercentage
+      },
     })
 
     return { taxesAndFees: commonTaxesAndFeesTotal, propertyFees: propertyTaxesAndFeesTotal }
@@ -90,13 +97,15 @@ const calculateTaxAmount = ({ total, taxesAndFees, nights, occupancies }) => {
  * @param {Array<TaxesAndFees>} params.taxesAndFees - The list of taxes
  * @param {number} params.nights - The number of nights
  * @param {Array<Occupants>} params.occupancies - The occupancies
+ * @param {callback} params.percentageCalculationFormula - Formula of finding percentage
  * @returns Sum of taxes and fees (taxesAndFeesTotal) and taxesAndFees with total injected (taxesAndFeesWithTotalForEach)
  */
-const calculateAmountForEachTax = ({
+const _calculateForEachAmount = ({
   total,
   taxesAndFees,
   nights,
   occupancies,
+  percentageCalculationFormula,
 }) => {
   let taxesAndFeesWithTotalForEach = []
   const percentageTaxesAndFees = []
@@ -143,9 +152,7 @@ const calculateAmountForEachTax = ({
     percentageTaxesAndFees.push({ ...tax, percentage: taxPercent })
     return acc + taxPercent
   }, 0)
-  const percentageTaxes =
-    totalExcludingAmountTaxes -
-    totalExcludingAmountTaxes / (totalTaxPercentage / 100 + 1)
+  const percentageTaxes = percentageCalculationFormula(totalExcludingAmountTaxes, totalTaxPercentage)
 
   // Include taxesAndFees with total calculated for percentage taxesAndFees
   if (percentageTaxesAndFees.length > 0) {
@@ -166,65 +173,48 @@ const calculateAmountForEachTax = ({
   }
 }
 
-/**
- * Calculate the taxes total amount and inject total for 'Due at property' tax
- *
- * @param {object} params - All params
- * @param {number} params.total - The total amount of booking period
- * @param {Array<TaxesAndFees>} params.taxesAndFees - The list of taxes
- * @param {number} params.nights - The number of nights
- * @param {Array<Occupants>} params.occupancies - The occupancies
- * @returns {number} - The total amount of Due at property Tax
- */
-const _calculateAmountForPayableAtProperty = ({
+const calculateAmountForEachTax = ({
   total,
   taxesAndFees,
   nights,
   occupancies,
 }) => {
-  const groupedTaxes = taxesAndFees.reduce(
-    (acc, tax) => {
-      if (tax.unit === 'percentage') {
-        acc.percentage.push(tax)
-      } else {
-        acc.amount.push(tax)
-      }
-      return acc
+  const { taxesAndFeesWithTotalForEach } = _calculateForEachAmount({
+    total,
+    taxesAndFees,
+    nights,
+    occupancies,
+    percentageCalculationFormula: function(totalExcludingAmountTaxes, totalTaxPercentage) {
+      return totalExcludingAmountTaxes -
+        totalExcludingAmountTaxes / (totalTaxPercentage / 100 + 1)
     },
-    { amount: [], percentage: [] },
-  )
+  })
 
-  const amountTaxes = groupedTaxes.amount.reduce((acc, tax) => {
-    const taxAmount = getTaxTotal({
-      type: tax.type,
-      unit: tax.unit,
-      value: tax.value,
-      nights,
-      perPerson: tax.per_person,
-      occupancies,
-    })
+  return taxesAndFeesWithTotalForEach
+}
 
-    return acc + taxAmount
-  }, 0)
+const calculateAmountForEachPropertyFee = ({
+  total,
+  taxesAndFees,
+  nights,
+  occupancies,
+}) => {
+  const { taxesAndFeesWithTotalForEach } = _calculateForEachAmount({
+    total,
+    taxesAndFees,
+    nights,
+    occupancies,
+    percentageCalculationFormula: function(totalExcludingAmountTaxes, totalTaxPercentage) {
+      return totalExcludingAmountTaxes -
+        totalExcludingAmountTaxes / (totalTaxPercentage / 100 + 1)
+    },
+  })
 
-  const totalTaxPercentage = groupedTaxes.percentage.reduce((acc, tax) => {
-    const taxPercent = getTaxTotal({
-      type: tax.type,
-      unit: tax.unit,
-      value: tax.value,
-      nights,
-      perPerson: tax.per_person,
-      occupancies,
-    })
-    return acc + taxPercent
-  }, 0)
-
-  const percentageTaxes = (total - amountTaxes)  / 100 * totalTaxPercentage
-
-  return Math.floor(amountTaxes + percentageTaxes)
+  return taxesAndFeesWithTotalForEach
 }
 
 module.exports = {
   calculateTaxAmount,
   calculateAmountForEachTax,
+  calculateAmountForEachPropertyFee,
 }

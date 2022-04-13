@@ -92,20 +92,27 @@ var calculateTaxAmount = function calculateTaxAmount(_ref2) {
       }
     });
 
-    var _calculateAmountForEa = calculateAmountForEachTax({
+    var _calculateForEachAmou = _calculateForEachAmount({
       total: total,
       taxesAndFees: commonTaxesAndFees,
       nights: nights,
-      occupancies: occupancies
+      occupancies: occupancies,
+      percentageCalculationFormula: function percentageCalculationFormula(totalExcludingAmountTaxes, totalTaxPercentage) {
+        return totalExcludingAmountTaxes - totalExcludingAmountTaxes / (totalTaxPercentage / 100 + 1);
+      }
     }),
-        commonTaxesAndFeesTotal = _calculateAmountForEa.taxesAndFeesTotal;
+        commonTaxesAndFeesTotal = _calculateForEachAmou.taxesAndFeesTotal;
 
-    var propertyTaxesAndFeesTotal = _calculateAmountForPayableAtProperty({
+    var _calculateForEachAmou2 = _calculateForEachAmount({
       total: total - commonTaxesAndFeesTotal,
       taxesAndFees: propertyTaxesAndFees,
       nights: nights,
-      occupancies: occupancies
-    });
+      occupancies: occupancies,
+      percentageCalculationFormula: function percentageCalculationFormula(totalExcludingAmountTaxes, totalTaxPercentage) {
+        return totalExcludingAmountTaxes / 100 * totalTaxPercentage;
+      }
+    }),
+        propertyTaxesAndFeesTotal = _calculateForEachAmou2.taxesAndFeesTotal;
 
     return {
       taxesAndFees: commonTaxesAndFeesTotal,
@@ -126,15 +133,17 @@ var calculateTaxAmount = function calculateTaxAmount(_ref2) {
  * @param {Array<TaxesAndFees>} params.taxesAndFees - The list of taxes
  * @param {number} params.nights - The number of nights
  * @param {Array<Occupants>} params.occupancies - The occupancies
+ * @param {callback} params.percentageCalculationFormula - Formula of finding percentage
  * @returns Sum of taxes and fees (taxesAndFeesTotal) and taxesAndFees with total injected (taxesAndFeesWithTotalForEach)
  */
 
 
-var calculateAmountForEachTax = function calculateAmountForEachTax(_ref3) {
+var _calculateForEachAmount = function _calculateForEachAmount(_ref3) {
   var total = _ref3.total,
       taxesAndFees = _ref3.taxesAndFees,
       nights = _ref3.nights,
-      occupancies = _ref3.occupancies;
+      occupancies = _ref3.occupancies,
+      percentageCalculationFormula = _ref3.percentageCalculationFormula;
   var taxesAndFeesWithTotalForEach = [];
   var percentageTaxesAndFees = []; // Group the taxes by unit
 
@@ -182,7 +191,7 @@ var calculateAmountForEachTax = function calculateAmountForEachTax(_ref3) {
     }));
     return acc + taxPercent;
   }, 0);
-  var percentageTaxes = totalExcludingAmountTaxes - totalExcludingAmountTaxes / (totalTaxPercentage / 100 + 1); // Include taxesAndFees with total calculated for percentage taxesAndFees
+  var percentageTaxes = percentageCalculationFormula(totalExcludingAmountTaxes, totalTaxPercentage); // Include taxesAndFees with total calculated for percentage taxesAndFees
 
   if (percentageTaxesAndFees.length > 0) {
     taxesAndFeesWithTotalForEach = [].concat(_toConsumableArray(taxesAndFeesWithTotalForEach), _toConsumableArray(percentageTaxesAndFees.map(function (_ref4) {
@@ -202,62 +211,49 @@ var calculateAmountForEachTax = function calculateAmountForEachTax(_ref3) {
     taxesAndFeesWithTotalForEach: taxesAndFeesWithTotalForEach
   };
 };
-/**
- * Calculate the taxes total amount and inject total for 'Due at property' tax
- *
- * @param {object} params - All params
- * @param {number} params.total - The total amount of booking period
- * @param {Array<TaxesAndFees>} params.taxesAndFees - The list of taxes
- * @param {number} params.nights - The number of nights
- * @param {Array<Occupants>} params.occupancies - The occupancies
- * @returns {number} - The total amount of Due at property Tax
- */
 
-
-var _calculateAmountForPayableAtProperty = function _calculateAmountForPayableAtProperty(_ref5) {
+var calculateAmountForEachTax = function calculateAmountForEachTax(_ref5) {
   var total = _ref5.total,
       taxesAndFees = _ref5.taxesAndFees,
       nights = _ref5.nights,
       occupancies = _ref5.occupancies;
-  var groupedTaxes = taxesAndFees.reduce(function (acc, tax) {
-    if (tax.unit === 'percentage') {
-      acc.percentage.push(tax);
-    } else {
-      acc.amount.push(tax);
-    }
 
-    return acc;
-  }, {
-    amount: [],
-    percentage: []
-  });
-  var amountTaxes = groupedTaxes.amount.reduce(function (acc, tax) {
-    var taxAmount = getTaxTotal({
-      type: tax.type,
-      unit: tax.unit,
-      value: tax.value,
-      nights: nights,
-      perPerson: tax.per_person,
-      occupancies: occupancies
-    });
-    return acc + taxAmount;
-  }, 0);
-  var totalTaxPercentage = groupedTaxes.percentage.reduce(function (acc, tax) {
-    var taxPercent = getTaxTotal({
-      type: tax.type,
-      unit: tax.unit,
-      value: tax.value,
-      nights: nights,
-      perPerson: tax.per_person,
-      occupancies: occupancies
-    });
-    return acc + taxPercent;
-  }, 0);
-  var percentageTaxes = (total - amountTaxes) / 100 * totalTaxPercentage;
-  return Math.floor(amountTaxes + percentageTaxes);
+  var _calculateForEachAmou3 = _calculateForEachAmount({
+    total: total,
+    taxesAndFees: taxesAndFees,
+    nights: nights,
+    occupancies: occupancies,
+    percentageCalculationFormula: function percentageCalculationFormula(totalExcludingAmountTaxes, totalTaxPercentage) {
+      return totalExcludingAmountTaxes - totalExcludingAmountTaxes / (totalTaxPercentage / 100 + 1);
+    }
+  }),
+      taxesAndFeesWithTotalForEach = _calculateForEachAmou3.taxesAndFeesWithTotalForEach;
+
+  return taxesAndFeesWithTotalForEach;
+};
+
+var calculateAmountForEachPropertyFee = function calculateAmountForEachPropertyFee(_ref6) {
+  var total = _ref6.total,
+      taxesAndFees = _ref6.taxesAndFees,
+      nights = _ref6.nights,
+      occupancies = _ref6.occupancies;
+
+  var _calculateForEachAmou4 = _calculateForEachAmount({
+    total: total,
+    taxesAndFees: taxesAndFees,
+    nights: nights,
+    occupancies: occupancies,
+    percentageCalculationFormula: function percentageCalculationFormula(totalExcludingAmountTaxes, totalTaxPercentage) {
+      return totalExcludingAmountTaxes - totalExcludingAmountTaxes / (totalTaxPercentage / 100 + 1);
+    }
+  }),
+      taxesAndFeesWithTotalForEach = _calculateForEachAmou4.taxesAndFeesWithTotalForEach;
+
+  return taxesAndFeesWithTotalForEach;
 };
 
 module.exports = {
   calculateTaxAmount: calculateTaxAmount,
-  calculateAmountForEachTax: calculateAmountForEachTax
+  calculateAmountForEachTax: calculateAmountForEachTax,
+  calculateAmountForEachPropertyFee: calculateAmountForEachPropertyFee
 };

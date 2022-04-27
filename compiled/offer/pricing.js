@@ -244,7 +244,7 @@ var calculateAmountForEachPropertyFee = function calculateAmountForEachPropertyF
     nights: nights,
     occupancies: occupancies,
     percentageCalculationFormula: function percentageCalculationFormula(totalExcludingAmountTaxes, totalTaxPercentage) {
-      return totalExcludingAmountTaxes - totalExcludingAmountTaxes / (totalTaxPercentage / 100 + 1);
+      return totalExcludingAmountTaxes / 100 * totalTaxPercentage;
     }
   }),
       taxesAndFeesWithTotalForEach = _calculateForEachAmou4.taxesAndFeesWithTotalForEach;

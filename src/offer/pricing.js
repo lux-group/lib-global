@@ -205,8 +205,7 @@ const calculateAmountForEachPropertyFee = ({
     nights,
     occupancies,
     percentageCalculationFormula: function(totalExcludingAmountTaxes, totalTaxPercentage) {
-      return totalExcludingAmountTaxes -
-        totalExcludingAmountTaxes / (totalTaxPercentage / 100 + 1)
+      return totalExcludingAmountTaxes / 100 * totalTaxPercentage
     },
   })
 

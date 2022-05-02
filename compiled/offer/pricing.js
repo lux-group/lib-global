@@ -38,7 +38,7 @@ var getTaxTotal = function getTaxTotal(_ref) {
       perPerson = _ref.perPerson,
       occupancies = _ref.occupancies;
   var members = perPerson ? countOfMembers(occupancies) : 1;
-  var rooms = !perPerson ? (occupancies || []).length : 1;
+  var rooms = !perPerson ? (occupancies || []).length || 1 : 1;
   var total = value * members;
 
   if (type !== 'stay' && unit !== 'percentage') {

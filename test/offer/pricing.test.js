@@ -727,7 +727,7 @@ describe('calculateAmountForEachTax', () => {
         {
           name: 'Tax1',
           per_person: true,
-          total: 50.666666666666664,
+          total: 30.400000000000002,
           type: 'night',
           unit: 'percentage',
           value: 1,
@@ -735,7 +735,7 @@ describe('calculateAmountForEachTax', () => {
         {
           name: 'Tax2',
           per_person: true,
-          total: 202.66666666666666,
+          total: 121.60000000000001,
           type: 'stay',
           unit: 'percentage',
           value: 4,

@@ -13,7 +13,7 @@ const countOfMembers = (occupancies) => {
 
 const getTaxTotal = ({ type, unit, value, nights, perPerson, occupancies }) => {
   const members = perPerson ? countOfMembers(occupancies) : 1
-  const rooms = !perPerson ? (occupancies || []).length || 1 : 1
+  const rooms = (occupancies || []).length || 1
   let total = value * members
 
   if (type !== 'stay' && unit !== 'percentage') {
@@ -21,7 +21,11 @@ const getTaxTotal = ({ type, unit, value, nights, perPerson, occupancies }) => {
     total = total * nights
   }
 
-  return total * rooms
+  if (!perPerson && unit !== 'percentage') {
+    total = total * rooms
+  }
+
+  return total
 }
 
 /**

@@ -38,7 +38,7 @@ var getTaxTotal = function getTaxTotal(_ref) {
       perPerson = _ref.perPerson,
       occupancies = _ref.occupancies;
   var members = perPerson ? countOfMembers(occupancies) : 1;
-  var rooms = !perPerson ? (occupancies || []).length || 1 : 1;
+  var rooms = (occupancies || []).length || 1;
   var total = value * members;
 
   if (type !== 'stay' && unit !== 'percentage') {
@@ -46,7 +46,11 @@ var getTaxTotal = function getTaxTotal(_ref) {
     total = total * nights;
   }
 
-  return total * rooms;
+  if (!perPerson && unit !== 'percentage') {
+    total = total * rooms;
+  }
+
+  return total;
 };
 /**
  * Calculate the taxes included into the total amount for an offer/order

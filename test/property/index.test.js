@@ -44,4 +44,11 @@ describe('Property', () => {
       expect(returnData).to.have.length(25)
     })
   })
+
+  describe('allTypes', () => {
+    it('Must return all Types', async() => {
+      const returnData = property.allTypes
+      expect(returnData).to.eql(['HOTEL', 'UNIQUE_STAYS'])
+    })
+  })
 })

@@ -7,6 +7,7 @@ var allTypesAndCategories = {
   UNIQUE_STAYS: UNIQUE_STAYS
 };
 var allCategories = HOTEL.concat(UNIQUE_STAYS);
+var allTypes = ['HOTEL', 'UNIQUE_STAYS'];
 
 var defaultTypeForCategory = function defaultTypeForCategory(categoryName) {
   if (HOTEL.includes(categoryName)) {
@@ -23,5 +24,6 @@ var defaultTypeForCategory = function defaultTypeForCategory(categoryName) {
 module.exports = {
   defaultTypeForCategory: defaultTypeForCategory,
   allTypesAndCategories: allTypesAndCategories,
-  allCategories: allCategories
+  allCategories: allCategories,
+  allTypes: allTypes
 };

@@ -169,8 +169,9 @@ declare module "@luxuryescapes/lib-global" {
     ) => string;
   };
   const property: {
-    defaultTypeForCategory: (categoryName: string) => string,
-    allTypesAndCategories: {[type: string]: string},
-    allCategories: Array<string>
+    defaultTypeForCategory: (categoryName: string) => string;
+    allTypesAndCategories: {[type: string]: string};
+    allCategories: Array<string>;
+    allTypes: Array<string>;
   };
 }

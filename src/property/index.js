@@ -32,6 +32,8 @@ const allTypesAndCategories = { HOTEL, UNIQUE_STAYS }
 
 const allCategories = HOTEL.concat(UNIQUE_STAYS)
 
+const allTypes = ['HOTEL', 'UNIQUE_STAYS']
+
 const defaultTypeForCategory = (categoryName) => {
   if (HOTEL.includes(categoryName)) {
     return 'HOTEL'
@@ -46,4 +48,5 @@ module.exports = {
   defaultTypeForCategory,
   allTypesAndCategories,
   allCategories,
+  allTypes,
 }

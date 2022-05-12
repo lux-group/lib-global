@@ -6,4 +6,5 @@ module.exports = {
   occupancy: require('./occupancy'),
   date: require('./date'),
   calendar: require('./calendar'),
+  property: require('./property'),
 }

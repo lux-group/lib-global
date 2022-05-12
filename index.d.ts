@@ -168,4 +168,9 @@ declare module "@luxuryescapes/lib-global" {
       enquiryType: 'customer' | 'admin'
     ) => string;
   };
+  const property: {
+    defaultTypeForCategory: (categoryName: string) => string,
+    allTypesAndCategories: {[type: string]: string},
+    allCategories: Array<string>
+  };
 }

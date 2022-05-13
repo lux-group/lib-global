@@ -168,10 +168,35 @@ declare module "@luxuryescapes/lib-global" {
       enquiryType: 'customer' | 'admin'
     ) => string;
   };
+  export type PropertyType = 'HOTEL' | 'UNIQUE_STAYS'
   const property: {
-    defaultTypeForCategory: (categoryName: string) => string;
+    defaultTypeForCategory: (categoryName: string) => PropertyType;
     allTypesAndCategories: {[type: string]: string};
     allCategories: Array<string>;
-    allTypes: Array<string>;
+    allTypes: Array<PropertyType>;
+    HOTEL: string;
+    RESORT: string;
+    CASTLE: string;
+    PALACE: string;
+    INN: string;
+    BEDBREAKFAST: string;
+    GUESTHOUSE: string;
+    LODGE: string;
+    RYOKAN: string;
+    TREEHOUSE: string;
+    APARTHOTEL: string;
+    COUNTRYHOUSE: string;
+    AGRITOURISM: string;
+    ALLINCLUSIVE: string;
+    RIAD: string;
+    CABIN: string;
+    CHALET: string;
+    COTTAGE: string;
+    VILLA: string;
+    APARTMENT: string;
+    PRIVATEVACATIONHOME: string;
+    HOUSEBOAT: string;
+    CONDOMINIUMRESORT: string;
+    CAMPSITE: string;
   };
 }

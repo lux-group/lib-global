@@ -24,10 +24,10 @@ describe('Property', () => {
       expect(returnData).to.eql('UNIQUE_STAYS')
     })
 
-    it('Must return a null for unknown category', async() => {
+    it('Must return a HOTEL type for unknown category', async() => {
       const returnData = property.defaultTypeForCategory('blahblahblah')
 
-      expect(returnData).to.eql(null)
+      expect(returnData).to.eql('HOTEL')
     })
   })
 
@@ -41,7 +41,7 @@ describe('Property', () => {
   describe('allCategories', () => {
     it('Must return a massive array', async() => {
       const returnData = property.allCategories
-      expect(returnData).to.have.length(25)
+      expect(returnData).to.have.length(24)
     })
   })
 

@@ -174,6 +174,8 @@ declare module "@luxuryescapes/lib-global" {
     allTypesAndCategories: {[type: string]: string};
     allCategories: Array<string>;
     allTypes: Array<PropertyType>;
+    HOTEL_TYPE: string;
+    UNIQUE_STAYS_TYPE: string;
     HOTEL: string;
     RESORT: string;
     CASTLE: string;

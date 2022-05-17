@@ -1,3 +1,5 @@
+export const HOTEL_TYPE = 'HOTEL'
+export const UNIQUE_STAYS_TYPE = 'UNIQUE_STAYS'
 export const HOTEL = 'Hotel'
 export const RESORT = 'Resort'
 export const CASTLE = 'Castle'
@@ -23,7 +25,7 @@ export const PRIVATEVACATIONHOME = 'Private vacation home'
 export const HOUSEBOAT = 'Houseboat'
 export const CAMPSITE = 'Campsite'
 
-const HOTEL_TYPE = [
+const hotelTypeCategories = [
   HOTEL,
   RESORT,
   CASTLE,
@@ -41,7 +43,7 @@ const HOTEL_TYPE = [
   RIAD,
 ]
 
-const UNIQUE_STAYS_TYPE = [
+const uniqueStaysCategories = [
   CABIN,
   CHALET,
   COTTAGE,
@@ -53,11 +55,11 @@ const UNIQUE_STAYS_TYPE = [
   CAMPSITE,
 ]
 
-export const allTypesAndCategories = { HOTEL: HOTEL_TYPE, UNIQUE_STAYS: UNIQUE_STAYS_TYPE }
+export const allTypesAndCategories = { HOTEL: hotelTypeCategories, UNIQUE_STAYS: uniqueStaysCategories }
 
-export const allCategories = HOTEL_TYPE.concat(UNIQUE_STAYS_TYPE)
+export const allCategories = hotelTypeCategories.concat(uniqueStaysCategories)
 
-export const allTypes = ['HOTEL', 'UNIQUE_STAYS']
+export const allTypes = [HOTEL_TYPE, UNIQUE_STAYS_TYPE]
 
 /**
  * Checks if a category name is a unique stay category, else assume it's a hotel
@@ -65,8 +67,8 @@ export const allTypes = ['HOTEL', 'UNIQUE_STAYS']
  * @returns {string}
  */
 export const defaultTypeForCategory = (categoryName) => {
-  if (UNIQUE_STAYS_TYPE.includes(categoryName)) {
-    return 'UNIQUE_STAYS'
+  if (uniqueStaysCategories.includes(categoryName)) {
+    return UNIQUE_STAYS_TYPE
   }
-  return 'HOTEL'
+  return HOTEL_TYPE
 }

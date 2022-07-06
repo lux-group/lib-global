@@ -103,6 +103,9 @@ declare module "@luxuryescapes/lib-global" {
       date: Date,
       mask: string
     ) => string;
+    formatYYYYMMDD: (
+      date: Date
+    ) => string;
     convertTZ: (
       date: Date,
       tzString: string

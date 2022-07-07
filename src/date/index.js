@@ -57,6 +57,10 @@ function addDays(date, days) {
   return new Date(date.getTime() + days * 86400000)
 }
 
+function formatYYYYMMDD(date) {
+  return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`
+}
+
 function format(date, mask) {
   const token = /d{1,4}|m{1,4}|yy(?:yy)?|([HhMsTt])\1?|[Ll]|"[^"]*"|'[^']*'/g
 
@@ -123,11 +127,12 @@ const diffInDays = (date1, date2) => {
 }
 
 module.exports = {
-  format: format,
-  diffInDays: diffInDays,
-  getDays: getDays,
-  addDays: addDays,
-  subDays: subDays,
-  calculateTimezoneOffset: calculateTimezoneOffset,
-  convertTZ: convertTZ,
+  format,
+  formatYYYYMMDD,
+  diffInDays,
+  getDays,
+  addDays,
+  subDays,
+  calculateTimezoneOffset,
+  convertTZ,
 }

@@ -1,7 +1,6 @@
 export const HOTEL_TYPE = 'HOTEL'
 export const UNIQUE_STAYS_TYPE = 'UNIQUE_STAYS'
-export const HOTEL = 'Hotel'
-export const RESORT = 'Resort'
+export const HOTELSRESORTS = 'Hotels & Resorts'
 export const CASTLE = 'Castle'
 export const PALACE = 'Palace'
 export const CONDOMINIUMRESORT = 'Condominium resort'
@@ -26,8 +25,6 @@ export const HOUSEBOAT = 'Houseboat'
 export const CAMPSITE = 'Campsite'
 
 const hotelTypeCategories = [
-  HOTEL,
-  RESORT,
   CASTLE,
   PALACE,
   INN,
@@ -41,6 +38,7 @@ const hotelTypeCategories = [
   AGRITOURISM,
   ALLINCLUSIVE,
   RIAD,
+  HOTELSRESORTS,
 ]
 
 const uniqueStaysCategories = [

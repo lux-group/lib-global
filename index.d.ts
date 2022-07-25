@@ -179,8 +179,6 @@ declare module "@luxuryescapes/lib-global" {
     allTypes: Array<PropertyType>;
     HOTEL_TYPE: string;
     UNIQUE_STAYS_TYPE: string;
-    HOTEL: string;
-    RESORT: string;
     CASTLE: string;
     PALACE: string;
     INN: string;
@@ -203,5 +201,6 @@ declare module "@luxuryescapes/lib-global" {
     HOUSEBOAT: string;
     CONDOMINIUMRESORT: string;
     CAMPSITE: string;
+    HOTELSRESORTS: string;
   };
 }

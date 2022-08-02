@@ -2,7 +2,11 @@ const expect = require('chai').expect
 
 const { offer: offerLib } = require('../../compiled')
 
-const { calculateTaxAmount, calculateAmountForEachTax } = offerLib.pricing
+const {
+  calculateTaxAmount,
+  calculateAmountForEachTax,
+  constCalculateTaxBreakdownForEachTax,
+} = offerLib.pricing
 
 describe('calculateAmountForEachTax', () => {
   const tests = {
@@ -23,7 +27,15 @@ describe('calculateAmountForEachTax', () => {
     'percentage per night for a single night': {
       params: {
         total: 100,
-        taxesAndFees: [{ name: 'Tax1', unit: 'percentage', type: 'night', per_person: false, value: 20 }],
+        taxesAndFees: [
+          {
+            name: 'Tax1',
+            unit: 'percentage',
+            type: 'night',
+            per_person: false,
+            value: 20,
+          },
+        ],
         nights: 1,
       },
       expected: [
@@ -40,7 +52,15 @@ describe('calculateAmountForEachTax', () => {
     'percentage per night for two nights': {
       params: {
         total: 100,
-        taxesAndFees: [{ name: 'Tax1', unit: 'percentage', type: 'night', per_person: false, value: 10 }],
+        taxesAndFees: [
+          {
+            name: 'Tax1',
+            unit: 'percentage',
+            type: 'night',
+            per_person: false,
+            value: 10,
+          },
+        ],
         nights: 2,
       },
       expected: [
@@ -57,7 +77,15 @@ describe('calculateAmountForEachTax', () => {
     'percentage per night for seven nights': {
       params: {
         total: 200,
-        taxesAndFees: [{ name: 'Tax1', unit: 'percentage', type: 'night', per_person: false, value: 5 }],
+        taxesAndFees: [
+          {
+            name: 'Tax1',
+            unit: 'percentage',
+            type: 'night',
+            per_person: false,
+            value: 5,
+          },
+        ],
         nights: 7,
       },
       expected: [
@@ -74,7 +102,15 @@ describe('calculateAmountForEachTax', () => {
     'percentage per stay for a single night': {
       params: {
         total: 100,
-        taxesAndFees: [{ name: 'Tax1', unit: 'percentage', type: 'stay', per_person: false, value: 20 }],
+        taxesAndFees: [
+          {
+            name: 'Tax1',
+            unit: 'percentage',
+            type: 'stay',
+            per_person: false,
+            value: 20,
+          },
+        ],
         nights: 1,
       },
       expected: [
@@ -91,7 +127,15 @@ describe('calculateAmountForEachTax', () => {
     'percentage per stay for a seven nights': {
       params: {
         total: 100,
-        taxesAndFees: [{ name: 'Tax1', unit: 'percentage', type: 'stay', per_person: false, value: 20 }],
+        taxesAndFees: [
+          {
+            name: 'Tax1',
+            unit: 'percentage',
+            type: 'stay',
+            per_person: false,
+            value: 20,
+          },
+        ],
         nights: 7,
       },
       expected: [
@@ -109,9 +153,27 @@ describe('calculateAmountForEachTax', () => {
       params: {
         total: 200,
         taxesAndFees: [
-          { name: 'Tax1', unit: 'percentage', type: 'night', per_person: false, value: 4 },
-          { name: 'Tax2', unit: 'percentage', type: 'night', per_person: false, value: 7 },
-          { name: 'Tax3', unit: 'percentage', type: 'night', per_person: false, value: 1 },
+          {
+            name: 'Tax1',
+            unit: 'percentage',
+            type: 'night',
+            per_person: false,
+            value: 4,
+          },
+          {
+            name: 'Tax2',
+            unit: 'percentage',
+            type: 'night',
+            per_person: false,
+            value: 7,
+          },
+          {
+            name: 'Tax3',
+            unit: 'percentage',
+            type: 'night',
+            per_person: false,
+            value: 1,
+          },
         ],
         nights: 3,
       },
@@ -146,9 +208,27 @@ describe('calculateAmountForEachTax', () => {
       params: {
         total: 200,
         taxesAndFees: [
-          { name: 'Tax1', unit: 'percentage', type: 'stay', per_person: false, value: 6 },
-          { name: 'Tax2', unit: 'percentage', type: 'stay', per_person: false, value: 22 },
-          { name: 'Tax3', unit: 'percentage', type: 'stay', per_person: false, value: 5 },
+          {
+            name: 'Tax1',
+            unit: 'percentage',
+            type: 'stay',
+            per_person: false,
+            value: 6,
+          },
+          {
+            name: 'Tax2',
+            unit: 'percentage',
+            type: 'stay',
+            per_person: false,
+            value: 22,
+          },
+          {
+            name: 'Tax3',
+            unit: 'percentage',
+            type: 'stay',
+            per_person: false,
+            value: 5,
+          },
         ],
         nights: 4,
       },
@@ -183,9 +263,27 @@ describe('calculateAmountForEachTax', () => {
       params: {
         total: 200,
         taxesAndFees: [
-          { name: 'Tax1', unit: 'percentage', type: 'night', per_person: false, value: 5 },
-          { name: 'Tax2', unit: 'percentage', type: 'stay', per_person: false, value: 10 },
-          { name: 'Tax3', unit: 'percentage', type: 'stay', per_person: false, value: 2 },
+          {
+            name: 'Tax1',
+            unit: 'percentage',
+            type: 'night',
+            per_person: false,
+            value: 5,
+          },
+          {
+            name: 'Tax2',
+            unit: 'percentage',
+            type: 'stay',
+            per_person: false,
+            value: 10,
+          },
+          {
+            name: 'Tax3',
+            unit: 'percentage',
+            type: 'stay',
+            per_person: false,
+            value: 2,
+          },
         ],
         nights: 7,
       },
@@ -219,7 +317,15 @@ describe('calculateAmountForEachTax', () => {
     'amount per night for a single night': {
       params: {
         total: 100,
-        taxesAndFees: [{ name: 'Tax1', unit: 'amount', type: 'night', per_person: false, value: 10 }],
+        taxesAndFees: [
+          {
+            name: 'Tax1',
+            unit: 'amount',
+            type: 'night',
+            per_person: false,
+            value: 10,
+          },
+        ],
         nights: 1,
       },
       expected: [
@@ -236,7 +342,15 @@ describe('calculateAmountForEachTax', () => {
     'amount per night for two nights': {
       params: {
         total: 100,
-        taxesAndFees: [{ name: 'Tax1', unit: 'amount', type: 'night', per_person: false, value: 17 }],
+        taxesAndFees: [
+          {
+            name: 'Tax1',
+            unit: 'amount',
+            type: 'night',
+            per_person: false,
+            value: 17,
+          },
+        ],
         nights: 2,
       },
       expected: [
@@ -253,7 +367,15 @@ describe('calculateAmountForEachTax', () => {
     'amount per night for seven nights': {
       params: {
         total: 200,
-        taxesAndFees: [{ name: 'Tax1', unit: 'amount', type: 'night', per_person: false, value: 5 }],
+        taxesAndFees: [
+          {
+            name: 'Tax1',
+            unit: 'amount',
+            type: 'night',
+            per_person: false,
+            value: 5,
+          },
+        ],
         nights: 7,
       },
       expected: [
@@ -271,8 +393,20 @@ describe('calculateAmountForEachTax', () => {
       params: {
         total: 100,
         taxesAndFees: [
-          { name: 'Tax1', unit: 'amount', type: 'night', per_person: false, value: 10 },
-          { name: 'Tax2', unit: 'amount', type: 'night', per_person: false, value: 3 },
+          {
+            name: 'Tax1',
+            unit: 'amount',
+            type: 'night',
+            per_person: false,
+            value: 10,
+          },
+          {
+            name: 'Tax2',
+            unit: 'amount',
+            type: 'night',
+            per_person: false,
+            value: 3,
+          },
         ],
         nights: 2,
       },
@@ -299,9 +433,27 @@ describe('calculateAmountForEachTax', () => {
       params: {
         total: 300,
         taxesAndFees: [
-          { name: 'Tax1', unit: 'amount', type: 'stay', per_person: false, value: 20 },
-          { name: 'Tax2', unit: 'amount', type: 'stay', per_person: false, value: 41 },
-          { name: 'Tax3', unit: 'amount', type: 'stay', per_person: false, value: 6 },
+          {
+            name: 'Tax1',
+            unit: 'amount',
+            type: 'stay',
+            per_person: false,
+            value: 20,
+          },
+          {
+            name: 'Tax2',
+            unit: 'amount',
+            type: 'stay',
+            per_person: false,
+            value: 41,
+          },
+          {
+            name: 'Tax3',
+            unit: 'amount',
+            type: 'stay',
+            per_person: false,
+            value: 6,
+          },
         ],
         nights: 5,
       },
@@ -336,8 +488,20 @@ describe('calculateAmountForEachTax', () => {
       params: {
         total: 300,
         taxesAndFees: [
-          { name: 'Tax1', unit: 'amount', type: 'night', per_person: false, value: 15 },
-          { name: 'Tax2', unit: 'amount', type: 'stay', per_person: false, value: 7 },
+          {
+            name: 'Tax1',
+            unit: 'amount',
+            type: 'night',
+            per_person: false,
+            value: 15,
+          },
+          {
+            name: 'Tax2',
+            unit: 'amount',
+            type: 'stay',
+            per_person: false,
+            value: 7,
+          },
         ],
         nights: 5,
       },
@@ -364,8 +528,20 @@ describe('calculateAmountForEachTax', () => {
       params: {
         total: 300,
         taxesAndFees: [
-          { name: 'Tax1', unit: 'percentage', type: 'night', per_person: false, value: 5 },
-          { name: 'Tax2', unit: 'amount', type: 'night', per_person: false, value: 18 },
+          {
+            name: 'Tax1',
+            unit: 'percentage',
+            type: 'night',
+            per_person: false,
+            value: 5,
+          },
+          {
+            name: 'Tax2',
+            unit: 'amount',
+            type: 'night',
+            per_person: false,
+            value: 18,
+          },
         ],
         nights: 3,
       },
@@ -392,10 +568,34 @@ describe('calculateAmountForEachTax', () => {
       params: {
         total: 1000,
         taxesAndFees: [
-          { name: 'Tax1', unit: 'percentage', type: 'night', per_person: false, value: 5 },
-          { name: 'Tax2', unit: 'percentage', type: 'stay', per_person: false, value: 10 },
-          { name: 'Tax3', unit: 'amount', type: 'night', per_person: false, value: 20 },
-          { name: 'Tax4', unit: 'amount', type: 'stay', per_person: false, value: 100 },
+          {
+            name: 'Tax1',
+            unit: 'percentage',
+            type: 'night',
+            per_person: false,
+            value: 5,
+          },
+          {
+            name: 'Tax2',
+            unit: 'percentage',
+            type: 'stay',
+            per_person: false,
+            value: 10,
+          },
+          {
+            name: 'Tax3',
+            unit: 'amount',
+            type: 'night',
+            per_person: false,
+            value: 20,
+          },
+          {
+            name: 'Tax4',
+            unit: 'amount',
+            type: 'stay',
+            per_person: false,
+            value: 100,
+          },
         ],
         nights: 4,
       },
@@ -437,7 +637,15 @@ describe('calculateAmountForEachTax', () => {
     'percentage per night per person (default persons)': {
       params: {
         total: 100,
-        taxesAndFees: [{ name: 'Tax1', unit: 'percentage', type: 'night', per_person: true, value: 2 }],
+        taxesAndFees: [
+          {
+            name: 'Tax1',
+            unit: 'percentage',
+            type: 'night',
+            per_person: true,
+            value: 2,
+          },
+        ],
         nights: 5,
       },
       expected: [
@@ -454,7 +662,15 @@ describe('calculateAmountForEachTax', () => {
     'percentage per night per person': {
       params: {
         total: 100,
-        taxesAndFees: [{ name: 'Tax1', unit: 'percentage', type: 'night', per_person: true, value: 2 }],
+        taxesAndFees: [
+          {
+            name: 'Tax1',
+            unit: 'percentage',
+            type: 'night',
+            per_person: true,
+            value: 2,
+          },
+        ],
         nights: 5,
         occupancies: [{ adults: 2, children: 1, infants: 0 }],
       },
@@ -472,7 +688,15 @@ describe('calculateAmountForEachTax', () => {
     'percentage per stay per person': {
       params: {
         total: 100,
-        taxesAndFees: [{ name: 'Tax1', unit: 'percentage', type: 'stay', per_person: true, value: 10 }],
+        taxesAndFees: [
+          {
+            name: 'Tax1',
+            unit: 'percentage',
+            type: 'stay',
+            per_person: true,
+            value: 10,
+          },
+        ],
         nights: 7,
         occupancies: [{ adults: 2, children: 1, infants: 1 }],
       },
@@ -491,9 +715,27 @@ describe('calculateAmountForEachTax', () => {
       params: {
         total: 200,
         taxesAndFees: [
-          { name: 'Tax1', unit: 'percentage', type: 'night', per_person: true, value: 1 },
-          { name: 'Tax2', unit: 'percentage', type: 'stay', per_person: true, value: 5 },
-          { name: 'Tax2', unit: 'percentage', type: 'stay', per_person: true, value: 2 },
+          {
+            name: 'Tax1',
+            unit: 'percentage',
+            type: 'night',
+            per_person: true,
+            value: 1,
+          },
+          {
+            name: 'Tax2',
+            unit: 'percentage',
+            type: 'stay',
+            per_person: true,
+            value: 5,
+          },
+          {
+            name: 'Tax2',
+            unit: 'percentage',
+            type: 'stay',
+            per_person: true,
+            value: 2,
+          },
         ],
         nights: 7,
         occupancies: [{ adults: 1, children: 1, infants: 1 }],
@@ -528,7 +770,15 @@ describe('calculateAmountForEachTax', () => {
     'amount per night per person': {
       params: {
         total: 200,
-        taxesAndFees: [{ name: 'Tax1', unit: 'amount', type: 'night', per_person: true, value: 5 }],
+        taxesAndFees: [
+          {
+            name: 'Tax1',
+            unit: 'amount',
+            type: 'night',
+            per_person: true,
+            value: 5,
+          },
+        ],
         nights: 7,
         occupancies: [{ adults: 2, children: 0, infants: 0 }],
       },
@@ -547,8 +797,20 @@ describe('calculateAmountForEachTax', () => {
       params: {
         total: 300,
         taxesAndFees: [
-          { name: 'Tax1', unit: 'amount', type: 'night', per_person: true, value: 15 },
-          { name: 'Tax2', unit: 'amount', type: 'stay', per_person: true, value: 7 },
+          {
+            name: 'Tax1',
+            unit: 'amount',
+            type: 'night',
+            per_person: true,
+            value: 15,
+          },
+          {
+            name: 'Tax2',
+            unit: 'amount',
+            type: 'stay',
+            per_person: true,
+            value: 7,
+          },
         ],
         nights: 5,
         occupancies: [{ adults: 2, children: 0, infants: 0 }],
@@ -576,8 +838,20 @@ describe('calculateAmountForEachTax', () => {
       params: {
         total: 300,
         taxesAndFees: [
-          { name: 'Tax1', unit: 'percentage', type: 'night', per_person: true, value: 3 },
-          { name: 'Tax2', unit: 'amount', type: 'night', per_person: true, value: 10 },
+          {
+            name: 'Tax1',
+            unit: 'percentage',
+            type: 'night',
+            per_person: true,
+            value: 3,
+          },
+          {
+            name: 'Tax2',
+            unit: 'amount',
+            type: 'night',
+            per_person: true,
+            value: 10,
+          },
         ],
         nights: 3,
         occupancies: [{ adults: 1, children: 3, infants: 1 }],
@@ -601,61 +875,110 @@ describe('calculateAmountForEachTax', () => {
         },
       ],
     },
-    'percentage and amount per night & percentage and amount per stay per person': {
-      params: {
-        total: 1000,
-        taxesAndFees: [
-          { name: 'Tax1', unit: 'percentage', type: 'night', per_person: true, value: 1 },
-          { name: 'Tax2', unit: 'percentage', type: 'stay', per_person: true, value: 4 },
-          { name: 'Tax3', unit: 'amount', type: 'night', per_person: true, value: 20 },
-          { name: 'Tax4', unit: 'amount', type: 'stay', per_person: true, value: 40 },
+    'percentage and amount per night & percentage and amount per stay per person':
+      {
+        params: {
+          total: 1000,
+          taxesAndFees: [
+            {
+              name: 'Tax1',
+              unit: 'percentage',
+              type: 'night',
+              per_person: true,
+              value: 1,
+            },
+            {
+              name: 'Tax2',
+              unit: 'percentage',
+              type: 'stay',
+              per_person: true,
+              value: 4,
+            },
+            {
+              name: 'Tax3',
+              unit: 'amount',
+              type: 'night',
+              per_person: true,
+              value: 20,
+            },
+            {
+              name: 'Tax4',
+              unit: 'amount',
+              type: 'stay',
+              per_person: true,
+              value: 40,
+            },
+          ],
+          nights: 4,
+          occupancies: [{ adults: 3, children: 0, infants: 0 }],
+        },
+        expected: [
+          {
+            name: 'Tax3',
+            per_person: true,
+            total: 240,
+            type: 'night',
+            unit: 'amount',
+            value: 20,
+          },
+          {
+            name: 'Tax4',
+            per_person: true,
+            total: 120,
+            type: 'stay',
+            unit: 'amount',
+            value: 40,
+          },
+          {
+            name: 'Tax1',
+            per_person: true,
+            total: 16.69565217391303,
+            type: 'night',
+            unit: 'percentage',
+            value: 1,
+          },
+          {
+            name: 'Tax2',
+            per_person: true,
+            total: 66.78260869565212,
+            type: 'stay',
+            unit: 'percentage',
+            value: 4,
+          },
         ],
-        nights: 4,
-        occupancies: [{ adults: 3, children: 0, infants: 0 }],
       },
-      expected: [
-        {
-          name: 'Tax3',
-          per_person: true,
-          total: 240,
-          type: 'night',
-          unit: 'amount',
-          value: 20,
-        },
-        {
-          name: 'Tax4',
-          per_person: true,
-          total: 120,
-          type: 'stay',
-          unit: 'amount',
-          value: 40,
-        },
-        {
-          name: 'Tax1',
-          per_person: true,
-          total: 16.69565217391303,
-          type: 'night',
-          unit: 'percentage',
-          value: 1,
-        },
-        {
-          name: 'Tax2',
-          per_person: true,
-          total: 66.78260869565212,
-          type: 'stay',
-          unit: 'percentage',
-          value: 4,
-        },
-      ],
-    },
     'mix of per person & per night & per stay': {
       params: {
         total: 1000,
         taxesAndFees: [
-          { name: 'Tax1', unit: 'percentage', type: 'night', per_person: true, value: 2 },
-          { name: 'Tax2', unit: 'percentage', type: 'stay', per_person: false, value: 5 },
-          { name: 'Tax3', unit: 'amount', type: 'night', per_person: false, value: 10 },
-          { name: 'Tax4', unit: 'amount', type: 'stay', per_person: true, value: 26 },
+          {
+            name: 'Tax1',
+            unit: 'percentage',
+            type: 'night',
+            per_person: true,
+            value: 2,
+          },
+          {
+            name: 'Tax2',
+            unit: 'percentage',
+            type: 'stay',
+            per_person: false,
+            value: 5,
+          },
+          {
+            name: 'Tax3',
+            unit: 'amount',
+            type: 'night',
+            per_person: false,
+            value: 10,
+          },
+          {
+            name: 'Tax4',
+            unit: 'amount',
+            type: 'stay',
+            per_person: true,
+            value: 26,
+          },
         ],
         nights: 4,
         occupancies: [{ adults: 3, children: 1, infants: 0 }],
@@ -695,53 +1018,81 @@ describe('calculateAmountForEachTax', () => {
         },
       ],
     },
-    'percentage and amount per night & percentage and amount per stay per person and multiple rooms': {
-      params: {
-        total: 1000,
-        taxesAndFees: [
-          { name: 'Tax1', unit: 'percentage', type: 'night', per_person: true, value: 1 },
-          { name: 'Tax2', unit: 'percentage', type: 'stay', per_person: true, value: 4 },
-          { name: 'Tax3', unit: 'amount', type: 'night', per_person: false, value: 20 },
-          { name: 'Tax4', unit: 'amount', type: 'stay', per_person: false, value: 40 },
+    'percentage and amount per night & percentage and amount per stay per person and multiple rooms':
+      {
+        params: {
+          total: 1000,
+          taxesAndFees: [
+            {
+              name: 'Tax1',
+              unit: 'percentage',
+              type: 'night',
+              per_person: true,
+              value: 1,
+            },
+            {
+              name: 'Tax2',
+              unit: 'percentage',
+              type: 'stay',
+              per_person: true,
+              value: 4,
+            },
+            {
+              name: 'Tax3',
+              unit: 'amount',
+              type: 'night',
+              per_person: false,
+              value: 20,
+            },
+            {
+              name: 'Tax4',
+              unit: 'amount',
+              type: 'stay',
+              per_person: false,
+              value: 40,
+            },
+          ],
+          nights: 4,
+          occupancies: [
+            { adults: 3, children: 0, infants: 0 },
+            { adults: 2, children: 0, infants: 0 },
+          ],
+        },
+        expected: [
+          {
+            name: 'Tax3',
+            per_person: false,
+            total: 160,
+            type: 'night',
+            unit: 'amount',
+            value: 20,
+          },
+          {
+            name: 'Tax4',
+            per_person: false,
+            total: 80,
+            type: 'stay',
+            unit: 'amount',
+            value: 40,
+          },
+          {
+            name: 'Tax1',
+            per_person: true,
+            total: 30.400000000000002,
+            type: 'night',
+            unit: 'percentage',
+            value: 1,
+          },
+          {
+            name: 'Tax2',
+            per_person: true,
+            total: 121.60000000000001,
+            type: 'stay',
+            unit: 'percentage',
+            value: 4,
+          },
         ],
-        nights: 4,
-        occupancies: [{ adults: 3, children: 0, infants: 0 }, { adults: 2, children: 0, infants: 0 }],
       },
-      expected: [
-        {
-          name: 'Tax3',
-          per_person: false,
-          total: 160,
-          type: 'night',
-          unit: 'amount',
-          value: 20,
-        },
-        {
-          name: 'Tax4',
-          per_person: false,
-          total: 80,
-          type: 'stay',
-          unit: 'amount',
-          value: 40,
-        },
-        {
-          name: 'Tax1',
-          per_person: true,
-          total: 30.400000000000002,
-          type: 'night',
-          unit: 'percentage',
-          value: 1,
-        },
-        {
-          name: 'Tax2',
-          per_person: true,
-          total: 121.60000000000001,
-          type: 'stay',
-          unit: 'percentage',
-          value: 4,
-        },
-      ],
-    },
   }
 
   for (const key in tests) {
@@ -753,18 +1104,109 @@ describe('calculateAmountForEachTax', () => {
   }
 })
 
+describe('constCalculateTaxBreakdownForEachTax', () => {
+  const tests = {
+    'default types are amount, per stay and per group (not per person)': {
+      params: {
+        total: 1019,
+        taxesAndFees: [
+          {
+            name: 'VAT',
+            dynamic_tax: false,
+            commissionable: true,
+            unit: 'percentage',
+            duration_type: 'night',
+            per_person: false,
+            value: 10,
+            currency: '',
+            additional_tax: false,
+            cost: 45.454545454545496,
+            cost_currency: 'AUD',
+            sell: 45,
+            sell_currency: 'AUD',
+            amount: 45.454545454545496,
+            amount_currency: 'AUD',
+          },
+        ],
+        nights: 3,
+        sellCurrency: 'AUD',
+      },
+      expected: [
+        {
+          name: 'VAT',
+          dynamic_tax: false,
+          unit: 'percentage',
+          durationType: 'night',
+          value: 10,
+          currency: '',
+          per_person: false,
+          sell: 92,
+          sell_currency: 'AUD',
+        },
+      ],
+    },
+  }
+
+  for (const key in tests) {
+    const test = tests[key]
+    it(`should return tax breakdown by ${key}`, () => {
+      const result = constCalculateTaxBreakdownForEachTax(test.params)
+      expect(result).to.deep.equal(test.expected)
+    })
+  }
+})
+
 describe('calculateTaxAmount', () => {
   it('should get correct total', () => {
     const result = calculateTaxAmount({
       total: 1000,
       taxesAndFees: [
-        { name: 'Tax1', unit: 'percentage', type: 'night', per_person: true, value: 2 },
-        { name: 'Tax2', unit: 'percentage', type: 'stay', per_person: false, value: 5 },
-        { name: 'Tax3', unit: 'amount', type: 'night', per_person: false, value: 10 },
-        { name: 'Tax4', unit: 'amount', type: 'stay', per_person: true, value: 26, payable_at_property: false },
+        {
+          name: 'Tax1',
+          unit: 'percentage',
+          type: 'night',
+          per_person: true,
+          value: 2,
+        },
+        {
+          name: 'Tax2',
+          unit: 'percentage',
+          type: 'stay',
+          per_person: false,
+          value: 5,
+        },
+        {
+          name: 'Tax3',
+          unit: 'amount',
+          type: 'night',
+          per_person: false,
+          value: 10,
+        },
+        {
+          name: 'Tax4',
+          unit: 'amount',
+          type: 'stay',
+          per_person: true,
+          value: 26,
+          payable_at_property: false,
+        },
 
-        { name: 'Tax5', unit: 'percentage', type: 'stay', per_person: false, value: 10, payable_at_property: true },
-        { name: 'Tax6', unit: 'amount', type: 'stay', per_person: false, value: 5, payable_at_property: true },
+        {
+          name: 'Tax5',
+          unit: 'percentage',
+          type: 'stay',
+          per_person: false,
+          value: 10,
+          payable_at_property: true,
+        },
+        {
+          name: 'Tax6',
+          unit: 'amount',
+          type: 'stay',
+          per_person: false,
+          value: 5,
+          payable_at_property: true,
+        },
       ],
       nights: 4,
       occupancies: [{ adults: 3, children: 1, infants: 0 }],

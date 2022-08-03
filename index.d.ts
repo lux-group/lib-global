@@ -26,6 +26,18 @@ declare module "@luxuryescapes/lib-global" {
     additional_tax?: boolean;
   }
 
+  interface TaxBreakdown {
+    name: string;
+    dynamic_tax: boolean;
+    unit: string;
+    duration_type: string;
+    value: number;
+    currency?: string;
+    per_person: boolean;
+    sell: number;
+    sell_currency: string;
+  }
+
   interface Occupants {
     adults: number;
     children?: number;
@@ -75,6 +87,7 @@ declare module "@luxuryescapes/lib-global" {
       calculateTaxAmount: ({ total, taxesAndFees, nights, occupancies }: { total: number, taxesAndFees: TaxesAndFees[], nights: number, occupancies?: Occupants[] }) => {taxesAndFees: number, propertyFees: number};
       calculateAmountForEachTax: ({ total, taxesAndFees, nights, occupancies }: { total: number, taxesAndFees: TaxesAndFees[], nights: number, occupancies?: Occupants[] }) => Array<TaxesAndFeesWithTotal>;
       calculateAmountForEachPropertyFee: ({ total, taxesAndFees, nights, occupancies }: { total: number, taxesAndFees: TaxesAndFees[], nights: number, occupancies?: Occupants[] }) => Array<TaxesAndFeesWithTotal>;
+      constCalculateTaxBreakdownForEachTax: ({ total, taxesAndFees, nights, occupancies }: { total: number, taxesAndFees: TaxesAndFees[], nights: number, occupancies?: Occupants[] }) => Array<TaxBreakdown>;
     };
   };
   const occupancy: {

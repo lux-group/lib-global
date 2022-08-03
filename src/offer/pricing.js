@@ -241,22 +241,6 @@ const calculateAmountForEachPropertyFee = ({
   return taxesAndFeesWithTotalForEach
 }
 
-/**
- *
- * [{
-      name: tax.name,
-      unit: tax.unit || 'amount',
-      durationType: tax.type || 'night',
-      perPerson: tax.per_person || false,
-      additionalTax: tax.additional_tax || false,
-      dynamicTax: false,
-      value: tax.value,
-      currency: tax.currency,
-      sell: Math.floor(tax.total),
-      sellCurrency,
-    }]
- * @returns
- */
 const constCalculateTaxBreakdownForEachTax = ({
   total,
   taxesAndFees,
@@ -283,9 +267,9 @@ const constCalculateTaxBreakdownForEachTax = ({
   taxesAndFeesWithTotalForEach.forEach((tax) => {
     breakdown.push({
       name: tax.name,
-      dynamic_tax: tax.dynamic_tax || false,
+      dynamic_tax: false,
       unit: tax.unit || 'amount',
-      durationType: tax.duration_type || 'night',
+      duration_type: tax.type || 'night',
       value: tax.value,
       currency: tax.currency,
       per_person: tax.per_person || false,

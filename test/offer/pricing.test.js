@@ -1136,7 +1136,7 @@ describe('constCalculateTaxBreakdownForEachTax', () => {
           name: 'VAT',
           dynamic_tax: false,
           unit: 'percentage',
-          durationType: 'night',
+          duration_type: 'night',
           value: 10,
           currency: '',
           per_person: false,

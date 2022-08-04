@@ -269,6 +269,7 @@ const constCalculateTaxBreakdownForEachTax = ({
       name: tax.name,
       dynamic_tax: false,
       unit: tax.unit || 'amount',
+      additional_tax: tax.additional_tax || false,
       duration_type: tax.type || 'night',
       value: tax.value,
       currency: tax.currency,

@@ -30,6 +30,7 @@ declare module "@luxuryescapes/lib-global" {
     name: string;
     dynamic_tax: boolean;
     unit: string;
+    additional_tax: boolean;
     duration_type: string;
     value: number;
     currency?: string;

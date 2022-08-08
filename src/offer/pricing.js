@@ -241,7 +241,7 @@ const calculateAmountForEachPropertyFee = ({
   return taxesAndFeesWithTotalForEach
 }
 
-const constCalculateTaxBreakdownForEachTax = ({
+const calculateTaxBreakdownForEachTax = ({
   total,
   taxesAndFees,
   nights,
@@ -285,5 +285,5 @@ module.exports = {
   calculateTaxAmount,
   calculateAmountForEachTax,
   calculateAmountForEachPropertyFee,
-  constCalculateTaxBreakdownForEachTax,
+  calculateTaxBreakdownForEachTax,
 }

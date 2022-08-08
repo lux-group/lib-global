@@ -5,7 +5,7 @@ const { offer: offerLib } = require('../../compiled')
 const {
   calculateTaxAmount,
   calculateAmountForEachTax,
-  constCalculateTaxBreakdownForEachTax,
+  calculateTaxBreakdownForEachTax,
 } = offerLib.pricing
 
 describe('calculateAmountForEachTax', () => {
@@ -1104,7 +1104,7 @@ describe('calculateAmountForEachTax', () => {
   }
 })
 
-describe('constCalculateTaxBreakdownForEachTax', () => {
+describe('calculateTaxBreakdownForEachTax', () => {
   const tests = {
     'percentage per night for 3 nights': {
       params: {
@@ -1415,7 +1415,7 @@ describe('constCalculateTaxBreakdownForEachTax', () => {
   for (const key in tests) {
     const test = tests[key]
     it(`should return tax breakdown by ${key}`, () => {
-      const result = constCalculateTaxBreakdownForEachTax(test.params)
+      const result = calculateTaxBreakdownForEachTax(test.params)
       expect(result).to.deep.equal(test.expected)
     })
   }

@@ -88,7 +88,7 @@ declare module "@luxuryescapes/lib-global" {
       calculateTaxAmount: ({ total, taxesAndFees, nights, occupancies }: { total: number, taxesAndFees: TaxesAndFees[], nights: number, occupancies?: Occupants[] }) => {taxesAndFees: number, propertyFees: number};
       calculateAmountForEachTax: ({ total, taxesAndFees, nights, occupancies }: { total: number, taxesAndFees: TaxesAndFees[], nights: number, occupancies?: Occupants[] }) => Array<TaxesAndFeesWithTotal>;
       calculateAmountForEachPropertyFee: ({ total, taxesAndFees, nights, occupancies }: { total: number, taxesAndFees: TaxesAndFees[], nights: number, occupancies?: Occupants[] }) => Array<TaxesAndFeesWithTotal>;
-      constCalculateTaxBreakdownForEachTax: ({ total, taxesAndFees, nights, occupancies }: { total: number, taxesAndFees: TaxesAndFees[], nights: number, occupancies?: Occupants[] }) => Array<TaxBreakdown>;
+      calculateTaxBreakdownForEachTax: ({ total, taxesAndFees, nights, occupancies }: { total: number, taxesAndFees: TaxesAndFees[], nights: number, occupancies?: Occupants[] }) => Array<TaxBreakdown>;
     };
   };
   const occupancy: {

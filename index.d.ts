@@ -24,6 +24,7 @@ declare module "@luxuryescapes/lib-global" {
     payable_at_property?: boolean;
     currency?: string;
     additional_tax?: boolean;
+    excl_flash_at_property?: boolean;
   }
 
   interface TaxBreakdown {

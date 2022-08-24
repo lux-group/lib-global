@@ -38,6 +38,7 @@ const getTaxTotal = ({ type, unit, value, nights, perPerson, occupancies }) => {
  *   per_person: boolean;
  *   value: number;
  *   payable_at_property: boolean;
+ *   excl_flash_at_property?: boolean;
  * }
  *
  * interface Occupants {
@@ -52,15 +53,16 @@ const getTaxTotal = ({ type, unit, value, nights, perPerson, occupancies }) => {
  * @param {Array<TaxesAndFees>} params.taxesAndFees - The list of taxes
  * @param {number} params.nights - The number of nights
  * @param {Array<Occupants>} params.occupancies - The occupancies
+ * @param {boolean} params.isFlash - Offer type is a flash/hotel type, defaults to false
  * @returns {{taxesAndFees: number, propertyFees: number}} Sum of taxes and fees
  */
-const calculateTaxAmount = ({ total, taxesAndFees, nights, occupancies }) => {
+const calculateTaxAmount = ({ total, taxesAndFees, nights, occupancies, isFlash = false }) => {
   const commonTaxesAndFees = []
   const propertyTaxesAndFees = []
 
   if (taxesAndFees && total) {
     taxesAndFees.forEach((tax) => {
-      if (!tax.payable_at_property) {
+      if (!tax.payable_at_property || (tax.payable_at_property && isFlash && tax.excl_flash_at_property)) {
         commonTaxesAndFees.push(tax)
       } else {
         propertyTaxesAndFees.push(tax)

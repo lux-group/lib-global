@@ -1,6 +1,6 @@
 {
   "name": "@luxuryescapes/lib-global",
-  "version": "2.8.3",
+  "version": "2.8.4",
   "description": "Lib for expanding functionality and deduplicating code between services",
   "main": "compiled/index.js",
   "types": "index.d.ts",
@@ -12,6 +12,7 @@
     "lint": "eslint --ext .js src",
     "lint:fix": "eslint --fix --ext .js src",
     "test": "mocha test",
+    "test:utc": "TZ=utc mocha test",
     "build": "babel src -d compiled",
     "release": "yarn lint && yarn clean && yarn build && yarn test",
     "prepare": "yarn run build",

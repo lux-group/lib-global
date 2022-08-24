@@ -86,7 +86,7 @@ declare module "@luxuryescapes/lib-global" {
       getFromPackages: (packages: Array<object>, offerType: string, holidayTypes: Array<string>) => string;
     };
     pricing: {
-      calculateTaxAmount: ({ total, taxesAndFees, nights, occupancies }: { total: number, taxesAndFees: TaxesAndFees[], nights: number, occupancies?: Occupants[] }) => {taxesAndFees: number, propertyFees: number};
+      calculateTaxAmount: ({ total, taxesAndFees, nights, occupancies, isFlash }: { total: number, taxesAndFees: TaxesAndFees[], nights: number, occupancies?: Occupants[], isFlash?: boolean }) => {taxesAndFees: number, propertyFees: number};
       calculateAmountForEachTax: ({ total, taxesAndFees, nights, occupancies }: { total: number, taxesAndFees: TaxesAndFees[], nights: number, occupancies?: Occupants[] }) => Array<TaxesAndFeesWithTotal>;
       calculateAmountForEachPropertyFee: ({ total, taxesAndFees, nights, occupancies }: { total: number, taxesAndFees: TaxesAndFees[], nights: number, occupancies?: Occupants[] }) => Array<TaxesAndFeesWithTotal>;
       calculateTaxBreakdownForEachTax: ({ total, taxesAndFees, nights, occupancies }: { total: number, taxesAndFees: TaxesAndFees[], nights: number, occupancies?: Occupants[] }) => Array<TaxBreakdown>;

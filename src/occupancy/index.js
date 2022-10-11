@@ -64,7 +64,7 @@ const strummerMatcher = {
         dataCheck = [value]
       }
     } else if (typeof value === 'undefined' || !value) {
-      dataCheck = []
+      return 'Occupancy is required'
     }
     for (const occupancy of dataCheck) {
       if (!match(occupancy)) {

@@ -82,6 +82,10 @@ describe('Occupancy', () => {
         expect(occupancy.strummerMatcher.match('', '2')).to.eql(undefined)
       })
 
+      it('occupancy is required', () => {
+        expect(occupancy.strummerMatcher.match('', '')).to.eql('Occupancy is required')
+      })
+
       it('allows multiple occupancies', () => {
         expect(occupancy.strummerMatcher.match('', ['2', '3-1'])).to.eql(undefined)
       })

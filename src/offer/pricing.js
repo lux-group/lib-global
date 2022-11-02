@@ -1,5 +1,5 @@
 const isEmpty = require('lodash')
-const { PRODUCT_ALL, PRODUCT_DYNAMIC, PRODUCT_LTE } = require('../constants/taxesAndFees')
+const { PRODUCT_ALL, PRODUCT_DYNAMIC, PRODUCT_LTE } = require('../product/constants')
 
 const countOfMembers = (occupancies) => {
   return (

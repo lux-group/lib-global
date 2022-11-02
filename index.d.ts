@@ -219,4 +219,11 @@ declare module "@luxuryescapes/lib-global" {
     CAMPSITE: string;
     HOTELSRESORTS: string;
   };
+  const product: {
+    constants: {
+      PRODUCT_ALL: "all",
+      PRODUCT_DYNAMIC: "dynamic",
+      PRODUCT_LTE: "lte",
+    };
+  }
 }

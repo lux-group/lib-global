@@ -1,5 +1,5 @@
-import { isEmpty } from 'lodash'
-import * as TAXES_AND_FEES from '../constants/taxesAndFees'
+const isEmpty = require('lodash')
+const { PRODUCT_ALL, PRODUCT_DYNAMIC, PRODUCT_LTE } = require('../constants/taxesAndFees')
 
 const countOfMembers = (occupancies) => {
   return (
@@ -73,12 +73,12 @@ const calculateTaxAmount = ({ total, taxesAndFees, nights, occupancies, isFlash 
 
   if (taxesAndFees && total) {
     taxesAndFees.forEach((tax) => {
-      if (tax.product_type === TAXES_AND_FEES.PRODUCT_DYNAMIC && !isFlash) {
+      if (tax.product_type === PRODUCT_DYNAMIC && !isFlash) {
         _appendPropertyTaxesAndFees(tax)
-      } else if (tax.product_type === TAXES_AND_FEES.PRODUCT_LTE && isFlash) {
+      } else if (tax.product_type === PRODUCT_LTE && isFlash) {
         _appendPropertyTaxesAndFees(tax)
       } else if (
-        tax.product_type === TAXES_AND_FEES.PRODUCT_ALL ||
+        tax.product_type === PRODUCT_ALL ||
         isEmpty(tax.product_type)
       ) {
         // Include if product type is set to ALL or if product type is empty/missing

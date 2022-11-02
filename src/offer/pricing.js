@@ -71,6 +71,8 @@ const calculateTaxAmount = ({ total, taxesAndFees, nights, occupancies, isFlash 
     }
   }
 
+  // Filter out tax items according to product type and offer type
+  // https://aussiecommerce.atlassian.net/browse/CONLT-442
   if (taxesAndFees && total) {
     taxesAndFees.forEach((tax) => {
       if (tax.product_type === PRODUCT_DYNAMIC && !isFlash) {

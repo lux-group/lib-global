@@ -1,4 +1,4 @@
-const isEmpty = require('lodash')
+const _ = require('lodash')
 const { PRODUCT_ALL, PRODUCT_DYNAMIC, PRODUCT_LTE } = require('../product/constants')
 
 const countOfMembers = (occupancies) => {
@@ -80,8 +80,7 @@ const calculateTaxAmount = ({ total, taxesAndFees, nights, occupancies, isFlash 
       } else if (tax.product_type === PRODUCT_LTE && isFlash) {
         _appendPropertyTaxesAndFees(tax)
       } else if (
-        tax.product_type === PRODUCT_ALL ||
-        isEmpty(tax.product_type)
+        tax.product_type === PRODUCT_ALL || _.isEmpty(tax.product_type)
       ) {
         // Include if product type is set to ALL or if product type is empty/missing
         _appendPropertyTaxesAndFees(tax)

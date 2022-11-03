@@ -1535,4 +1535,40 @@ describe('calculateTaxAmount', () => {
     })
     expect(result).to.deep.equal({ taxesAndFees: 242, propertyFees: 80 })
   })
+
+  it('should ignore filtered tax items', () => {
+    const result = calculateTaxAmount({
+      total: 1000,
+      taxesAndFees: [
+        {
+          name: 'Tax1',
+          unit: 'percentage',
+          type: 'night',
+          per_person: true,
+          value: 2,
+          product_type: 'limited_time_exclusive',
+        },
+        {
+          name: 'tax2 - should not be added to calculation',
+          unit: 'percentage',
+          type: 'night',
+          per_person: true,
+          value: 2,
+          product_type: 'dynamic',
+        },
+        {
+          name: 'tax3 - missing product type, added to calculation',
+          unit: 'percentage',
+          type: 'night',
+          per_person: true,
+          value: 2,
+          product_type: '',
+        },
+      ],
+      nights: 4,
+      occupancies: [{ adults: 3, children: 1, infants: 0 }],
+      isFlash: true,
+    })
+    expect(result).to.deep.equal({ taxesAndFees: 137, propertyFees: 0 })
+  })
 })

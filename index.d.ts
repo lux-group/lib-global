@@ -25,6 +25,7 @@ declare module "@luxuryescapes/lib-global" {
     currency?: string;
     additional_tax?: boolean;
     excl_flash_at_property?: boolean;
+    product_type?: "all" | "dynamic" | "limited_time_exclusive"
   }
 
   interface TaxBreakdown {
@@ -218,4 +219,11 @@ declare module "@luxuryescapes/lib-global" {
     CAMPSITE: string;
     HOTELSRESORTS: string;
   };
+  const product: {
+    constants: {
+      PRODUCT_ALL: "all",
+      PRODUCT_DYNAMIC: "dynamic",
+      PRODUCT_LTE: "limited_time_exclusive",
+    };
+  }
 }

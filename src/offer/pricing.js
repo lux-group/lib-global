@@ -1,3 +1,6 @@
+const _ = require('lodash')
+const { PRODUCT_ALL, PRODUCT_DYNAMIC, PRODUCT_LTE } = require('../product/constants')
+
 const countOfMembers = (occupancies) => {
   return (
     (occupancies || []).reduce((acc, occupancy) => {
@@ -60,12 +63,27 @@ const calculateTaxAmount = ({ total, taxesAndFees, nights, occupancies, isFlash 
   const commonTaxesAndFees = []
   const propertyTaxesAndFees = []
 
+  const _appendPropertyTaxesAndFees = (taxItem) => {
+    if (!taxItem.payable_at_property || (taxItem.payable_at_property && isFlash && taxItem.excl_flash_at_property)) {
+      commonTaxesAndFees.push(taxItem)
+    } else {
+      propertyTaxesAndFees.push(taxItem)
+    }
+  }
+
+  // Filter out tax items according to product type and offer type
+  // https://aussiecommerce.atlassian.net/browse/CONLT-442
   if (taxesAndFees && total) {
     taxesAndFees.forEach((tax) => {
-      if (!tax.payable_at_property || (tax.payable_at_property && isFlash && tax.excl_flash_at_property)) {
-        commonTaxesAndFees.push(tax)
-      } else {
-        propertyTaxesAndFees.push(tax)
+      if (tax.product_type === PRODUCT_DYNAMIC && !isFlash) {
+        _appendPropertyTaxesAndFees(tax)
+      } else if (tax.product_type === PRODUCT_LTE && isFlash) {
+        _appendPropertyTaxesAndFees(tax)
+      } else if (
+        tax.product_type === PRODUCT_ALL || _.isEmpty(tax.product_type)
+      ) {
+        // Include if product type is set to ALL or if product type is empty/missing
+        _appendPropertyTaxesAndFees(tax)
       }
     })
 

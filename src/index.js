@@ -7,4 +7,5 @@ module.exports = {
   date: require('./date'),
   calendar: require('./calendar'),
   property: require('./property'),
+  constants: require('./product'),
 }

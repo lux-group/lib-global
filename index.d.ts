@@ -37,7 +37,7 @@ declare module "@luxuryescapes/lib-global" {
     currency?: string;
     per_person: boolean;
     sell: number;
-    sell_in_cost: number;
+    sell_in_cost?: number;
     sell_currency: string;
   }
 

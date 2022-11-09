@@ -99,6 +99,7 @@ declare module "@luxuryescapes/lib-global" {
     match: (occupancy: string) => boolean;
     toString: (occupancy: Occupants) => string;
     strummerMatcher: { match: <V>(path?: string, value?: V) => string | undefined, toJSONSchema: () => JSONSchema };
+    strummerMatcherRequired: { match: <V>(path?: string, value?: V) => string | undefined, toJSONSchema: () => JSONSchema };
   };
   const currency: {
     addDollarType: (

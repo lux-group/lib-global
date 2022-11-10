@@ -54,25 +54,30 @@ const get = occupancy => {
   return occupancies
 }
 
-const strummerMatcher = {
-  match: (path, value) => {
-    let dataCheck = value
-    if (typeof value === 'string' && value) {
-      if (value.split(',').every(occupancy => !!occupancy.match(/^[0-9]{1,2}-[0-9]{1,2}-[0-9]{1,2}?$/gi))) {
-        dataCheck = [value.split(',')].flat()
-      } else {
-        dataCheck = [value]
+const getStrummerMatcher = (required = false) => {
+  return {
+    match: (path, value) => {
+      let dataCheck = value
+      if (typeof value === 'string' && value) {
+        if (value.split(',').every(occupancy => !!occupancy.match(/^[0-9]{1,2}-[0-9]{1,2}-[0-9]{1,2}?$/gi))) {
+          dataCheck = [value.split(',')].flat()
+        } else {
+          dataCheck = [value]
+        }
+      } else if (typeof value === 'undefined' || !value) {
+        if (required === true) {
+          return 'Occupancy is required'
+        }
+        dataCheck = []
       }
-    } else if (typeof value === 'undefined' || !value) {
-      return 'Occupancy is required'
-    }
-    for (const occupancy of dataCheck) {
-      if (!match(occupancy)) {
-        return 'Invalid occupancy format'
+      for (const occupancy of dataCheck) {
+        if (!match(occupancy)) {
+          return 'Invalid occupancy format'
+        }
       }
-    }
-  },
-  toJSONSchema: () => ({ type: 'string', properties: {} }),
+    },
+    toJSONSchema: () => ({ type: 'string', properties: {} }),
+  }
 }
 
 module.exports = {
@@ -80,5 +85,6 @@ module.exports = {
   get: get,
   match: match,
   toString: toString,
-  strummerMatcher: strummerMatcher,
+  strummerMatcher: getStrummerMatcher(),
+  strummerMatcherRequired: getStrummerMatcher(true),
 }

@@ -23,6 +23,7 @@ export const APARTMENT = 'Apartment'
 export const PRIVATEVACATIONHOME = 'Private vacation home'
 export const HOUSEBOAT = 'Houseboat'
 export const CAMPSITE = 'Campsite'
+export const ULTRA_LUX = 'Ultra Lux'
 
 const hotelTypeCategories = [
   CASTLE,
@@ -51,6 +52,7 @@ const uniqueStaysCategories = [
   HOUSEBOAT,
   CONDOMINIUMRESORT,
   CAMPSITE,
+  ULTRA_LUX,
 ]
 
 export const allTypesAndCategories = { HOTEL: hotelTypeCategories, UNIQUE_STAYS: uniqueStaysCategories }

@@ -218,6 +218,7 @@ declare module "@luxuryescapes/lib-global" {
     HOUSEBOAT: string;
     CONDOMINIUMRESORT: string;
     CAMPSITE: string;
+    ULTRA_LUX: string;
     HOTELSRESORTS: string;
   };
   const product: {

@@ -41,7 +41,14 @@ describe('Property', () => {
   describe('allCategories', () => {
     it('Must return a massive array', async() => {
       const returnData = property.allCategories
-      expect(returnData).to.have.length(24)
+      expect(returnData).to.have.length(23)
+    })
+  })
+
+  describe('allSubCategories', () => {
+    it('Must return a massive array', async() => {
+      const returnData = property.allSubCategories
+      expect(returnData).to.have.length(1)
     })
   })
 

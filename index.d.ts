@@ -193,6 +193,7 @@ declare module "@luxuryescapes/lib-global" {
     defaultTypeForCategory: (categoryName: string) => PropertyType;
     allTypesAndCategories: {[type: string]: string};
     allCategories: Array<string>;
+    allSubCategories: Array<string>;
     allTypes: Array<PropertyType>;
     HOTEL_TYPE: string;
     UNIQUE_STAYS_TYPE: string;

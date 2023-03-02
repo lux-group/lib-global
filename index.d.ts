@@ -229,4 +229,51 @@ declare module "@luxuryescapes/lib-global" {
       PRODUCT_LTE: "limited_time_exclusive",
     };
   }
+
+  export interface ISlackHookDetails {
+    channelManager: string
+    channelSupplierId?: string
+    channelAriType?: string
+    supplierReservationId?: string
+    hotelId?: string
+    offerTitle?: string
+    offerId?: string
+    rateId?: string // ratePlanCode
+    roomId?: string // roomTypeCode
+    roomRateId?: string
+    propertyId?: string
+    propertyName?: string
+    bookingNumber?: string
+    checkIn?: string
+    checkOut?: string
+    costCurrency?: string
+    costAmount?: number
+    adults?: number
+    children?: number
+    lengthOfStay?: number
+    ariType?: string
+    leadDayId?: string
+    externalBookingId?: string
+    other?: string
+  }
+
+  export interface ISlackHookPayload {
+    blocks: Array<{
+      type: string
+      text: {
+        type: string
+        text: string
+      }
+    } | ISlackHookPayloadFieldSection>
+  }
+
+  export interface ISlackHookPayloadFieldSection {
+    type: string
+    fields: ISlackHookPayloadFieldData[]
+  }
+
+  export interface ISlackHookPayloadFieldData {
+    type: string
+    text: string
+  }
 }

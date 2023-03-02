@@ -276,4 +276,11 @@ declare module "@luxuryescapes/lib-global" {
     type: string
     text: string
   }
+
+  const hotel: {
+    buildNotificationPayload: (
+      notificationText: string,
+      details: ISlackHookDetails
+    ) => ISlackHookPayload;
+  }
 }

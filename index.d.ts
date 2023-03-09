@@ -229,4 +229,11 @@ declare module "@luxuryescapes/lib-global" {
       PRODUCT_LTE: "limited_time_exclusive",
     };
   }
+  const environment: {
+    DEVELOPMENT: 'development',
+    SPEC: 'spec',
+    TEST: 'test',
+    PRODUCTION: 'production',
+    PERFORMANCE: 'performance',
+  }
 }

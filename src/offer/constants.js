@@ -2,7 +2,7 @@ const OFFER_TYPE_HOTEL = 'hotel'
 const OFFER_TYPE_TOUR = 'tour'
 const OFFER_TYPE_LAST_MINUTE_HOTEL = 'last_minute_hotel'
 const OFFER_TYPE_TACTICAL_AO_HOTEL = 'tactical_ao_hotel'
-const LAST_MINUTE_CHECK_IN_LIMIT_DEFAULT = 7
+const LAST_MINUTE_CHECK_IN_LIMIT_DEFAULT = 14
 
 module.exports = {
   OFFER_TYPE_HOTEL,

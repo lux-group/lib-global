@@ -60,6 +60,7 @@ declare module "@luxuryescapes/lib-global" {
     | "hotel"
     | "last_minute_hotel"
     | "tactical_ao_hotel"
+    | "bundle_and_save"
 
   const offer: {
     constants: {
@@ -67,6 +68,7 @@ declare module "@luxuryescapes/lib-global" {
       OFFER_TYPE_TOUR: 'tour';
       OFFER_TYPE_LAST_MINUTE_HOTEL: 'last_minute_hotel';
       OFFER_TYPE_TACTICAL_AO_HOTEL: 'tactical_ao_hotel';
+      OFFER_TYPE_BUNDLE_AND_SAVE: 'bundle_and_save';
       LAST_MINUTE_CHECK_IN_LIMIT_DEFAULT: number;
     };
     dates: {

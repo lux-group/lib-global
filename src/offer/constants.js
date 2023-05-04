@@ -2,6 +2,7 @@ const OFFER_TYPE_HOTEL = 'hotel'
 const OFFER_TYPE_TOUR = 'tour'
 const OFFER_TYPE_LAST_MINUTE_HOTEL = 'last_minute_hotel'
 const OFFER_TYPE_TACTICAL_AO_HOTEL = 'tactical_ao_hotel'
+const OFFER_TYPE_BUNDLE_AND_SAVE = "bundle_and_save";
 const LAST_MINUTE_CHECK_IN_LIMIT_DEFAULT = 14
 
 module.exports = {
@@ -9,5 +10,6 @@ module.exports = {
   OFFER_TYPE_TOUR,
   OFFER_TYPE_LAST_MINUTE_HOTEL,
   OFFER_TYPE_TACTICAL_AO_HOTEL,
+  OFFER_TYPE_BUNDLE_AND_SAVE,
   LAST_MINUTE_CHECK_IN_LIMIT_DEFAULT,
 }

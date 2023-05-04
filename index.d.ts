@@ -175,12 +175,12 @@ declare module "@luxuryescapes/lib-global" {
       maxDate: string
     ) => number;
     getMaxCheckInCloseDate: (
-      checkInCloses?: string,
+      checkInCloses?: string | null,
       defaultMonths?: number
     ) => string;
     getStartDate: (
-      minDate?: string,
-      travelFromDate?: string
+      minDate?: string | null,
+      travelFromDate?: string | null
     ) => string;
     getDateFloorOffset: (
       timezoneOffset: number,

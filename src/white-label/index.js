@@ -1,4 +1,4 @@
 
 module.exports = {
-  dynamicTags: require('./dynamic-tags')
+  dynamicTags: require('./dynamic-tags'),
 }

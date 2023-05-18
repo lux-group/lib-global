@@ -55,8 +55,8 @@ const dynamicValuesSource = {
     TrustedPartnerTourEmail: 'trustedpartnertours@luxuryescapes.com',
     FlightPolicyLink: 'https://luxuryescapes.com/au/flights-policies',
   },
-};
+}
 
 module.exports = {
-  dynamicValuesSource
+  dynamicValuesSource,
 }

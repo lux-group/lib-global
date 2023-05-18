@@ -9,4 +9,5 @@ module.exports = {
   property: require('./property'),
   constants: require('./product'),
   environment: require('./environment'),
+  whiteLabel: require('./white-label')
 }

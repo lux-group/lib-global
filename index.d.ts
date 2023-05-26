@@ -238,4 +238,10 @@ declare module "@luxuryescapes/lib-global" {
     PRODUCTION: 'production',
     PERFORMANCE: 'performance',
   }
+  const whiteLabel: {
+    dynamicTags: {
+      replaceTagsMiddleware: (allowedFields: string[]) => ((req: Request, res: Response, next: () => any) => void)
+      replaceTags: <T>(object: T, brand?: string, allowedFields?: string[], isRetainingTags?: boolean) => T
+    }
+  }
 }

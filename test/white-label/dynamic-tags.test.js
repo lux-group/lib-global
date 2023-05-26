@@ -185,6 +185,20 @@ describe('replaceTags', () => {
       propWithTag: 'Welcome to {{BrandName}}'
     })
   })
+
+  it('Should ignore allowed fields that do not exist in the response', () => {
+    const object = {
+      propWithTag: 'Welcome to {{BrandName}}',
+      propObject: {}
+    }
+
+    const res = replaceTags(object, 'luxuryescapes', ['propWithTag', 'notExistingPop', 'propObject.notExistingChild', 'notExistingObject.notExistingChild'])
+
+    expect(res).to.eql({
+      propWithTag: 'Welcome to Luxury Escapes',
+      propObject: {}
+    })
+  })
 })
 
 describe('replaceTagsMiddleware', () => {

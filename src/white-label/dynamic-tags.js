@@ -112,4 +112,5 @@ const replaceTagsMiddleware = (allowedFields) => {
 module.exports = {
   replaceTagsMiddleware,
   replaceTags,
+  brandContent: dynamicValuesSource,
 }

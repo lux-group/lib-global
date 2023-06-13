@@ -242,6 +242,16 @@ declare module "@luxuryescapes/lib-global" {
     dynamicTags: {
       replaceTagsMiddleware: (allowedFields: string[]) => ((req: Request, res: Response, next: () => any) => void)
       replaceTags: <T>(object: T, brand?: string, allowedFields?: string[], isRetainingTags?: boolean) => T
+      brandContent: {
+          [key: string]: {
+            BrandName: string;
+            SalesEmail: string;
+            CruiseEmail: string;
+            TourEmail: string;
+            TrustedPartnerTourEmail: string;
+            FlightPolicyLink: string;
+        }
+      }
     }
   }
 }

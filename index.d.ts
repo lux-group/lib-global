@@ -70,6 +70,10 @@ declare module "@luxuryescapes/lib-global" {
       OFFER_TYPE_TACTICAL_AO_HOTEL: 'tactical_ao_hotel';
       OFFER_TYPE_BUNDLE_AND_SAVE: 'bundle_and_save';
       LAST_MINUTE_CHECK_IN_LIMIT_DEFAULT: number;
+      STATUS_CONTENT_APPROVED: 'content-approved';
+      STATUS_AD_FEED_ONLY: 'ad-feed-only';
+      STATUS_HIDDEN: 'hidden';
+      STATUS_DRAFT: 'draft';
     };
     dates: {
       checkInCloses: (
@@ -94,6 +98,7 @@ declare module "@luxuryescapes/lib-global" {
       calculateAmountForEachPropertyFee: ({ total, taxesAndFees, nights, occupancies }: { total: number, taxesAndFees: TaxesAndFees[], nights: number, occupancies?: Occupants[] }) => Array<TaxesAndFeesWithTotal>;
       calculateTaxBreakdownForEachTax: ({ total, taxesAndFees, nights, occupancies }: { total: number, taxesAndFees: TaxesAndFees[], nights: number, occupancies?: Occupants[] }) => Array<TaxBreakdown>;
     };
+    patchBundleOffer: (offer: any) => void;
   };
   const occupancy: {
     get: (occupancy: string | string[]) => Occupants[];

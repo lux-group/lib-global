@@ -5,6 +5,11 @@ const OFFER_TYPE_TACTICAL_AO_HOTEL = 'tactical_ao_hotel'
 const OFFER_TYPE_BUNDLE_AND_SAVE = 'bundle_and_save'
 const LAST_MINUTE_CHECK_IN_LIMIT_DEFAULT = 14
 
+const STATUS_CONTENT_APPROVED = 'content-approved'
+const STATUS_AD_FEED_ONLY = 'ad-feed-only'
+const STATUS_HIDDEN = 'hidden'
+const STATUS_DRAFT = 'draft'
+
 module.exports = {
   OFFER_TYPE_HOTEL,
   OFFER_TYPE_TOUR,
@@ -12,4 +17,8 @@ module.exports = {
   OFFER_TYPE_TACTICAL_AO_HOTEL,
   OFFER_TYPE_BUNDLE_AND_SAVE,
   LAST_MINUTE_CHECK_IN_LIMIT_DEFAULT,
+  STATUS_CONTENT_APPROVED,
+  STATUS_AD_FEED_ONLY,
+  STATUS_HIDDEN,
+  STATUS_DRAFT,
 }

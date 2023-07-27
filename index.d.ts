@@ -48,6 +48,34 @@ declare module "@luxuryescapes/lib-global" {
     childrenAge?: Array<number>;
   }
 
+  interface RoomIncludedGuests {
+    adults: number;
+    children: number;
+    infants: number;
+  }
+  
+  interface RoomExtraGuestSurcharge {
+    adult_amount: number;
+    adult_cost?: number;
+    child_amount: number;
+    child_cost?: number;
+    infant_amount: number;
+    infant_cost?: number;
+    currency?: string;
+  }
+
+  interface ExtraGuestSurcharge {
+    sell: number;
+    cost: number;
+    applies: boolean;
+    costCurrency?: string,
+    duration: {
+      sell: number;
+      cost: number;
+      applies: boolean;
+    },
+  }
+
   interface JSONSchema {
     type: "string";
   }
@@ -60,6 +88,7 @@ declare module "@luxuryescapes/lib-global" {
     | "hotel"
     | "last_minute_hotel"
     | "tactical_ao_hotel"
+    | "bundle_and_save"
 
   const offer: {
     constants: {
@@ -67,7 +96,12 @@ declare module "@luxuryescapes/lib-global" {
       OFFER_TYPE_TOUR: 'tour';
       OFFER_TYPE_LAST_MINUTE_HOTEL: 'last_minute_hotel';
       OFFER_TYPE_TACTICAL_AO_HOTEL: 'tactical_ao_hotel';
+      OFFER_TYPE_BUNDLE_AND_SAVE: 'bundle_and_save';
       LAST_MINUTE_CHECK_IN_LIMIT_DEFAULT: number;
+      STATUS_CONTENT_APPROVED: 'content-approved';
+      STATUS_AD_FEED_ONLY: 'ad-feed-only';
+      STATUS_HIDDEN: 'hidden';
+      STATUS_DRAFT: 'draft';
     };
     dates: {
       checkInCloses: (
@@ -92,12 +126,14 @@ declare module "@luxuryescapes/lib-global" {
       calculateAmountForEachPropertyFee: ({ total, taxesAndFees, nights, occupancies }: { total: number, taxesAndFees: TaxesAndFees[], nights: number, occupancies?: Occupants[] }) => Array<TaxesAndFeesWithTotal>;
       calculateTaxBreakdownForEachTax: ({ total, taxesAndFees, nights, occupancies }: { total: number, taxesAndFees: TaxesAndFees[], nights: number, occupancies?: Occupants[] }) => Array<TaxBreakdown>;
     };
+    patchBundleOffer: (offer: any) => void;
   };
   const occupancy: {
     get: (occupancy: string | string[]) => Occupants[];
     parse: (occupancy: string) => Occupants;
     match: (occupancy: string) => boolean;
     toString: (occupancy: Occupants) => string;
+    countOccupants: ({ occupancy, maxChildAge, maxInfantAge }: { occupancy: Occupants, maxChildAge?: number, maxInfantAge?: number }) => Occupants;
     strummerMatcher: { match: <V>(path?: string, value?: V) => string | undefined, toJSONSchema: () => JSONSchema };
     strummerMatcherRequired: { match: <V>(path?: string, value?: V) => string | undefined, toJSONSchema: () => JSONSchema };
   };
@@ -175,12 +211,12 @@ declare module "@luxuryescapes/lib-global" {
       maxDate: string
     ) => number;
     getMaxCheckInCloseDate: (
-      checkInCloses?: string,
+      checkInCloses?: string | null,
       defaultMonths?: number
     ) => string;
     getStartDate: (
-      minDate?: string,
-      travelFromDate?: string
+      minDate?: string | null,
+      travelFromDate?: string | null
     ) => string;
     getDateFloorOffset: (
       timezoneOffset: number,
@@ -193,6 +229,7 @@ declare module "@luxuryescapes/lib-global" {
     defaultTypeForCategory: (categoryName: string) => PropertyType;
     allTypesAndCategories: {[type: string]: string};
     allCategories: Array<string>;
+    allSubCategories: Array<string>;
     allTypes: Array<PropertyType>;
     HOTEL_TYPE: string;
     UNIQUE_STAYS_TYPE: string;
@@ -220,6 +257,10 @@ declare module "@luxuryescapes/lib-global" {
     CAMPSITE: string;
     ULTRA_LUX: string;
     HOTELSRESORTS: string;
+    extraGuests: { 
+      get: ({ adults, children, infants, includedGuests }: { adults: number, children: number, infants: number, includedGuests: RoomIncludedGuests[] }) => RoomIncludedGuests[];
+      surcharges: ({ nights, extraGuests, extraGuestSurcharge }: { nights: number, extraGuests: RoomIncludedGuests[][], extraGuestSurcharge?: RoomExtraGuestSurcharge }) => ExtraGuestSurcharge;
+    }
   };
   const product: {
     constants: {
@@ -227,5 +268,28 @@ declare module "@luxuryescapes/lib-global" {
       PRODUCT_DYNAMIC: "dynamic",
       PRODUCT_LTE: "limited_time_exclusive",
     };
+  }
+  const environment: {
+    DEVELOPMENT: 'development',
+    SPEC: 'spec',
+    TEST: 'test',
+    PRODUCTION: 'production',
+    PERFORMANCE: 'performance',
+  }
+  const whiteLabel: {
+    dynamicTags: {
+      replaceTagsMiddleware: (allowedFields: string[]) => ((req: Request, res: Response, next: () => any) => void)
+      replaceTags: <T>(object: T, brand?: string, allowedFields?: string[], isRetainingTags?: boolean) => T
+      brandContent: {
+          [key: string]: {
+            BrandName: string;
+            SalesEmail: string;
+            CruiseEmail: string;
+            TourEmail: string;
+            TrustedPartnerTourEmail: string;
+            FlightPolicyLink: string;
+        }
+      }
+    }
   }
 }

@@ -121,4 +121,148 @@ describe('Occupancy', () => {
       })
     })
   })
+
+  describe('item context: countOccupants', function() {
+    it('should get occupants without ages', async function() {
+      const occupants = occupancy.countOccupants({
+        occupancy: {
+          adults: 2,
+          children: 1,
+          infants: 1,
+          childrenAges: [],
+        },
+      })
+
+      expect(occupants).to.eql({
+        adults: 2,
+        children: 1,
+        infants: 1,
+        childrenAges: [],
+      })
+    })
+
+    it('should get occupants with limiting by ages', async function() {
+      const occupants = occupancy.countOccupants({
+        occupancy: {
+          adults: 2,
+          childrenAges: [0, 7],
+        },
+      })
+
+      expect(occupants).to.eql({
+        adults: 2,
+        children: 2,
+        infants: 0,
+        childrenAges: [0, 7],
+      })
+    })
+
+    it('should get occupants with limiting by ages and property ages limits', async function() {
+      const occupants = occupancy.countOccupants({
+        occupancy: {
+          adults: 2,
+          childrenAges: [0, 7],
+        },
+        maxChildAge: 12,
+        maxInfantAge: 3,
+      })
+
+      expect(occupants).to.eql({
+        adults: 2,
+        children: 1,
+        infants: 1,
+        childrenAges: [0, 7],
+      })
+    })
+
+    it('should get occupants with limiting by ages and property ages limits', async function() {
+      const occupants = occupancy.countOccupants({
+        occupancy: {
+          adults: 2,
+          childrenAges: [0, 7],
+        },
+        maxChildAge: 12,
+        maxInfantAge: 0,
+      })
+
+      expect(occupants).to.eql({
+        adults: 2,
+        children: 1,
+        infants: 1,
+        childrenAges: [0, 7],
+      })
+    })
+
+    it('should get occupants with limiting by ages and property ages limits', async function() {
+      const occupants = occupancy.countOccupants({
+        occupancy: {
+          adults: 2,
+          childrenAges: [0, 7],
+        },
+        maxChildAge: '',
+        maxInfantAge: null,
+      })
+
+      expect(occupants).to.eql({
+        adults: 2,
+        children: 2,
+        infants: 0,
+        childrenAges: [0, 7],
+      })
+    })
+
+    it('should get occupants with extra adults', async function() {
+      const occupants = occupancy.countOccupants({
+        occupancy: {
+          adults: 2,
+          childrenAges: [0, 13],
+        },
+        maxChildAge: 12,
+        maxInfantAge: 3,
+      })
+
+      expect(occupants).to.eql({
+        adults: 3,
+        children: 0,
+        infants: 1,
+        childrenAges: [0],
+      })
+    })
+
+    it('should get occupants with infants', async function() {
+      const occupants = occupancy.countOccupants({
+        occupancy: {
+          adults: 2,
+          childrenAges: [0],
+        },
+        maxChildAge: 0,
+        maxInfantAge: 0,
+      })
+
+      expect(occupants).to.eql({
+        adults: 2,
+        children: 0,
+        infants: 1,
+        childrenAges: [0],
+      })
+    })
+
+    it('should get occupants with infants and children', async function() {
+      const occupants = occupancy.countOccupants({
+        occupancy: {
+          adults: 2,
+          childrenAges: [0, 2],
+        },
+        maxChildAge: 0,
+        maxInfantAge: 0,
+      })
+
+      expect(occupants).to.eql({
+        adults: 2,
+        children: 1,
+        infants: 1,
+        childrenAges: [0, 2],
+      })
+    })
+  })
 })

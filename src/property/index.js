@@ -1,3 +1,4 @@
+export const extraGuests = require('./extraGuests')
 export const HOTEL_TYPE = 'HOTEL'
 export const UNIQUE_STAYS_TYPE = 'UNIQUE_STAYS'
 export const HOTELSRESORTS = 'Hotels & Resorts'
@@ -42,6 +43,10 @@ const hotelTypeCategories = [
   HOTELSRESORTS,
 ]
 
+const subCategories = [
+  ULTRA_LUX,
+]
+
 const uniqueStaysCategories = [
   CABIN,
   CHALET,
@@ -52,12 +57,13 @@ const uniqueStaysCategories = [
   HOUSEBOAT,
   CONDOMINIUMRESORT,
   CAMPSITE,
-  ULTRA_LUX,
 ]
 
 export const allTypesAndCategories = { HOTEL: hotelTypeCategories, UNIQUE_STAYS: uniqueStaysCategories }
 
 export const allCategories = hotelTypeCategories.concat(uniqueStaysCategories)
+
+export const allSubCategories = subCategories
 
 export const allTypes = [HOTEL_TYPE, UNIQUE_STAYS_TYPE]
 

@@ -1,3 +1,5 @@
+const { isInteger } = require('lodash')
+
 const match = occupancy => !(occupancy.match(/^[0-9]{1,2}-[0-9]{1,2}-[0-9]{1,2}?$/gi) == null) ||
   !(occupancy.match(/^[0-9]{1,2}(-[0-9]{1,2}?(,[0-9]{1,2})*)?$/ig) == null)
 
@@ -80,11 +82,48 @@ const getStrummerMatcher = (required = false) => {
   }
 }
 
+function countOccupants({ occupancy, maxChildAge, maxInfantAge }) {
+  let childrenAges = occupancy.childrenAges || []
+  if (!childrenAges.length) {
+    return {
+      adults: occupancy.adults,
+      children: occupancy.children,
+      infants: occupancy.infants,
+      childrenAges: [],
+    }
+  } else {
+    let adults = occupancy.adults
+    let children = childrenAges.length
+    if (isInteger(maxChildAge) && maxChildAge > 0 && children > 0) {
+      const filteredChildrenAges = childrenAges.filter(
+        (age) => age <= maxChildAge,
+      )
+      children = filteredChildrenAges.length
+      adults = adults + childrenAges.length - children
+      childrenAges = filteredChildrenAges
+    }
+
+    let infants = 0
+    if (isInteger(maxInfantAge) && children > 0) {
+      infants = childrenAges.filter((age) => age <= maxInfantAge).length
+      children = children - infants
+    }
+
+    return {
+      adults: adults,
+      children: children,
+      infants: infants,
+      childrenAges: childrenAges,
+    }
+  }
+}
+
 module.exports = {
   parse: parse,
   get: get,
   match: match,
   toString: toString,
+  countOccupants: countOccupants,
   strummerMatcher: getStrummerMatcher(),
   strummerMatcherRequired: getStrummerMatcher(true),
 }

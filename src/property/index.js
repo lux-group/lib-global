@@ -1,3 +1,4 @@
+export const extraGuests = require('./extraGuests')
 export const HOTEL_TYPE = 'HOTEL'
 export const UNIQUE_STAYS_TYPE = 'UNIQUE_STAYS'
 export const HOTELSRESORTS = 'Hotels & Resorts'

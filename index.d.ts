@@ -24,6 +24,21 @@ declare module "@luxuryescapes/lib-global" {
     payable_at_property?: boolean;
     currency?: string;
     additional_tax?: boolean;
+    excl_flash_at_property?: boolean;
+    product_type?: "all" | "dynamic" | "limited_time_exclusive"
+  }
+
+  interface TaxBreakdown {
+    name: string;
+    dynamic_tax: boolean;
+    unit: string;
+    additional_tax: boolean;
+    duration_type: string;
+    value: number;
+    currency?: string;
+    per_person: boolean;
+    sell: number;
+    sell_currency: string;
   }
 
   interface Occupants {
@@ -31,6 +46,34 @@ declare module "@luxuryescapes/lib-global" {
     children?: number;
     infants?: number;
     childrenAge?: Array<number>;
+  }
+
+  interface RoomIncludedGuests {
+    adults: number;
+    children: number;
+    infants: number;
+  }
+  
+  interface RoomExtraGuestSurcharge {
+    adult_amount: number;
+    adult_cost?: number;
+    child_amount: number;
+    child_cost?: number;
+    infant_amount: number;
+    infant_cost?: number;
+    currency?: string;
+  }
+
+  interface ExtraGuestSurcharge {
+    sell: number;
+    cost: number;
+    applies: boolean;
+    costCurrency?: string,
+    duration: {
+      sell: number;
+      cost: number;
+      applies: boolean;
+    },
   }
 
   interface JSONSchema {
@@ -41,15 +84,11 @@ declare module "@luxuryescapes/lib-global" {
     total: number;
   }
 
-  interface CalculateAmountForEachTaxResult {
-    taxesAndFeesTotal: number;
-    taxesAndFeesWithTotalForEach: Array<TaxesAndFeesWithTotal>
-  }
-
   export type LeHotelOfferType =
     | "hotel"
     | "last_minute_hotel"
     | "tactical_ao_hotel"
+    | "bundle_and_save"
 
   const offer: {
     constants: {
@@ -57,7 +96,12 @@ declare module "@luxuryescapes/lib-global" {
       OFFER_TYPE_TOUR: 'tour';
       OFFER_TYPE_LAST_MINUTE_HOTEL: 'last_minute_hotel';
       OFFER_TYPE_TACTICAL_AO_HOTEL: 'tactical_ao_hotel';
+      OFFER_TYPE_BUNDLE_AND_SAVE: 'bundle_and_save';
       LAST_MINUTE_CHECK_IN_LIMIT_DEFAULT: number;
+      STATUS_CONTENT_APPROVED: 'content-approved';
+      STATUS_AD_FEED_ONLY: 'ad-feed-only';
+      STATUS_HIDDEN: 'hidden';
+      STATUS_DRAFT: 'draft';
     };
     dates: {
       checkInCloses: (
@@ -77,16 +121,21 @@ declare module "@luxuryescapes/lib-global" {
       getFromPackages: (packages: Array<object>, offerType: string, holidayTypes: Array<string>) => string;
     };
     pricing: {
-      calculateTaxAmount: ({ total, taxesAndFees, nights, occupancies }: { total: number, taxesAndFees: TaxesAndFees[], nights: number, occupancies?: Occupants[] }) => {taxesAndFees: number, propertyFees: number};
-      calculateAmountForEachTax: ({ total, taxesAndFees, nights, occupancies }: { total: number, taxesAndFees: TaxesAndFees[], nights: number, occupancies?: Occupants[] }) => CalculateAmountForEachTaxResult;
+      calculateTaxAmount: ({ total, taxesAndFees, nights, occupancies, isFlash }: { total: number, taxesAndFees: TaxesAndFees[], nights: number, occupancies?: Occupants[], isFlash?: boolean }) => {taxesAndFees: number, propertyFees: number};
+      calculateAmountForEachTax: ({ total, taxesAndFees, nights, occupancies }: { total: number, taxesAndFees: TaxesAndFees[], nights: number, occupancies?: Occupants[] }) => Array<TaxesAndFeesWithTotal>;
+      calculateAmountForEachPropertyFee: ({ total, taxesAndFees, nights, occupancies }: { total: number, taxesAndFees: TaxesAndFees[], nights: number, occupancies?: Occupants[] }) => Array<TaxesAndFeesWithTotal>;
+      calculateTaxBreakdownForEachTax: ({ total, taxesAndFees, nights, occupancies }: { total: number, taxesAndFees: TaxesAndFees[], nights: number, occupancies?: Occupants[] }) => Array<TaxBreakdown>;
     };
+    patchBundleOffer: (offer: any) => void;
   };
   const occupancy: {
     get: (occupancy: string | string[]) => Occupants[];
     parse: (occupancy: string) => Occupants;
     match: (occupancy: string) => boolean;
     toString: (occupancy: Occupants) => string;
-    strummerMatcher: { match: (path: string, value: any) => string | undefined, toJSONSchema?: () => JSONSchema };
+    countOccupants: ({ occupancy, maxChildAge, maxInfantAge }: { occupancy: Occupants, maxChildAge?: number, maxInfantAge?: number }) => Occupants;
+    strummerMatcher: { match: <V>(path?: string, value?: V) => string | undefined, toJSONSchema: () => JSONSchema };
+    strummerMatcherRequired: { match: <V>(path?: string, value?: V) => string | undefined, toJSONSchema: () => JSONSchema };
   };
   const currency: {
     addDollarType: (
@@ -106,6 +155,9 @@ declare module "@luxuryescapes/lib-global" {
     format: (
       date: Date,
       mask: string
+    ) => string;
+    formatYYYYMMDD: (
+      date: Date
     ) => string;
     convertTZ: (
       date: Date,
@@ -159,12 +211,12 @@ declare module "@luxuryescapes/lib-global" {
       maxDate: string
     ) => number;
     getMaxCheckInCloseDate: (
-      checkInCloses?: string,
+      checkInCloses?: string | null,
       defaultMonths?: number
     ) => string;
     getStartDate: (
-      minDate?: string,
-      travelFromDate?: string
+      minDate?: string | null,
+      travelFromDate?: string | null
     ) => string;
     getDateFloorOffset: (
       timezoneOffset: number,
@@ -172,4 +224,72 @@ declare module "@luxuryescapes/lib-global" {
       enquiryType: 'customer' | 'admin'
     ) => string;
   };
+  export type PropertyType = 'HOTEL' | 'UNIQUE_STAYS'
+  const property: {
+    defaultTypeForCategory: (categoryName: string) => PropertyType;
+    allTypesAndCategories: {[type: string]: string};
+    allCategories: Array<string>;
+    allSubCategories: Array<string>;
+    allTypes: Array<PropertyType>;
+    HOTEL_TYPE: string;
+    UNIQUE_STAYS_TYPE: string;
+    CASTLE: string;
+    PALACE: string;
+    INN: string;
+    BEDBREAKFAST: string;
+    GUESTHOUSE: string;
+    LODGE: string;
+    RYOKAN: string;
+    TREEHOUSE: string;
+    APARTHOTEL: string;
+    COUNTRYHOUSE: string;
+    AGRITOURISM: string;
+    ALLINCLUSIVE: string;
+    RIAD: string;
+    CABIN: string;
+    CHALET: string;
+    COTTAGE: string;
+    VILLA: string;
+    APARTMENT: string;
+    PRIVATEVACATIONHOME: string;
+    HOUSEBOAT: string;
+    CONDOMINIUMRESORT: string;
+    CAMPSITE: string;
+    ULTRA_LUX: string;
+    HOTELSRESORTS: string;
+    extraGuests: { 
+      get: ({ adults, children, infants, includedGuests }: { adults: number, children: number, infants: number, includedGuests: RoomIncludedGuests[] }) => RoomIncludedGuests[];
+      surcharges: ({ nights, extraGuests, extraGuestSurcharge }: { nights: number, extraGuests: RoomIncludedGuests[][], extraGuestSurcharge?: RoomExtraGuestSurcharge }) => ExtraGuestSurcharge;
+    }
+  };
+  const product: {
+    constants: {
+      PRODUCT_ALL: "all",
+      PRODUCT_DYNAMIC: "dynamic",
+      PRODUCT_LTE: "limited_time_exclusive",
+    };
+  }
+  const environment: {
+    DEVELOPMENT: 'development',
+    SPEC: 'spec',
+    TEST: 'test',
+    PRODUCTION: 'production',
+    PERFORMANCE: 'performance',
+  }
+  const whiteLabel: {
+    dynamicTags: {
+      replaceTagsMiddleware: (allowedFields: string[]) => ((req: Request, res: Response, next: () => any) => void)
+      replaceTags: <T>(object: T, brand?: string, allowedFields?: string[], isRetainingTags?: boolean) => T
+      brandContent: {
+          [key: string]: {
+            BrandName: string;
+            SalesEmail: string;
+            CruiseEmail: string;
+            TourEmail: string;
+            TrustedPartnerTourEmail: string;
+            FlightPolicyLink: string;
+        }
+      }
+    }
+  }
 }

@@ -37,11 +37,11 @@ describe('checkInCloses', () => {
   })
 
   describe('offerType = LME', () => {
-    it('should return 7 days from today', () => {
+    it('should return 14 days from today', () => {
       const travelToDate = moment()
-      travelToDate.add(10, 'days')
+      travelToDate.add(17, 'days')
       const expected = moment()
-      expected.add(6, 'days')
+      expected.add(13, 'days')
 
       expect(
         checkInCloses(
@@ -53,11 +53,11 @@ describe('checkInCloses', () => {
       ).to.eql(expected.format('YYYY-MM-DD'))
     })
 
-    it('should return travel to date if earlier than 7 days days', () => {
+    it('should return travel to date if earlier than 14 days', () => {
       const travelToDate = moment()
-      travelToDate.add(10, 'days')
+      travelToDate.add(17, 'days')
       const expected = moment()
-      expected.add(6, 'days')
+      expected.add(13, 'days')
 
       expect(
         checkInCloses(
@@ -69,11 +69,11 @@ describe('checkInCloses', () => {
       ).to.eql(expected.format('YYYY-MM-DD'))
     })
 
-    it('should return 7 days from today if travelToDate is null', () => {
+    it('should return 14 days from today if travelToDate is null', () => {
       const travelToDate = null
 
       const expected = moment()
-      expected.add(6, 'days')
+      expected.add(13, 'days')
 
       expect(
         checkInCloses(OFFER_TYPE_LAST_MINUTE_HOTEL, travelToDate, 2, 600),

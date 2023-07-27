@@ -4,4 +4,5 @@ module.exports = {
   duration: require('./duration'),
   flexibleNights: require('./flexiNights'),
   pricing: require('./pricing'),
+  patchBundleOffer: require('./patchBundleOffer'),
 }

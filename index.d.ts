@@ -258,8 +258,8 @@ declare module "@luxuryescapes/lib-global" {
     ULTRA_LUX: string;
     HOTELSRESORTS: string;
     extraGuests: { 
-      get: ({ adults, children, infants, includedGuests }: { adults: number, children: number, infants: number, includedGuests: RoomIncludedGuests[][] }) => RoomIncludedGuests[];
-      surcharges: ({ nights, extraGuests, extraGuestSurcharge }: { nights: number, extraGuests: RoomIncludedGuests[], extraGuestSurcharge?: RoomExtraGuestSurcharge }) => ExtraGuestSurcharge;
+      get: ({ adults, children, infants, includedGuests }: { adults: number, children: number, infants: number, includedGuests: RoomIncludedGuests[] }) => RoomIncludedGuests[];
+      surcharges: ({ nights, extraGuests, extraGuestSurcharge }: { nights: number, extraGuests: RoomIncludedGuests[][], extraGuestSurcharge?: RoomExtraGuestSurcharge }) => ExtraGuestSurcharge;
     }
   };
   const product: {

@@ -68,7 +68,7 @@ const replaceTags = (object, brand = 'luxuryescapes', allowedFields = [], isReta
     { replaceOnStringItem(object, key) }
   }
 
-  allowedFields.forEach(async keyString => replaceTagsRecursively(object, keyString.split('.')))
+  allowedFields.forEach(keyString => replaceTagsRecursively(object, keyString.split('.')))
 
   return object
 }

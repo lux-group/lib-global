@@ -40,6 +40,9 @@ function patchBundleOffer(offer) {
 
   // map option name and rate id to package if package became bundle via option
   const attachedPackages = offer.attached_packages.map((pack) => {
+    pack.max_extra_nights = pack.bundle_max_extra_nights || pack.max_extra_nights
+    pack.prices = (pack.bundle_prices || []).length > 0 ? pack.bundle_prices :  pack.prices
+
     if (!pack.package_options.length) {
       return pack
     }

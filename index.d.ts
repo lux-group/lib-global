@@ -53,7 +53,7 @@ declare module "@luxuryescapes/lib-global" {
     children: number;
     infants: number;
   }
-  
+
   interface RoomExtraGuestSurcharge {
     adult_amount: number;
     adult_cost?: number;
@@ -224,15 +224,16 @@ declare module "@luxuryescapes/lib-global" {
       enquiryType: 'customer' | 'admin'
     ) => string;
   };
-  export type PropertyType = 'HOTEL' | 'UNIQUE_STAYS'
+  export type PropertyType = 'HOTEL' | 'UNIQUE_STAYS' | 'RENTAL';
   const property: {
-    defaultTypeForCategory: (categoryName: string) => PropertyType;
+    isUniqueStay: (categoryName: string) => boolean;
     allTypesAndCategories: {[type: string]: string};
     allCategories: Array<string>;
     allSubCategories: Array<string>;
     allTypes: Array<PropertyType>;
     HOTEL_TYPE: string;
     UNIQUE_STAYS_TYPE: string;
+    RENTAL_TYPE: string;
     CASTLE: string;
     PALACE: string;
     INN: string;
@@ -257,7 +258,7 @@ declare module "@luxuryescapes/lib-global" {
     CAMPSITE: string;
     ULTRA_LUX: string;
     HOTELSRESORTS: string;
-    extraGuests: { 
+    extraGuests: {
       get: ({ adults, children, infants, includedGuests }: { adults: number, children: number, infants: number, includedGuests: RoomIncludedGuests[] }) => RoomIncludedGuests[];
       surcharges: ({ nights, extraGuests, extraGuestSurcharge }: { nights: number, extraGuests: RoomIncludedGuests[][], extraGuestSurcharge?: RoomExtraGuestSurcharge }) => ExtraGuestSurcharge;
     }

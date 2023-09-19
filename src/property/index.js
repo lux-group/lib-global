@@ -1,6 +1,7 @@
 export const extraGuests = require('./extraGuests')
 export const HOTEL_TYPE = 'HOTEL'
 export const UNIQUE_STAYS_TYPE = 'UNIQUE_STAYS'
+export const RENTAL_TYPE = 'RENTAL'
 export const HOTELSRESORTS = 'Hotels & Resorts'
 export const CASTLE = 'Castle'
 export const PALACE = 'Palace'
@@ -59,22 +60,35 @@ const uniqueStaysCategories = [
   CAMPSITE,
 ]
 
-export const allTypesAndCategories = { HOTEL: hotelTypeCategories, UNIQUE_STAYS: uniqueStaysCategories }
+const rentalCategories = [
+  ALLINCLUSIVE,
+  APARTMENT,
+  BEDBREAKFAST,
+  CABIN,
+  CAMPSITE,
+  CASTLE,
+  CHALET,
+  CONDOMINIUMRESORT,
+  COUNTRYHOUSE,
+  GUESTHOUSE,
+  HOTELSRESORTS,
+  INN,
+  LODGE,
+  PRIVATEVACATIONHOME,
+  VILLA,
+]
 
-export const allCategories = hotelTypeCategories.concat(uniqueStaysCategories)
+export const allTypesAndCategories = { HOTEL: hotelTypeCategories, UNIQUE_STAYS: uniqueStaysCategories, RENTAL: rentalCategories }
 
 export const allSubCategories = subCategories
 
-export const allTypes = [HOTEL_TYPE, UNIQUE_STAYS_TYPE]
+export const allCategories =  [...new Set(hotelTypeCategories.concat(uniqueStaysCategories).concat(rentalCategories))]
+
+export const allTypes = [HOTEL_TYPE, UNIQUE_STAYS_TYPE, RENTAL_TYPE]
 
 /**
- * Checks if a category name is a unique stay category, else assume it's a hotel
+ * Checks if a category name is a unique stay category
  * @param categoryName
- * @returns {string}
+ * @returns {boolean}
  */
-export const defaultTypeForCategory = (categoryName) => {
-  if (uniqueStaysCategories.includes(categoryName)) {
-    return UNIQUE_STAYS_TYPE
-  }
-  return HOTEL_TYPE
-}
+export const isUniqueStay = (categoryName) => allTypesAndCategories.UNIQUE_STAYS.includes(categoryName)

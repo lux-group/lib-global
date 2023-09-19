@@ -89,6 +89,6 @@ export const allTypes = [HOTEL_TYPE, UNIQUE_STAYS_TYPE, RENTAL_TYPE]
 /**
  * Checks if a category name is a unique stay category
  * @param categoryName
- * @returns {string}
+ * @returns {boolean}
  */
 export const isUniqueStay = (categoryName) => allTypesAndCategories.UNIQUE_STAYS.includes(categoryName)

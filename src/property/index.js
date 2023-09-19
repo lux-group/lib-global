@@ -26,7 +26,6 @@ export const PRIVATEVACATIONHOME = 'Private vacation home'
 export const HOUSEBOAT = 'Houseboat'
 export const CAMPSITE = 'Campsite'
 export const ULTRA_LUX = 'Ultra Lux'
-export const RENTAL = 'Rental'
 
 const hotelTypeCategories = [
   CASTLE,

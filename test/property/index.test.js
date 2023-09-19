@@ -11,30 +11,24 @@ describe('Property', () => {
   afterEach(() => {
   })
 
-  describe('defaultTypeForCategory', () => {
-    it('Must return a HOTEL type', async() => {
-      const returnData = property.defaultTypeForCategory('Castle')
+  describe('isUniqueStay', () => {
+    it('Must return true for a UNIQUE_STAYS type', async() => {
+      const returnData = property.isUniqueStay('Houseboat')
 
-      expect(returnData).to.eql('HOTEL')
+      expect(returnData).to.eql(true)
     })
 
-    it('Must return a UNIQUE_STAYS type', async() => {
-      const returnData = property.defaultTypeForCategory('Houseboat')
+    it('Must return false for a HOTEL type', async() => {
+      const returnData = property.isUniqueStay('Castle')
 
-      expect(returnData).to.eql('UNIQUE_STAYS')
-    })
-
-    it('Must return a HOTEL type for unknown category', async() => {
-      const returnData = property.defaultTypeForCategory('blahblahblah')
-
-      expect(returnData).to.eql('HOTEL')
+      expect(returnData).to.eql(false)
     })
   })
 
   describe('allTypesAndCategories', () => {
     it('Must return a map', async() => {
       const returnData = property.allTypesAndCategories
-      expect(returnData).to.have.all.keys('HOTEL', 'UNIQUE_STAYS')
+      expect(returnData).to.have.all.keys('HOTEL', 'UNIQUE_STAYS', 'RENTAL')
     })
   })
 
@@ -55,7 +49,7 @@ describe('Property', () => {
   describe('allTypes', () => {
     it('Must return all Types', async() => {
       const returnData = property.allTypes
-      expect(returnData).to.eql(['HOTEL', 'UNIQUE_STAYS'])
+      expect(returnData).to.eql(['HOTEL', 'UNIQUE_STAYS', 'RENTAL'])
     })
   })
 })

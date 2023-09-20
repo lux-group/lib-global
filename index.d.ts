@@ -99,6 +99,7 @@ declare module "@luxuryescapes/lib-global" {
       OFFER_TYPE_TACTICAL_AO_HOTEL: 'tactical_ao_hotel';
       OFFER_TYPE_BUNDLE_AND_SAVE: 'bundle_and_save';
       OFFER_TYPE_RENTAL: 'rental';
+      OFFER_TYPE_BEDBANK_HOTEL: 'bedbank_hotel';
       LAST_MINUTE_CHECK_IN_LIMIT_DEFAULT: number;
       STATUS_CONTENT_APPROVED: 'content-approved';
       STATUS_AD_FEED_ONLY: 'ad-feed-only';

@@ -1,4 +1,4 @@
-const { OFFER_TYPE_HOTEL, OFFER_TYPE_TOUR, OFFER_TYPE_LAST_MINUTE_HOTEL, OFFER_TYPE_TACTICAL_AO_HOTEL, OFFER_TYPE_RENTAL } = require('../offer/constants')
+const { OFFER_TYPE_HOTEL, OFFER_TYPE_TOUR, OFFER_TYPE_LAST_MINUTE_HOTEL, OFFER_TYPE_TACTICAL_AO_HOTEL, OFFER_TYPE_RENTAL, OFFER_TYPE_BEDBANK_HOTEL } = require('../offer/constants')
 
 const OFFERS = {
   [OFFER_TYPE_TOUR]: {
@@ -41,6 +41,14 @@ const OFFERS = {
     useDynamicRate: false,
     useTimezoneOffset: false,
   },
+  [OFFER_TYPE_BEDBANK_HOTEL]: {
+    type: OFFER_TYPE_BEDBANK_HOTEL,
+    parentType: OFFER_TYPE_BEDBANK_HOTEL,
+    dateFloorOffset: 2,
+    hourOfDayThreshold: 0,
+    useDynamicRate: false,
+    useTimezoneOffset: false,
+  },
 }
 
 const CEILING_YEARS = 3
@@ -56,5 +64,6 @@ module.exports = {
   OFFER_TYPE_LAST_MINUTE_HOTEL,
   OFFER_TYPE_TACTICAL_AO_HOTEL,
   OFFER_TYPE_RENTAL,
+  OFFER_TYPE_BEDBANK_HOTEL,
   OFFERS,
 }

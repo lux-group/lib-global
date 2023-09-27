@@ -35,11 +35,11 @@ const OFFERS = {
   },
   [OFFER_TYPE_RENTAL]: {
     type: OFFER_TYPE_RENTAL,
-    parentType: OFFER_TYPE_RENTAL,
-    dateFloorOffset: 2,
-    hourOfDayThreshold: 0,
-    useDynamicRate: false,
-    useTimezoneOffset: false,
+    parentType: OFFER_TYPE_HOTEL,
+    dateFloorOffset: 0,
+    hourOfDayThreshold: 15,
+    useDynamicRate: true,
+    useTimezoneOffset: true,
   },
 }
 

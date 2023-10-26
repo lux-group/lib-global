@@ -40,7 +40,7 @@ const dynamicValuesSource = {
     FlightPolicyLink: 'https://kogantravel.com/au/flights-policies',
   },
   lebusinesstraveller: {
-    BrandName: 'LE for Business',
+    BrandName: 'LE Business Traveller',
     SalesEmail: 'sales@luxuryescapes.com',
     CruiseEmail: 'cruises@luxuryescapes.com',
     TourEmail: 'tours@luxuryescapes.com',

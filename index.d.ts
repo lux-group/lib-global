@@ -200,6 +200,7 @@ declare module "@luxuryescapes/lib-global" {
           hourOfDayThreshold: number;
           useDynamicRate: boolean;
           useTimezoneOffset: boolean;
+          isSupported: boolean;
         };
       };
     };

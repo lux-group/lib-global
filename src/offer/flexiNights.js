@@ -8,14 +8,27 @@
 function calculatePackagePrices(offerPackagePrices, extraNights = 0) {
   // null comes through, can't use default props for package prices
   return (offerPackagePrices ?? []).map((price) => {
-    return {
-      ...price,
-      currency_code: price.currency_code,
-      price: price.price + extraNights * price.nightly_price,
-      value: price.value + extraNights * price.nightly_value,
-      nightly_price: price.nightly_price,
-      nightly_value: price.nightly_value,
-    }
+    const hasLuxPlusPricing = price.lux_plus_price && price.lux_plus_nightly_price
+
+    return hasLuxPlusPricing ?
+        {
+          ...price,
+          currency_code: price.currency_code,
+          price: price.price + extraNights * price.nightly_price,
+          lux_plus_price: price.lux_plus_price + extraNights * price.lux_plus_nightly_price,
+          value: price.value + extraNights * price.nightly_value,
+          nightly_price: price.nightly_price,
+          lux_plus_nightly_price: price.lux_plus_nightly_price,
+          nightly_value: price.nightly_value,
+        } :
+        {
+          ...price,
+          currency_code: price.currency_code,
+          price: price.price + extraNights * price.nightly_price,
+          value: price.value + extraNights * price.nightly_value,
+          nightly_price: price.nightly_price,
+          nightly_value: price.nightly_value,
+        }
   })
 }
 

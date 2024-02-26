@@ -473,6 +473,55 @@ const buildLEOffer = () => {
   }
 }
 
+const buildLEPackageWithLuxPlusPricing =       {
+  _links: {},
+  fk_room_type_id: '52a04cb0-3e59-11ea-80f2-ad68d677b787',
+  fk_property_id: '01b96480-3e59-11ea-80f2-ad68d677b787',
+  fk_room_rate_id: '198b69a7-2225-4e8f-b7a4-ebe3f4914274',
+  fk_room_policy_id: 7,
+  room_policy_description: 'classic room policy create',
+  number_of_nights: 7,
+  airport_transfers_included: false,
+  max_extra_nights: 2,
+  nightly_cost_price: 0,
+  discount_percent: 0,
+  name: '7 nights stay in an upgraded Superior room for two',
+  description: '3 nights stay in a Classic Room',
+  inclusion_highlights: '',
+  status: 'content-approved',
+  id: 117550,
+  id_salesforce_external: 'a0s0I000007Sj5RQAS',
+  offer_id_salesforce_external: '0060I00000eNTRSQA4',
+  prices_count: 33,
+  cost_price: 1360,
+  cost_currency: 'EUR',
+  qff_bonus_points: null,
+  qff_bonus_description: null,
+  regions: [],
+  prices: [
+    {
+      currency_code: 'AUD',
+      price: 2899,
+      lux_plus_price: 2500,
+      value: 5137,
+      nightly_price: 400,
+      lux_plus_nightly_price: 350,
+      nightly_value: 800,
+    },
+  ],
+  sort_order: null,
+  room_occupancy: 'Two Adults',
+  deal_option_name: '7 nights stay in an upgraded Superior room for two',
+  flexible_nights: true,
+  addons: [],
+  partnerships: [],
+  is_exclusive: false,
+  memberships: [],
+  package_bonus_inclusions: [],
+  package_options: [],
+}
+
 module.exports = {
   buildLEOffer,
+  buildLEPackageWithLuxPlusPricing,
 }

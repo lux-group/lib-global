@@ -10,6 +10,7 @@ const {
 const {
   buildLEOffer,
   buildLEPackageWithLuxPlusPricing,
+  buildLEPackageWithOnlyLuxPlusPriceNoNightlyPrice,
   buildLMEOffer,
   buildTAOOffer,
   buildTourOffer,
@@ -66,6 +67,8 @@ describe('Offer: Flexible nights', () => {
           prices: [{
             currency_code: 'AUD',
             price: 1099,
+            lux_plus_price: 0,
+            lux_plus_nightly_price: 0,
             value: 2068,
             nightly_price: 0,
             nightly_value: 0,
@@ -90,6 +93,8 @@ describe('Offer: Flexible nights', () => {
             {
               currency_code: 'AUD',
               price: 240,
+              lux_plus_price: 0,
+              lux_plus_nightly_price: 0,
               value: 300,
               nightly_price: 0,
               nightly_value: 0,
@@ -113,6 +118,8 @@ describe('Offer: Flexible nights', () => {
             {
               currency_code: 'AUD',
               price: 299,
+              lux_plus_price: 0,
+              lux_plus_nightly_price: 0,
               value: 419,
               nightly_price: 0,
               nightly_value: 0,
@@ -135,6 +142,8 @@ describe('Offer: Flexible nights', () => {
             {
               currency_code: 'AUD',
               price: 5099,
+              lux_plus_price: 0,
+              lux_plus_nightly_price: 0,
               value: 6168,
               nightly_price: 0,
               nightly_value: 0,
@@ -161,6 +170,8 @@ describe('Offer: Flexible nights', () => {
           prices: [{
             currency_code: 'AUD',
             price: 2899,
+            lux_plus_price: 0,
+            lux_plus_nightly_price: 0,
             value: 5137,
             nightly_price: 0,
             nightly_value: 0,
@@ -178,6 +189,8 @@ describe('Offer: Flexible nights', () => {
             {
               currency_code: 'AUD',
               price: 2899,
+              lux_plus_price: 0,
+              lux_plus_nightly_price: 0,
               value: 5137,
               nightly_price: 0,
               nightly_value: 0,
@@ -194,6 +207,8 @@ describe('Offer: Flexible nights', () => {
           prices: [{
             currency_code: 'AUD',
             price: 2899,
+            lux_plus_price: 0,
+            lux_plus_nightly_price: 0,
             value: 5137,
             nightly_price: 0,
             nightly_value: 0,
@@ -263,6 +278,67 @@ describe('Offer: Flexible nights', () => {
       ])
     })
 
+    it('should add two extra package options, total three package options with correct lux plus pricing when theres no lux plus nightly price', () => {
+      const result = generateAllOptions(buildLEPackageWithOnlyLuxPlusPriceNoNightlyPrice)
+
+      expect(result).to.eql([
+        {
+          packageId: 'a0s0I000007Sj5RQAS',
+          extraNights: 0,
+          roomTypeId: '52a04cb0-3e59-11ea-80f2-ad68d677b787',
+          roomRateId: '198b69a7-2225-4e8f-b7a4-ebe3f4914274',
+          name: '7 nights stay in an upgraded Superior room for two',
+          duration: 7,
+          prices: [{
+            currency_code: 'AUD',
+            price: 2899,
+            lux_plus_price: 2500,
+            value: 5137,
+            nightly_price: 400,
+            lux_plus_nightly_price: 0,
+            nightly_value: 800,
+          },
+          ],
+        },
+        {
+          packageId: 'a0s0I000007Sj5RQAS',
+          extraNights: 1,
+          roomTypeId: '52a04cb0-3e59-11ea-80f2-ad68d677b787',
+          roomRateId: '198b69a7-2225-4e8f-b7a4-ebe3f4914274',
+          name: '7 nights stay in an upgraded Superior room for two',
+          duration: 8,
+          prices: [
+            {
+              currency_code: 'AUD',
+              price: 3299,
+              lux_plus_price: 0,
+              value: 5937,
+              nightly_price: 400,
+              lux_plus_nightly_price: 0,
+              nightly_value: 800,
+            },
+          ],
+        },
+        {
+          packageId: 'a0s0I000007Sj5RQAS',
+          extraNights: 2,
+          roomTypeId: '52a04cb0-3e59-11ea-80f2-ad68d677b787',
+          roomRateId: '198b69a7-2225-4e8f-b7a4-ebe3f4914274',
+          name: '7 nights stay in an upgraded Superior room for two',
+          duration: 9,
+          prices: [{
+            currency_code: 'AUD',
+            price: 3699,
+            lux_plus_price: 0,
+            value: 6737,
+            nightly_price: 400,
+            lux_plus_nightly_price: 0,
+            nightly_value: 800,
+          }],
+        },
+      ])
+    })
+
     it('should return three extra package options, total of four package options', () => {
       const offerPackage = buildLMEOffer().packages[2]
       const result = generateAllOptions(offerPackage)
@@ -279,6 +355,8 @@ describe('Offer: Flexible nights', () => {
             {
               currency_code: 'AUD',
               price: 120,
+              lux_plus_price: 0,
+              lux_plus_nightly_price: 0,
               value: 200,
               nightly_price: 0,
               nightly_value: 0,
@@ -296,6 +374,8 @@ describe('Offer: Flexible nights', () => {
             {
               currency_code: 'AUD',
               price: 120,
+              lux_plus_price: 0,
+              lux_plus_nightly_price: 0,
               value: 200,
               nightly_price: 0,
               nightly_value: 0,
@@ -313,6 +393,8 @@ describe('Offer: Flexible nights', () => {
             {
               currency_code: 'AUD',
               price: 120,
+              lux_plus_price: 0,
+              lux_plus_nightly_price: 0,
               value: 200,
               nightly_price: 0,
               nightly_value: 0,
@@ -330,6 +412,8 @@ describe('Offer: Flexible nights', () => {
             {
               currency_code: 'AUD',
               price: 120,
+              lux_plus_price: 0,
+              lux_plus_nightly_price: 0,
               value: 200,
               nightly_price: 0,
               nightly_value: 0,
@@ -354,6 +438,8 @@ describe('Offer: Flexible nights', () => {
             {
               currency_code: 'AUD',
               price: 819,
+              lux_plus_price: 0,
+              lux_plus_nightly_price: 0,
               value: 1029,
               nightly_price: 0,
               nightly_value: 0,
@@ -370,6 +456,8 @@ describe('Offer: Flexible nights', () => {
             {
               currency_code: 'AUD',
               price: 819,
+              lux_plus_price: 0,
+              lux_plus_nightly_price: 0,
               value: 1029,
               nightly_price: 0,
               nightly_value: 0,
@@ -387,6 +475,8 @@ describe('Offer: Flexible nights', () => {
             {
               currency_code: 'AUD',
               price: 819,
+              lux_plus_price: 0,
+              lux_plus_nightly_price: 0,
               value: 1029,
               nightly_price: 0,
               nightly_value: 0,
@@ -404,6 +494,8 @@ describe('Offer: Flexible nights', () => {
             {
               currency_code: 'AUD',
               price: 819,
+              lux_plus_price: 0,
+              lux_plus_nightly_price: 0,
               value: 1029,
               nightly_price: 0,
               nightly_value: 0,
@@ -421,6 +513,8 @@ describe('Offer: Flexible nights', () => {
             {
               currency_code: 'AUD',
               price: 819,
+              lux_plus_price: 0,
+              lux_plus_nightly_price: 0,
               value: 1029,
               nightly_price: 0,
               nightly_value: 0,
@@ -438,6 +532,8 @@ describe('Offer: Flexible nights', () => {
             {
               currency_code: 'AUD',
               price: 819,
+              lux_plus_price: 0,
+              lux_plus_nightly_price: 0,
               value: 1029,
               nightly_price: 0,
               nightly_value: 0,
@@ -464,6 +560,8 @@ describe('Offer: Flexible nights', () => {
             {
               currency_code: 'AUD',
               price: 4599,
+              lux_plus_price: 0,
+              lux_plus_nightly_price: 0,
               value: 5708,
               nightly_price: 0,
               nightly_value: 0,

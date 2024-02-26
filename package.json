@@ -1,6 +1,6 @@
 {
   "name": "@luxuryescapes/lib-global",
-  "version": "4.1.3",
+  "version": "4.2.0",
   "description": "Lib for expanding functionality and deduplicating code between services",
   "main": "compiled/index.js",
   "types": "index.d.ts",
@@ -21,7 +21,7 @@
     "ci": "yarn test && yarn run lint && yarn build"
   },
   "dependencies": {
-    "moment": "^2.29.1",
+    "moment": "^2.30.1",
     "mustache": "^4.2.0"
   },
   "devDependencies": {

@@ -9,8 +9,10 @@ declare module "@luxuryescapes/lib-global" {
     prices: Array<{
       currency_code: string;
       price: number;
+      lux_plus_price: number;
       value: number;
       nightly_price: number;
+      lux_plus_nightly_price: number;
       nightly_value: number;
     }>;
   }

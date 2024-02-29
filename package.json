@@ -1,6 +1,6 @@
 {
   "name": "@luxuryescapes/lib-global",
-  "version": "4.2.1",
+  "version": "4.2.2",
   "description": "Lib for expanding functionality and deduplicating code between services",
   "main": "compiled/index.js",
   "types": "index.d.ts",

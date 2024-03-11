@@ -55,6 +55,14 @@ const dynamicValuesSource = {
     TrustedPartnerTourEmail: 'trustedpartnertours@luxuryescapes.com',
     FlightPolicyLink: 'https://luxuryescapes.com/au/flights-policies',
   },
+  leagenthub: {
+    BrandName: 'Luxury Escapes',
+    SalesEmail: 'sales@luxuryescapes.com',
+    CruiseEmail: 'cruises@luxuryescapes.com',
+    TourEmail: 'tours@luxuryescapes.com',
+    TrustedPartnerTourEmail: 'trustedpartnertours@luxuryescapes.com',
+    FlightPolicyLink: 'https://luxuryescapes.com/au/flights-policies',
+  },
 }
 
 module.exports = {

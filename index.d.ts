@@ -1,4 +1,14 @@
 declare module "@luxuryescapes/lib-global" {
+  interface Price {
+    currency_code: string;
+    price: number;
+    lux_plus_price: number;
+    value: number;
+    nightly_price: number;
+    lux_plus_nightly_price: number;
+    nightly_value: number;
+  }
+
   interface PackageNightOption {
     packageId: string;
     extraNights: number;
@@ -6,15 +16,7 @@ declare module "@luxuryescapes/lib-global" {
     roomRateId: string;
     name: string;
     duration: number;
-    prices: Array<{
-      currency_code: string;
-      price: number;
-      lux_plus_price: number;
-      value: number;
-      nightly_price: number;
-      lux_plus_nightly_price: number;
-      nightly_value: number;
-    }>;
+    prices: Array<Price>;
   }
 
   interface TaxesAndFees {
@@ -118,6 +120,7 @@ declare module "@luxuryescapes/lib-global" {
     };
     flexibleNights: {
       generateAllOptions: (pkg: any) => Array<PackageNightOption>;
+      calculatePackagePrice: (price: any, extraNights: number) => Price
     };
     duration: {
       getCounts: (packages: Array<object>, field: string) => Array<number>;

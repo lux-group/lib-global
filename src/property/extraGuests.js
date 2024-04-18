@@ -43,6 +43,7 @@ function surcharges({
       cost: 0,
       applies: false,
       costCurrency: undefined,
+      payableAtProperty: false,
       duration: {
         sell: 0,
         cost: 0,
@@ -107,6 +108,7 @@ function surcharges({
     cost: floatify(lowest.cost),
     applies: true,
     costCurrency: extraGuestSurcharge.currency,
+    payableAtProperty: extraGuestSurcharge.payable_at_property,
     duration: {
       sell: durationAmounts.sell,
       cost: floatify(durationAmounts.cost),

@@ -93,6 +93,7 @@ describe('property = extraGuests', function() {
         child_amount: 60,
         infant_cost: 10,
         infant_amount: 12,
+        payable_at_property: false,
       },
       ...opts,
     })
@@ -107,6 +108,7 @@ describe('property = extraGuests', function() {
         cost: 0,
         applies: false,
         costCurrency: undefined,
+        payableAtProperty: false,
         duration: {
           sell: 0,
           cost: 0,
@@ -123,6 +125,7 @@ describe('property = extraGuests', function() {
         cost: 0,
         applies: false,
         costCurrency: undefined,
+        payableAtProperty: false,
         duration: {
           sell: 0,
           cost: 0,
@@ -138,6 +141,7 @@ describe('property = extraGuests', function() {
         applies: true,
         cost: 171,
         costCurrency: 'AUD',
+        payableAtProperty: false,
         duration: {
           applies: true,
           cost: 342,
@@ -161,6 +165,7 @@ describe('property = extraGuests', function() {
         applies: true,
         cost: 100,
         costCurrency: 'AUD',
+        payableAtProperty: false,
         duration: {
           applies: true,
           cost: 200,
@@ -189,6 +194,7 @@ describe('property = extraGuests', function() {
         applies: true,
         cost: 0,
         costCurrency: undefined,
+        payableAtProperty: undefined,
         duration: {
           applies: true,
           cost: 0,

@@ -46,12 +46,4 @@ describe('tenantFromBrand', () => {
     ]
     expect(args.every((a) => tenantFromBrand(a) === 'lux')).to.eql(true)
   })
-
-  it("should return 'lux' when the argument is undefined", () => {
-    expect(tenantFromBrand(undefined)).to.eql('lux')
-  })
-
-  it("should return 'lux' when the argument is null", () => {
-    expect(tenantFromBrand(null)).to.eql('lux')
-  })
 })

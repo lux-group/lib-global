@@ -300,5 +300,6 @@ declare module "@luxuryescapes/lib-global" {
         }
       }
     }
+    tenantFromBrand: (brand: string | null | undefined) => string;
   }
 }

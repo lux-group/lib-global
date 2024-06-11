@@ -197,5 +197,35 @@ describe('property = extraGuests', function() {
         sell: 120,
       })
     })
+
+    it('should return correct surcharge after exchange currency', async() => {
+      const params = buildParams({
+        nights: 7,
+        extraGuests: [
+          [
+            { adults: 1, children: 1, infants: 1 },
+            { adults: 0, children: 2, infants: 0 },
+          ],
+        ],
+        extraGuestSurcharge: {
+          adult_amount: 748.78,
+          adult_cost: 748.78,
+          child_amount: 0,
+          infant_amount: 0,
+        },
+      })
+      const result = property.extraGuests.surcharges(params)
+      expect(result).to.eql({
+        applies: true,
+        cost: 748.78,
+        costCurrency: undefined,
+        duration: {
+          applies: true,
+          cost: 5241.46,
+          sell: 5241,
+        },
+        sell: 748,
+      })
+    })
   })
 })

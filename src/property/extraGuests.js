@@ -65,19 +65,19 @@ function surcharges({
       }
 
       if (extra.adults) {
-        perNightAmounts.sell += extra.adults * Math.floor(extraGuestSurcharge.adult_amount)
+        perNightAmounts.sell += extra.adults * extraGuestSurcharge.adult_amount
         if (!isUndefined(extraGuestSurcharge.adult_cost)) {
           perNightAmounts.cost += extra.adults * extraGuestSurcharge.adult_cost
         }
       }
       if (extra.children) {
-        perNightAmounts.sell += extra.children * Math.floor(extraGuestSurcharge.child_amount)
+        perNightAmounts.sell += extra.children * extraGuestSurcharge.child_amount
         if (!isUndefined(extraGuestSurcharge.child_cost)) {
           perNightAmounts.cost += extra.children * extraGuestSurcharge.child_cost
         }
       }
       if (extra.infants) {
-        perNightAmounts.sell += extra.infants * Math.floor(extraGuestSurcharge.infant_amount)
+        perNightAmounts.sell += extra.infants * extraGuestSurcharge.infant_amount
         if (!isUndefined(extraGuestSurcharge.infant_cost)) {
           perNightAmounts.cost += extra.infants * extraGuestSurcharge.infant_cost
         }
@@ -103,12 +103,12 @@ function surcharges({
   }
 
   return {
-    sell: lowest.sell,
+    sell: Math.floor(lowest.sell),
     cost: floatify(lowest.cost),
     applies: true,
     costCurrency: extraGuestSurcharge.currency,
     duration: {
-      sell: durationAmounts.sell,
+      sell: Math.floor(durationAmounts.sell),
       cost: floatify(durationAmounts.cost),
       applies: true,
     },

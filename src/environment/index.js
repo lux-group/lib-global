@@ -1,4 +1,4 @@
-export const environment = {
+module.exports = {
   DEVELOPMENT: 'development',
   SPEC: 'spec',
   TEST: 'test',

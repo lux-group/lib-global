@@ -6,7 +6,7 @@ const environment = {
   PERFORMANCE: 'performance',
 }
 
-export default {
+module.exports = {
   ...environment,
   // @deprecated kept for backward compability, not supported by index.d.ts
   environment,

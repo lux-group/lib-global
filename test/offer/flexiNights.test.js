@@ -179,7 +179,7 @@ describe('Offer: Flexible nights', () => {
             value: 5137,
             nightly_price: 0,
             nightly_value: 0,
-            margin_aud: 0,
+            margin_aud: 2000,
           },
           ],
         },
@@ -199,6 +199,7 @@ describe('Offer: Flexible nights', () => {
               value: 5137,
               nightly_price: 0,
               nightly_value: 0,
+              margin_aud: 0,
             },
           ],
         },
@@ -217,12 +218,13 @@ describe('Offer: Flexible nights', () => {
             value: 5137,
             nightly_price: 0,
             nightly_value: 0,
+            margin_aud: 0,
           }],
         },
       ])
     })
 
-    it('should add two extra package options, total three package options with correct lux plus pricing', () => {
+    it('should add two extra package options, total three package options with correct lux plus pricing and margin', () => {
       const result = generateAllOptions(buildLEPackageWithLuxPlusPricing)
 
       expect(result).to.eql([
@@ -241,7 +243,7 @@ describe('Offer: Flexible nights', () => {
             nightly_price: 400,
             lux_plus_nightly_price: 350,
             nightly_value: 800,
-            margin_aud: 0,
+            margin_aud: 2000,
           },
           ],
         },
@@ -261,7 +263,7 @@ describe('Offer: Flexible nights', () => {
               nightly_price: 400,
               lux_plus_nightly_price: 350,
               nightly_value: 800,
-              margin_aud: 0,
+              margin_aud: 2300,
             },
           ],
         },
@@ -280,7 +282,7 @@ describe('Offer: Flexible nights', () => {
             nightly_price: 400,
             lux_plus_nightly_price: 350,
             nightly_value: 800,
-            margin_aud: 0,
+            margin_aud: 2600,
           }],
         },
       ])
@@ -305,7 +307,7 @@ describe('Offer: Flexible nights', () => {
             nightly_price: 400,
             lux_plus_nightly_price: 0,
             nightly_value: 800,
-            margin_aud: 0,
+            margin_aud: 2000,
           },
           ],
         },
@@ -325,6 +327,7 @@ describe('Offer: Flexible nights', () => {
               nightly_price: 400,
               lux_plus_nightly_price: 0,
               nightly_value: 800,
+              margin_aud: 0,
             },
           ],
         },

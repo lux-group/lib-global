@@ -9,6 +9,7 @@ function calculatePackagePrice(price, extraNights) {
       nightly_price: price.nightly_price,
       lux_plus_nightly_price: price.lux_plus_nightly_price ?? 0,
       nightly_value: price.nightly_value,
+      margin_aud: price.converted_cost,
     }
   }
 
@@ -24,6 +25,7 @@ function calculatePackagePrice(price, extraNights) {
     nightly_price: price.nightly_price,
     lux_plus_nightly_price: price.lux_plus_nightly_price ?? 0,
     nightly_value: price.nightly_value,
+    margin_aud: price.converted_cost + extraNights * price.nightly_converted_cost_price,
   }
 }
 

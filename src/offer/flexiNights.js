@@ -1,7 +1,9 @@
 function calculatePackagePrice(price, extraNights) {
+  const { converted_cost, nightly_converted_cost_price, ...rest } = price
+
   if (extraNights === 0) {
     return {
-      ...price,
+      ...rest,
       currency_code: price.currency_code,
       price: price.price,
       lux_plus_price: price.lux_plus_price ?? 0,
@@ -17,7 +19,7 @@ function calculatePackagePrice(price, extraNights) {
   const hasMarginInformation = price.converted_cost && price.nightly_converted_cost_price
 
   return {
-    ...price,
+    ...rest,
     currency_code: price.currency_code,
     price: price.price + extraNights * price.nightly_price,
     // for extra nights, if there's a lux plus price but no lux plus nightly price, final lux plus price will be 0

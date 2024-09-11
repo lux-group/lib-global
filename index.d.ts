@@ -7,6 +7,7 @@ declare module "@luxuryescapes/lib-global" {
     nightly_price: number;
     lux_plus_nightly_price: number;
     nightly_value: number;
+    margin_aud: number;
   }
 
   interface PackageNightOption {

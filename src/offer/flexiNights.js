@@ -1,5 +1,13 @@
 function calculatePackagePrice(price, extraNights) {
-  const { converted_cost, nightly_converted_cost_price, nightly_sell_price, ...rest } = price
+  const {
+    price_aud,
+    cost_aud,
+    nightly_cost_price_aud,
+    nightly_sell_price_aud,
+    ...rest
+  } = price
+
+  const baseMargin = (price_aud ?? 0) - (cost_aud ?? 0)
 
   if (extraNights === 0) {
     return {
@@ -11,12 +19,12 @@ function calculatePackagePrice(price, extraNights) {
       nightly_price: price.nightly_price,
       lux_plus_nightly_price: price.lux_plus_nightly_price ?? 0,
       nightly_value: price.nightly_value,
-      margin_aud: price.converted_cost ?? 0,
+      margin_aud: baseMargin,
     }
   }
 
   const hasLuxPlusNightlyPricing = price.lux_plus_price && price.lux_plus_nightly_price
-  const hasMarginInformation = price.converted_cost && price.nightly_converted_cost_price && price.nightly_sell_cost
+  const marginPerNight = (price.nightly_sell_price_aud ?? 0) - (price.nightly_cost_price_aud ?? 0)
 
   return {
     ...rest,
@@ -28,7 +36,7 @@ function calculatePackagePrice(price, extraNights) {
     nightly_price: price.nightly_price,
     lux_plus_nightly_price: price.lux_plus_nightly_price ?? 0,
     nightly_value: price.nightly_value,
-    margin_aud: hasMarginInformation ? price.converted_cost + extraNights * (price.nightly_sell_cost - price.nightly_converted_cost_price) : 0,
+    margin_aud: baseMargin + extraNights * marginPerNight,
   }
 }
 

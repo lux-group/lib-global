@@ -1,5 +1,5 @@
 function calculatePackagePrice(price, extraNights) {
-  const { converted_cost, nightly_converted_cost_price, nightly_sell_cost, ...rest } = price
+  const { converted_cost, nightly_converted_cost_price, nightly_sell_price, ...rest } = price
 
   if (extraNights === 0) {
     return {

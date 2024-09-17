@@ -26,4 +26,5 @@ function isFlashCruiseVendor(vendorId) {
 module.exports = {
   requiresTravellerDetails: requiresTravellerDetails,
   isFlashCruiseVendor: isFlashCruiseVendor,
+  FLASH_CRUISE_VENDORS: FLASH_CRUISE_VENDORS,
 }

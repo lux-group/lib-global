@@ -153,6 +153,8 @@ declare module "@luxuryescapes/lib-global" {
   };
   const vendor: {
     requiresTravellerDetails: (vendorId: string) => boolean;
+    isFlashCruiseVendor: (vendorId: string) => boolean;
+    FLASH_CRUISE_VENDORS: Array<string>;
   };
   const flights: {
     ALLOWED_DESTINATIONS: Array<{ code: string, name: string }>;

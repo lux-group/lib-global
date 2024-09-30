@@ -8,6 +8,10 @@ function calculatePackagePrice(price, extraNights) {
   } = price
 
   const baseMargin = (price_aud ?? 0) - (cost_aud ?? 0)
+  let luxPlusMargin = 0
+  if (price.currency_code === 'AUD') {
+    luxPlusMargin = price.lux_plus_price ? baseMargin - (price.price - price.lux_plus_price) : 0
+  }
 
   if (extraNights === 0) {
     return {
@@ -20,11 +24,16 @@ function calculatePackagePrice(price, extraNights) {
       lux_plus_nightly_price: price.lux_plus_nightly_price ?? 0,
       nightly_value: price.nightly_value,
       margin_aud: baseMargin,
+      lux_plus_margin_aud: luxPlusMargin,
     }
   }
 
   const hasLuxPlusNightlyPricing = price.lux_plus_price && price.lux_plus_nightly_price
   const marginPerNight = (price.nightly_sell_price_aud ?? 0) - (price.nightly_cost_price_aud ?? 0)
+  let luxPlusMarginPerNight = 0
+  if (price.currency_code === 'AUD') {
+    luxPlusMarginPerNight = hasLuxPlusNightlyPricing ? (marginPerNight - (price.nightly_sell_price_aud ?? 0 - price.lux_plus_nightly_price ?? 0)) : 0
+  }
 
   return {
     ...rest,
@@ -37,6 +46,7 @@ function calculatePackagePrice(price, extraNights) {
     lux_plus_nightly_price: price.lux_plus_nightly_price ?? 0,
     nightly_value: price.nightly_value,
     margin_aud: baseMargin + extraNights * marginPerNight,
+    lux_plus_margin_aud: luxPlusMargin + extraNights * luxPlusMarginPerNight,
   }
 }
 

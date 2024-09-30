@@ -562,6 +562,7 @@ const buildLEPackageWithOnlyLuxPlusPriceNoNightlyPrice =       {
       value: 5137,
       nightly_price: 400,
       lux_plus_nightly_price: 0,
+      lux_plus_margin_aud: 0,
       nightly_value: 800,
       margin_aud: 0,
     },

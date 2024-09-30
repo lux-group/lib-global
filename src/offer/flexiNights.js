@@ -10,7 +10,7 @@ function calculatePackagePrice(price, extraNights) {
   const baseMargin = (price_aud ?? 0) - (cost_aud ?? 0)
   let luxPlusMargin = 0
   if (price.currency_code === 'AUD') {
-    luxPlusMargin = price.lux_plus_price ? baseMargin - (price.price_aud - price.lux_plus_price) : 0
+    luxPlusMargin = price.lux_plus_price ? baseMargin - ((price.price_aud ?? 0) - (price.lux_plus_price ?? 0)) : 0
   }
 
   if (extraNights === 0) {

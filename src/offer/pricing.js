@@ -48,7 +48,7 @@ const getTaxTotal = ({ type, unit, value, nights, perPerson, occupancies }) => {
  *   adults: number;
  *   children?: number;
  *   infants?: number;
- *   childrenAge?: Array<number>;
+ *   childrenAges?: Array<number>;
  * }
  *
  * @param {object} params - All params

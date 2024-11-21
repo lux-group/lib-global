@@ -50,7 +50,7 @@ declare module "@luxuryescapes/lib-global" {
     adults: number;
     children?: number;
     infants?: number;
-    childrenAge?: Array<number>;
+    childrenAges?: Array<number>;
   }
 
   interface RoomIncludedGuests {

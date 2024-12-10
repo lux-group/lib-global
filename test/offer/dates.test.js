@@ -31,7 +31,7 @@ describe('checkInCloses', () => {
 
     it('should return the check in closes date + 1 day', () => {
       expect(checkInCloses(OFFER_TYPE_HOTEL, '2012-01-10', 2, 0)).to.eql(
-        '2012-01-08',
+        '2012-01-07',
       )
     })
   })

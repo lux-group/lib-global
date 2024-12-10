@@ -97,13 +97,13 @@ describe('Date', () => {
 
   describe('formatYYYYMMDD', function() {
     it('should convert date correctly', () => {
-      const d = new Date('2021-11-06T21:00:00.000Z');
-      expect(date.formatYYYYMMDD(d)).to.equal('2021-11-06');
+      const d = new Date('2021-11-06T21:00:00.000Z')
+      expect(date.formatYYYYMMDD(d)).to.equal('2021-11-06')
     })
 
     it('should match format', () => {
-      const d = new Date('2021-11-06T21:00:00.000Z');
-      expect(date.formatYYYYMMDD(d)).to.equal(date.format(d, 'yyyy-mm-dd'));
+      const d = new Date('2021-11-06T21:00:00.000Z')
+      expect(date.formatYYYYMMDD(d)).to.equal(date.format(d, 'yyyy-mm-dd'))
     })
   })
 })

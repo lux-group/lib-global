@@ -138,12 +138,12 @@ declare module "@luxuryescapes/lib-global" {
   };
   const occupancy: {
     get: (occupancy: string | string[]) => Occupants[];
-    parse: (occupancy: string) => Occupants;
-    match: (occupancy: string) => boolean;
+    parse: (occupancy: string | number) => Occupants;
+    match: (occupancy: string | number) => boolean;
     toString: (occupancy: Occupants) => string;
     countOccupants: ({ occupancy, maxChildAge, maxInfantAge }: { occupancy: Occupants, maxChildAge?: number, maxInfantAge?: number }) => Occupants;
-    strummerMatcher: { match: <V>(path?: string, value?: V) => string | undefined, toJSONSchema: () => JSONSchema };
-    strummerMatcherRequired: { match: <V>(path?: string, value?: V) => string | undefined, toJSONSchema: () => JSONSchema };
+    strummerMatcher: { match: <V>(path?: string, value?: V) => string | number | undefined, toJSONSchema: () => JSONSchema };
+    strummerMatcherRequired: { match: <V>(path?: string, value?: V) => string | number | undefined, toJSONSchema: () => JSONSchema };
   };
   const currency: {
     addDollarType: (

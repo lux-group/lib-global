@@ -7,9 +7,10 @@ const {
 const format = (date) => date.format('YYYY-MM-DD')
 
 const getMaxDate = (travelToDate, numberOfNights) => {
-  return moment(travelToDate)
-    .subtract(1, 'days')
-    .subtract(numberOfNights, 'days')
+  const maxDate = moment(travelToDate).add(1, 'days') // Travel to date inclusive
+  maxDate.subtract(numberOfNights, 'days')
+
+  return maxDate
 }
 
 const checkInClosesFlash = (travelToDate, numberOfNights) => {

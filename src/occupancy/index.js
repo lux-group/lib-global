@@ -60,11 +60,16 @@ const getStrummerMatcher = (required = false) => {
   return {
     match: (path, value) => {
       let dataCheck = value
-      if (typeof value === 'string' && value) {
-        if (value.split(',').every(occupancy => !!occupancy.match(/^[0-9]{1,2}-[0-9]{1,2}-[0-9]{1,2}?$/gi))) {
-          dataCheck = [value.split(',')].flat()
+
+      if (typeof value === 'number') {
+        dataCheck = value.toString()
+      }
+
+      if (typeof dataCheck === 'string' && dataCheck) {
+        if (dataCheck.split(',').every(occupancy => !!occupancy.match(/^[0-9]{1,2}-[0-9]{1,2}-[0-9]{1,2}?$/gi))) {
+          dataCheck = [dataCheck.split(',')].flat()
         } else {
-          dataCheck = [value]
+          dataCheck = [dataCheck]
         }
       } else if (typeof value === 'undefined' || !value) {
         if (required === true) {

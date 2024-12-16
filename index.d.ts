@@ -142,8 +142,8 @@ declare module "@luxuryescapes/lib-global" {
     match: (occupancy: string | number) => boolean;
     toString: (occupancy: Occupants) => string;
     countOccupants: ({ occupancy, maxChildAge, maxInfantAge }: { occupancy: Occupants, maxChildAge?: number, maxInfantAge?: number }) => Occupants;
-    strummerMatcher: { match: <V>(path?: string, value?: V) => string | number | undefined, toJSONSchema: () => JSONSchema };
-    strummerMatcherRequired: { match: <V>(path?: string, value?: V) => string | number | undefined, toJSONSchema: () => JSONSchema };
+    strummerMatcher: { match: <V>(path?: string, value?: V) => string | undefined, toJSONSchema: () => JSONSchema };
+    strummerMatcherRequired: { match: <V>(path?: string, value?: V) => string | undefined, toJSONSchema: () => JSONSchema };
   };
   const currency: {
     addDollarType: (

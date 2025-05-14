@@ -1,6 +1,6 @@
 const { isInteger } = require('lodash')
 
-const match = occupancy => !(occupancy.match(/^[0-9]{1,2}-[0-9]{1,2}-[0-9]{1,2}?$/gi) == null) ||
+const match = occupancy => !(occupancy.match(/^[0-9]{1,2}-[0-9]{1,2}-[0-9]{1,2}(-[0-9]{1,2})?$/gi) == null) ||
   !(occupancy.match(/^[0-9]{1,2}(-[0-9]{1,2}?(,[0-9]{1,2})*)?$/ig) == null)
 
 const parse = (occupancy) => {
@@ -17,16 +17,18 @@ const parse = (occupancy) => {
     return {
       adults: Number(adults),
       children: Number(children),
+      teenagers: 0,
       infants: 0,
       childrenAges,
     }
   } else {
-    const [adults, children, infants] = occupancy.split('-')
+    const [adults, children, infants, teenagers] = occupancy.split('-')
 
     return {
       adults: Number(adults),
       children: Number(children),
       infants: Number(infants),
+      teenagers: Number(teenagers) || 0,
       childrenAges: [],
     }
   }
@@ -36,7 +38,8 @@ const toString = occupancy => {
   if (occupancy.childrenAges && occupancy.childrenAges.length) {
     return `${occupancy.adults}-${occupancy.childrenAges.join(',')}`
   } else {
-    return `${occupancy.adults}-${occupancy.children}-${occupancy.infants}`
+    const teenagers = isInteger(occupancy.teenagers) && occupancy.teenagers > 0 ? `-${occupancy.teenagers}` : ''
+    return `${occupancy.adults}-${occupancy.children}-${occupancy.infants}${teenagers}`
   }
 }
 
@@ -44,7 +47,7 @@ const get = occupancy => {
   let occupancies = []
 
   if (typeof occupancy === 'string') {
-    if (occupancy.split(',').every(occupancy => !!occupancy.match(/^[0-9]{1,2}-[0-9]{1,2}-[0-9]{1,2}?$/gi))) {
+    if (occupancy.split(',').every(occupancy => !!occupancy.match(/^[0-9]{1,2}-[0-9]{1,2}-[0-9]{1,2}(-[0-9]{1,2})?$/gi))) {
       occupancies = occupancy.split(',').map(parse)
     } else {
       occupancies = [occupancy].map(parse)
@@ -66,7 +69,7 @@ const getStrummerMatcher = (required = false) => {
       }
 
       if (typeof dataCheck === 'string' && dataCheck) {
-        if (dataCheck.split(',').every(occupancy => !!occupancy.match(/^[0-9]{1,2}-[0-9]{1,2}-[0-9]{1,2}?$/gi))) {
+        if (dataCheck.split(',').every(occupancy => !!occupancy.match(/^[0-9]{1,2}-[0-9]{1,2}-[0-9]{1,2}(-[0-9]{1,2})?$/gi))) {
           dataCheck = [dataCheck.split(',')].flat()
         } else {
           dataCheck = [dataCheck]
@@ -87,24 +90,44 @@ const getStrummerMatcher = (required = false) => {
   }
 }
 
-function countOccupants({ occupancy, maxChildAge, maxInfantAge }) {
+function countOccupants({ occupancy, maxChildAge, maxInfantAge, maxTeenagerAge }) {
   let childrenAges = occupancy.childrenAges || []
   if (!childrenAges.length) {
     return {
       adults: occupancy.adults,
       children: occupancy.children,
       infants: occupancy.infants,
+      teenagers: occupancy.teenagers || 0,
       childrenAges: [],
     }
   } else {
     let adults = occupancy.adults
     let children = childrenAges.length
+    let teenagers = 0
+
+    if (isInteger(maxTeenagerAge) && maxTeenagerAge > 0 &&
+      isInteger(maxChildAge) && maxChildAge > 0 &&
+      children > 0) {
+      const teenAges = childrenAges.filter(
+        (age) => age > maxChildAge && age <= maxTeenagerAge,
+      )
+      teenagers = teenAges.length
+    }
+
     if (isInteger(maxChildAge) && maxChildAge > 0 && children > 0) {
       const filteredChildrenAges = childrenAges.filter(
         (age) => age <= maxChildAge,
       )
       children = filteredChildrenAges.length
-      adults = adults + childrenAges.length - children
+
+      if (isInteger(maxTeenagerAge) && maxTeenagerAge > 0) {
+        const adultAges = childrenAges.filter(
+          (age) => age > maxTeenagerAge,
+        )
+        adults = adults + adultAges.length
+      } else {
+        adults = adults + childrenAges.length - children - teenagers
+      }
       childrenAges = filteredChildrenAges
     }
 
@@ -118,6 +141,7 @@ function countOccupants({ occupancy, maxChildAge, maxInfantAge }) {
       adults: adults,
       children: children,
       infants: infants,
+      teenagers: teenagers,
       childrenAges: childrenAges,
     }
   }

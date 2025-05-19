@@ -50,6 +50,7 @@ declare module "@luxuryescapes/lib-global" {
     adults: number;
     children?: number;
     infants?: number;
+    teenagers?: number;
     childrenAges?: Array<number>;
   }
 

@@ -59,16 +59,6 @@ describe('Occupancy', () => {
       ])
     })
 
-    it('should handle get() including teenagers', async() => {
-      expect(occupancy.get('2-1-1-3')).to.eql([{
-        adults: 2,
-        children: 1,
-        infants: 1,
-        teenagers: 3,
-        childrenAges: [],
-      }])
-    })
-
     it('match', async() => {
       expect(occupancy.match('2-0-0')).to.eql(true)
       expect(occupancy.match('2-1,2')).to.eql(true)

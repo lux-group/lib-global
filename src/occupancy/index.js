@@ -1,6 +1,6 @@
 const { isInteger } = require('lodash')
 
-const match = occupancy => !(occupancy.match(/^[0-9]{1,2}-[0-9]{1,2}-[0-9]{1,2}(-[0-9]{1,2})?$/gi) == null) ||
+const match = occupancy => !(occupancy.match(/^[0-9]{1,2}-[0-9]{1,2}-[0-9]{1,2}?$/gi) == null) ||
   !(occupancy.match(/^[0-9]{1,2}(-[0-9]{1,2}?(,[0-9]{1,2})*)?$/ig) == null)
 
 const parse = (occupancy) => {
@@ -38,8 +38,7 @@ const toString = occupancy => {
   if (occupancy.childrenAges && occupancy.childrenAges.length) {
     return `${occupancy.adults}-${occupancy.childrenAges.join(',')}`
   } else {
-    const teenagers = isInteger(occupancy.teenagers) && occupancy.teenagers > 0 ? `-${occupancy.teenagers}` : ''
-    return `${occupancy.adults}-${occupancy.children}-${occupancy.infants}${teenagers}`
+    return `${occupancy.adults}-${occupancy.children}-${occupancy.infants}`
   }
 }
 
@@ -47,7 +46,7 @@ const get = occupancy => {
   let occupancies = []
 
   if (typeof occupancy === 'string') {
-    if (occupancy.split(',').every(occupancy => !!occupancy.match(/^[0-9]{1,2}-[0-9]{1,2}-[0-9]{1,2}(-[0-9]{1,2})?$/gi))) {
+    if (occupancy.split(',').every(occupancy => !!occupancy.match(/^[0-9]{1,2}-[0-9]{1,2}-[0-9]{1,2}?$/gi))) {
       occupancies = occupancy.split(',').map(parse)
     } else {
       occupancies = [occupancy].map(parse)
@@ -69,7 +68,7 @@ const getStrummerMatcher = (required = false) => {
       }
 
       if (typeof dataCheck === 'string' && dataCheck) {
-        if (dataCheck.split(',').every(occupancy => !!occupancy.match(/^[0-9]{1,2}-[0-9]{1,2}-[0-9]{1,2}(-[0-9]{1,2})?$/gi))) {
+        if (dataCheck.split(',').every(occupancy => !!occupancy.match(/^[0-9]{1,2}-[0-9]{1,2}-[0-9]{1,2}?$/gi))) {
           dataCheck = [dataCheck.split(',')].flat()
         } else {
           dataCheck = [dataCheck]

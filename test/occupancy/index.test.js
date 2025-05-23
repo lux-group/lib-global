@@ -75,8 +75,6 @@ describe('Occupancy', () => {
       expect(occupancy.match('2-12')).to.eql(true)
       expect(occupancy.match('2-1--2')).to.eql(false)
       expect(occupancy.match('2,1,2')).to.eql(false)
-      expect(occupancy.match('2-0-0-1')).to.eql(true)
-      expect(occupancy.match('2-1-1-')).to.eql(false)
     })
 
     it('toString', async() => {
@@ -92,20 +90,6 @@ describe('Occupancy', () => {
         infants: 1,
         childrenAges: [],
       })).to.eql('4-2-1')
-      expect(occupancy.toString({
-        adults: 2,
-        children: 1,
-        infants: 1,
-        teenagers: 0,
-        childrenAges: [],
-      })).to.eql('2-1-1')
-      expect(occupancy.toString({
-        adults: 2,
-        children: 1,
-        infants: 1,
-        teenagers: 3,
-        childrenAges: [],
-      })).to.eql('2-1-1-3')
     })
 
     describe('occupancy.strummerMatcher', () => {
@@ -128,10 +112,6 @@ describe('Occupancy', () => {
       it('detects an invalid occupancy in an array', () => {
         expect(occupancy.strummerMatcher.match('', ['2', 'x', '3-1'])).to.eql('Invalid occupancy format')
       })
-
-      it('allows valid occupancy with teenagers', () => {
-        expect(occupancy.strummerMatcher.match('', '2-1-1-3')).to.eql(undefined)
-      })
     })
 
     describe('occupancy.strummerMatcherRequired', () => {
@@ -153,10 +133,6 @@ describe('Occupancy', () => {
 
       it('detects an invalid occupancy in an array', () => {
         expect(occupancy.strummerMatcherRequired.match('', ['2', 'x', '3-1'])).to.eql('Invalid occupancy format')
-      })
-
-      it('allows valid occupancy with teenagers when required', () => {
-        expect(occupancy.strummerMatcherRequired.match('', '2-1-1-3')).to.eql(undefined)
       })
     })
   })

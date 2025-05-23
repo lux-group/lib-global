@@ -22,13 +22,13 @@ const parse = (occupancy) => {
       childrenAges,
     }
   } else {
-    const [adults, children, infants, teenagers] = occupancy.split('-')
+    const [adults, children, infants] = occupancy.split('-')
 
     return {
       adults: Number(adults),
       children: Number(children),
       infants: Number(infants),
-      teenagers: Number(teenagers) || 0,
+      teenagers: 0,
       childrenAges: [],
     }
   }

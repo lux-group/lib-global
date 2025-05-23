@@ -11,6 +11,7 @@ describe('Occupancy', () => {
         adults: 2,
         children: 0,
         infants: 0,
+        teenagers: 0,
         childrenAges: [],
       }])
     })
@@ -21,12 +22,14 @@ describe('Occupancy', () => {
           adults: 2,
           children: 0,
           infants: 0,
+          teenagers: 0,
           childrenAges: [],
         },
         {
           adults: 1,
           children: 3,
           infants: 0,
+          teenagers: 0,
           childrenAges: [],
         },
       ])
@@ -38,6 +41,7 @@ describe('Occupancy', () => {
           adults: 2,
           children: 2,
           infants: 0,
+          teenagers: 0,
           childrenAges: [12, 1],
         },
       ])
@@ -49,6 +53,7 @@ describe('Occupancy', () => {
           adults: 2,
           children: 0,
           infants: 0,
+          teenagers: 0,
           childrenAges: [],
         },
       ])
@@ -137,6 +142,7 @@ describe('Occupancy', () => {
         adults: 2,
         children: 1,
         infants: 1,
+        teenagers: 0,
         childrenAges: [],
       })
     })
@@ -153,6 +159,7 @@ describe('Occupancy', () => {
         adults: 2,
         children: 2,
         infants: 0,
+        teenagers: 0,
         childrenAges: [0, 7],
       })
     })
@@ -171,6 +178,7 @@ describe('Occupancy', () => {
         adults: 2,
         children: 1,
         infants: 1,
+        teenagers: 0,
         childrenAges: [0, 7],
       })
     })
@@ -189,6 +197,7 @@ describe('Occupancy', () => {
         adults: 2,
         children: 1,
         infants: 1,
+        teenagers: 0,
         childrenAges: [0, 7],
       })
     })
@@ -207,6 +216,7 @@ describe('Occupancy', () => {
         adults: 2,
         children: 2,
         infants: 0,
+        teenagers: 0,
         childrenAges: [0, 7],
       })
     })
@@ -225,6 +235,7 @@ describe('Occupancy', () => {
         adults: 3,
         children: 0,
         infants: 1,
+        teenagers: 0,
         childrenAges: [0],
       })
     })
@@ -243,6 +254,7 @@ describe('Occupancy', () => {
         adults: 2,
         children: 0,
         infants: 1,
+        teenagers: 0,
         childrenAges: [0],
       })
     })
@@ -261,7 +273,90 @@ describe('Occupancy', () => {
         adults: 2,
         children: 1,
         infants: 1,
+        teenagers: 0,
         childrenAges: [0, 2],
+      })
+    })
+
+    it('should correctly identify teenagers when ages fall between maxChildAge and maxTeenagerAge', async function() {
+      const occupants = occupancy.countOccupants({
+        occupancy: {
+          adults: 2,
+          childrenAges: [7, 13, 15, 17],
+        },
+        maxChildAge: 12,
+        maxTeenagerAge: 17,
+        maxInfantAge: 3,
+      })
+
+      expect(occupants).to.eql({
+        adults: 2,
+        children: 1,
+        infants: 0,
+        teenagers: 3,
+        childrenAges: [7],
+      })
+    })
+
+    it('should count people above maxTeenagerAge as adults', async function() {
+      const occupants = occupancy.countOccupants({
+        occupancy: {
+          adults: 2,
+          childrenAges: [7, 13, 15, 17],
+        },
+        maxChildAge: 12,
+        maxTeenagerAge: 14,
+        maxInfantAge: 3,
+      })
+
+      expect(occupants).to.eql({
+        adults: 4,
+        children: 1,
+        infants: 0,
+        teenagers: 1,
+        childrenAges: [7],
+      })
+    })
+
+    it('should default teenagers to 0 when not provided', async function() {
+      const occupants = occupancy.countOccupants({
+        occupancy: {
+          adults: 2,
+          children: 1,
+          infants: 1,
+          childrenAges: [],
+        },
+        maxChildAge: 12,
+        maxTeenagerAge: 17,
+        maxInfantAge: 3,
+      })
+
+      expect(occupants).to.eql({
+        adults: 2,
+        children: 1,
+        infants: 1,
+        teenagers: 0,
+        childrenAges: [],
+      })
+    })
+
+    it('should handle null/zero maxTeenagerAge correctly', async function() {
+      const occupants = occupancy.countOccupants({
+        occupancy: {
+          adults: 2,
+          childrenAges: [7, 13, 15],
+        },
+        maxChildAge: 12,
+        maxTeenagerAge: null,
+        maxInfantAge: 3,
+      })
+
+      expect(occupants).to.eql({
+        adults: 4,
+        children: 1,
+        infants: 0,
+        teenagers: 0,
+        childrenAges: [7],
       })
     })
   })

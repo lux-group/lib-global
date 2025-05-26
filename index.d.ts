@@ -58,6 +58,7 @@ declare module "@luxuryescapes/lib-global" {
     adults: number;
     children: number;
     infants: number;
+    teenagers: number;
   }
 
   interface RoomExtraGuestSurcharge {
@@ -67,6 +68,8 @@ declare module "@luxuryescapes/lib-global" {
     child_cost?: number;
     infant_amount: number;
     infant_cost?: number;
+    teenager_amount: number;
+    teenager_cost?: number;
     currency?: string;
   }
 
@@ -142,7 +145,7 @@ declare module "@luxuryescapes/lib-global" {
     parse: (occupancy: string | number) => Occupants;
     match: (occupancy: string | number) => boolean;
     toString: (occupancy: Occupants) => string;
-    countOccupants: ({ occupancy, maxChildAge, maxInfantAge }: { occupancy: Occupants, maxChildAge?: number, maxInfantAge?: number }) => Occupants;
+    countOccupants: ({ occupancy, maxChildAge, maxInfantAge, maxTeenagerAge }: { occupancy: Occupants, maxChildAge?: number, maxInfantAge?: number, maxTeenagerAge?: number }) => Occupants;
     strummerMatcher: { match: <V>(path?: string, value?: V) => string | undefined, toJSONSchema: () => JSONSchema };
     strummerMatcherRequired: { match: <V>(path?: string, value?: V) => string | undefined, toJSONSchema: () => JSONSchema };
   };
@@ -269,7 +272,7 @@ declare module "@luxuryescapes/lib-global" {
     ULTRA_LUX: string;
     HOTELSRESORTS: string;
     extraGuests: {
-      get: ({ adults, children, infants, includedGuests }: { adults: number, children: number, infants: number, includedGuests: RoomIncludedGuests[] }) => RoomIncludedGuests[];
+      get: ({ adults, children, infants, teenagers, includedGuests }: { adults: number, children: number, infants: number, teenagers: number, includedGuests: RoomIncludedGuests[] }) => RoomIncludedGuests[];
       surcharges: ({ nights, extraGuests, extraGuestSurcharge }: { nights: number, extraGuests: RoomIncludedGuests[][], extraGuestSurcharge?: RoomExtraGuestSurcharge }) => ExtraGuestSurcharge;
     }
   };

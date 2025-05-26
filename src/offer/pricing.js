@@ -8,7 +8,8 @@ const countOfMembers = (occupancies) => {
         acc +
         occupancy.adults +
         (occupancy.children || 0) +
-        (occupancy.infants || 0)
+        (occupancy.infants || 0) +
+        (occupancy.teenagers || 0)
       )
     }, 0) || 2
   )
@@ -48,6 +49,7 @@ const getTaxTotal = ({ type, unit, value, nights, perPerson, occupancies }) => {
  *   adults: number;
  *   children?: number;
  *   infants?: number;
+ *   teenagers?: number;
  *   childrenAges?: Array<number>;
  * }
  *

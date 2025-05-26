@@ -86,11 +86,9 @@ function surcharges({
       }
 
       if (extra.teenagers) {
-        const teenagerAmount = extraGuestSurcharge.teenager_amount || extraGuestSurcharge.child_amount
-        const teenagerCost = extraGuestSurcharge.teenager_cost || extraGuestSurcharge.child_cost
-        perNightAmounts.sell += extra.teenagers * teenagerAmount
-        if (!isUndefined(teenagerCost)) {
-          perNightAmounts.cost += extra.teenagers * teenagerCost
+        perNightAmounts.sell += extra.teenagers * extraGuestSurcharge.teenager_amount
+        if (!isUndefined(extraGuestSurcharge.teenager_cost)) {
+          perNightAmounts.cost += extra.teenagers * extraGuestSurcharge.teenager_cost
         }
       }
 

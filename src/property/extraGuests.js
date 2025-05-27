@@ -4,8 +4,8 @@ function floatify(value) {
   return parseFloat(parseFloat(value).toFixed(2))
 }
 
-function get({ adults, children, infants, includedGuests }) {
-  if (!adults && !children && !infants) {
+function get({ adults, children, infants, teenagers, includedGuests }) {
+  if (!adults && !children && !infants && !teenagers) {
     return []
   }
 
@@ -18,7 +18,8 @@ function get({ adults, children, infants, includedGuests }) {
     (included) =>
       adults <= included.adults &&
       children <= included.children &&
-      infants <= included.infants,
+      infants <= included.infants &&
+      teenagers <= included.teenagers,
   )
   if (validIncludedGuests.length) {
     return []
@@ -28,6 +29,7 @@ function get({ adults, children, infants, includedGuests }) {
     adults: Math.max(adults - included.adults, 0),
     children: Math.max(children - included.children, 0),
     infants: Math.max(infants - included.infants, 0),
+    teenagers: Math.max(teenagers - included.teenagers, 0),
   }))
 }
 
@@ -80,6 +82,13 @@ function surcharges({
         perNightAmounts.sell += extra.infants * extraGuestSurcharge.infant_amount
         if (!isUndefined(extraGuestSurcharge.infant_cost)) {
           perNightAmounts.cost += extra.infants * extraGuestSurcharge.infant_cost
+        }
+      }
+
+      if (extra.teenagers) {
+        perNightAmounts.sell += extra.teenagers * extraGuestSurcharge.teenager_amount
+        if (!isUndefined(extraGuestSurcharge.teenager_cost)) {
+          perNightAmounts.cost += extra.teenagers * extraGuestSurcharge.teenager_cost
         }
       }
 

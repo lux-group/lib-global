@@ -4,7 +4,7 @@ function floatify(value) {
   return parseFloat(parseFloat(value).toFixed(2))
 }
 
-function get({ adults, children, infants, teenagers, includedGuests }) {
+function get({ adults, children, infants, teenagers = 0, includedGuests }) {
   if (!adults && !children && !infants && !teenagers) {
     return []
   }
@@ -14,7 +14,14 @@ function get({ adults, children, infants, teenagers, includedGuests }) {
     return []
   }
 
-  const validIncludedGuests = includedGuests.filter(
+  const normalizedIncludedGuests = includedGuests.map((included) => ({
+    adults: included.adults || 0,
+    children: included.children || 0,
+    infants: included.infants || 0,
+    teenagers: included.teenagers || 0,
+  }))
+
+  const validIncludedGuests = normalizedIncludedGuests.filter(
     (included) =>
       adults <= included.adults &&
       children <= included.children &&
@@ -25,7 +32,7 @@ function get({ adults, children, infants, teenagers, includedGuests }) {
     return []
   }
 
-  return includedGuests.map((included) => ({
+  return normalizedIncludedGuests.map((included) => ({
     adults: Math.max(adults - included.adults, 0),
     children: Math.max(children - included.children, 0),
     infants: Math.max(infants - included.infants, 0),
@@ -85,7 +92,7 @@ function surcharges({
         }
       }
 
-      if (extra.teenagers) {
+      if (extra.teenagers && 'teenager_amount' in extraGuestSurcharge) {
         perNightAmounts.sell += extra.teenagers * extraGuestSurcharge.teenager_amount
         if (!isUndefined(extraGuestSurcharge.teenager_cost)) {
           perNightAmounts.cost += extra.teenagers * extraGuestSurcharge.teenager_cost

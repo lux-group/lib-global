@@ -8,12 +8,10 @@ const buildParams = (opts = {}) => ({
   adults: 2,
   children: 1,
   infants: 0,
-  teenagers: 0,
   includedGuests: [{
     adults: 2,
     children: 1,
     infants: 0,
-    teenagers: 0,
   }],
   ...opts,
 })
@@ -35,7 +33,7 @@ describe('property = extraGuests', function() {
         adults: 3,
         children: 0,
         infants: 0,
-        includedGuests: [{ adults: 3, children: 0, infants: 0, teenagers: 0 }],
+        includedGuests: [{ adults: 3, children: 0, infants: 0 }],
       })
       expect(property.extraGuests.get(params)).to.eql([])
     })
@@ -45,9 +43,8 @@ describe('property = extraGuests', function() {
         adults: 3,
         children: 2,
         infants: 1,
-        teenagers: 0,
         includedGuests: [
-          { adults: 1, children: 2, infants: 0, teenagers: 0 },
+          { adults: 1, children: 2, infants: 0 },
         ],
       })
       expect(property.extraGuests.get(params)).to.eql([
@@ -55,7 +52,6 @@ describe('property = extraGuests', function() {
           adults: 2,
           children: 0,
           infants: 1,
-          teenagers: 0,
         },
       ])
     })
@@ -65,10 +61,9 @@ describe('property = extraGuests', function() {
         adults: 1,
         children: 2,
         infants: 0,
-        teenagers: 0,
         includedGuests: [
-          { adults: 2, children: 0, infants: 1, teenagers: 0 },
-          { adults: 1, children: 1, infants: 1, teenagers: 0 },
+          { adults: 2, children: 0, infants: 1 },
+          { adults: 1, children: 1, infants: 1 },
         ],
       })
       expect(property.extraGuests.get(params)).to.eql([
@@ -76,13 +71,11 @@ describe('property = extraGuests', function() {
           adults: 0,
           children: 2,
           infants: 0,
-          teenagers: 0,
         },
         {
           adults: 0,
           children: 1,
           infants: 0,
-          teenagers: 0,
         },
       ])
     })
@@ -105,6 +98,24 @@ describe('property = extraGuests', function() {
           teenagers: 1,
         },
       ])
+    })
+
+    it('should work with old format (no teenagers)', () => {
+      const params = {
+        adults: 2,
+        children: 1,
+        infants: 0,
+        includedGuests: [{
+          adults: 1,
+          children: 1,
+          infants: 0,
+        }],
+      }
+      expect(property.extraGuests.get(params)).to.eql([{
+        adults: 1,
+        children: 0,
+        infants: 0,
+      }])
     })
   })
 
@@ -282,6 +293,35 @@ describe('property = extraGuests', function() {
           sell: 704,
         },
         sell: 352,
+      })
+    })
+
+    it('should calculate surcharges without teenager fields', () => {
+      const params = {
+        nights: 2,
+        extraGuests: [[{ adults: 1, children: 1, infants: 1 }]],
+        extraGuestSurcharge: {
+          currency: 'AUD',
+          adult_cost: 111,
+          adult_amount: 120,
+          child_cost: 50,
+          child_amount: 60,
+          infant_cost: 10,
+          infant_amount: 12,
+          // No teenager_amount or teenager_cost
+        },
+      }
+      const result = property.extraGuests.surcharges(params)
+      expect(result).to.eql({
+        applies: true,
+        cost: 171, // Only adult + child + infant costs
+        costCurrency: 'AUD',
+        duration: {
+          applies: true,
+          cost: 342,
+          sell: 384, // Only adult + child + infant amounts
+        },
+        sell: 192,
       })
     })
   })

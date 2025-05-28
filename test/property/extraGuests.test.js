@@ -103,7 +103,7 @@ describe('property = extraGuests', function() {
       ])
     })
 
-    it('should work with old format (no teenagers)', () => {
+    it('should be backwards compatible with old format (no teenagers)', () => {
       const params = {
         adults: 2,
         children: 1,

@@ -352,7 +352,7 @@ describe('property = extraGuests', function() {
   })
 
   describe('integration', function() {
-    it('extraGuests integration with surcharges (no teenagers)', () => {
+    it('should calculate surcharges with no teenagers', () => {
       const nights = 3
       const occupancies = [
         { adults: 3, children: 1, infants: 1 },
@@ -447,6 +447,54 @@ describe('property = extraGuests', function() {
           applies: true,
           cost: 525,
           sell: 600,
+        },
+      })
+    })
+
+    it('should not include surcharges if extraGuests is empty', () => {
+      const nights = 3
+      const occupancies = [
+        { adults: 2, children: 1, infants: 1 },
+      ]
+
+      const includedGuestsByRate = [
+        { adults: 2, children: 1, infants: 1 },
+      ]
+
+      const extraGuestSurcharge = {
+        currency: 'AUD',
+        adult_cost: 100,
+        adult_amount: 120,
+        child_cost: 50,
+        child_amount: 60,
+        infant_cost: 10,
+        infant_amount: 12,
+      }
+
+      const extraGuests = occupancies.map((occupancy) =>
+        property.extraGuests.get({
+          adults: occupancy.adults,
+          children: occupancy.children,
+          infants: occupancy.infants,
+          includedGuests: includedGuestsByRate,
+        }),
+      )
+
+      const result = property.extraGuests.surcharges({
+        nights,
+        extraGuests,
+        extraGuestSurcharge,
+      })
+
+      expect(result).to.eql({
+        applies: false,
+        cost: 0,
+        sell: 0,
+        costCurrency: undefined,
+        duration: {
+          applies: false,
+          cost: 0,
+          sell: 0,
         },
       })
     })

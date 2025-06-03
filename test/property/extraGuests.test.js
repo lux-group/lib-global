@@ -8,12 +8,10 @@ const buildParams = (opts = {}) => ({
   adults: 2,
   children: 1,
   infants: 0,
-  teenagers: 0,
   includedGuests: [{
     adults: 2,
     children: 1,
     infants: 0,
-    teenagers: 0,
   }],
   ...opts,
 })
@@ -35,7 +33,7 @@ describe('property = extraGuests', function() {
         adults: 3,
         children: 0,
         infants: 0,
-        includedGuests: [{ adults: 3, children: 0, infants: 0, teenagers: 0 }],
+        includedGuests: [{ adults: 3, children: 0, infants: 0 }],
       })
       expect(property.extraGuests.get(params)).to.eql([])
     })
@@ -45,9 +43,8 @@ describe('property = extraGuests', function() {
         adults: 3,
         children: 2,
         infants: 1,
-        teenagers: 0,
         includedGuests: [
-          { adults: 1, children: 2, infants: 0, teenagers: 0 },
+          { adults: 1, children: 2, infants: 0 },
         ],
       })
       expect(property.extraGuests.get(params)).to.eql([
@@ -65,10 +62,9 @@ describe('property = extraGuests', function() {
         adults: 1,
         children: 2,
         infants: 0,
-        teenagers: 0,
         includedGuests: [
-          { adults: 2, children: 0, infants: 1, teenagers: 0 },
-          { adults: 1, children: 1, infants: 1, teenagers: 0 },
+          { adults: 2, children: 0, infants: 1 },
+          { adults: 1, children: 1, infants: 1 },
         ],
       })
       expect(property.extraGuests.get(params)).to.eql([
@@ -105,6 +101,46 @@ describe('property = extraGuests', function() {
           teenagers: 1,
         },
       ])
+    })
+
+    it('should be backwards compatible with old format (no teenagers)', () => {
+      const params = {
+        adults: 2,
+        children: 1,
+        infants: 0,
+        includedGuests: [{
+          adults: 1,
+          children: 1,
+          infants: 0,
+        }],
+      }
+
+      expect(property.extraGuests.get(params)).to.eql([{
+        adults: 1,
+        children: 0,
+        infants: 0,
+        teenagers: 0,
+      }])
+    })
+
+    it('should handle missing field in includedGuests', () => {
+      const params = {
+        adults: 2,
+        children: 1,
+        infants: 0,
+        teenagers: 0,
+        includedGuests: [{
+          adults: null,
+          children: null,
+          infants: null,
+        }],
+      }
+      expect(property.extraGuests.get(params)).to.eql([{
+        adults: 2,
+        children: 1,
+        infants: 0,
+        teenagers: 0,
+      }])
     })
   })
 
@@ -178,8 +214,8 @@ describe('property = extraGuests', function() {
       const params = buildParams({
         extraGuests: [
           [
-            { adults: 1, children: 1, infants: 1, teenagers: 0 },
-            { adults: 0, children: 2, infants: 0, teenagers: 0 },
+            { adults: 1, children: 1, infants: 1 },
+            { adults: 0, children: 2, infants: 0 },
           ],
         ],
       })
@@ -230,8 +266,8 @@ describe('property = extraGuests', function() {
         nights: 7,
         extraGuests: [
           [
-            { adults: 1, children: 1, infants: 1, teenagers: 0 },
-            { adults: 0, children: 2, infants: 0, teenagers: 0 },
+            { adults: 1, children: 1, infants: 1 },
+            { adults: 0, children: 2, infants: 0 },
           ],
         ],
         extraGuestSurcharge: {
@@ -282,6 +318,184 @@ describe('property = extraGuests', function() {
           sell: 704,
         },
         sell: 352,
+      })
+    })
+
+    it('should calculate surcharges without teenager fields', () => {
+      const params = {
+        nights: 2,
+        extraGuests: [[{ adults: 1, children: 1, infants: 1 }]],
+        extraGuestSurcharge: {
+          currency: 'AUD',
+          adult_cost: 111,
+          adult_amount: 120,
+          child_cost: 50,
+          child_amount: 60,
+          infant_cost: 10,
+          infant_amount: 12,
+          // No teenager_amount or teenager_cost
+        },
+      }
+      const result = property.extraGuests.surcharges(params)
+      expect(result).to.eql({
+        applies: true,
+        cost: 171, // Only adult + child + infant costs
+        costCurrency: 'AUD',
+        duration: {
+          applies: true,
+          cost: 342,
+          sell: 384, // Only adult + child + infant amounts
+        },
+        sell: 192,
+      })
+    })
+  })
+
+  describe('integration', function() {
+    it('should calculate surcharges with no teenagers', () => {
+      const nights = 3
+      const occupancies = [
+        { adults: 3, children: 1, infants: 1 },
+      ]
+
+      const includedGuestsByRate = [
+        { adults: 2, children: 1, infants: 1 },
+      ]
+
+      const extraGuestSurcharge = {
+        currency: 'AUD',
+        adult_cost: 100,
+        adult_amount: 120,
+        child_cost: 50,
+        child_amount: 60,
+        infant_cost: 10,
+        infant_amount: 12,
+      }
+
+      const extraGuests = occupancies.map((occupancy) =>
+        property.extraGuests.get({
+          adults: occupancy.adults,
+          children: occupancy.children,
+          infants: occupancy.infants,
+          includedGuests: includedGuestsByRate,
+        }),
+      )
+
+      const result = property.extraGuests.surcharges({
+        nights,
+        extraGuests,
+        extraGuestSurcharge,
+      })
+
+      expect(result).to.eql({
+        applies: true,
+        cost: 100,
+        sell: 120,
+        costCurrency: 'AUD',
+        duration: {
+          applies: true,
+          cost: 300,
+          sell: 360,
+        },
+      })
+    })
+
+    it('should calculate surcharges with teenagers', () => {
+      const nights = 3
+      const occupancies = [
+        { adults: 3, children: 1, infants: 1, teenagers: 2 },
+      ]
+
+      const includedGuestsByRate = [
+        { adults: 2, children: 1, infants: 1, teenagers: 1 },
+      ]
+
+      const extraGuestSurcharge = {
+        currency: 'AUD',
+        adult_cost: 100,
+        adult_amount: 120,
+        child_cost: 50,
+        child_amount: 60,
+        infant_cost: 10,
+        infant_amount: 12,
+        teenager_cost: 75,
+        teenager_amount: 80,
+      }
+
+      const extraGuests = occupancies.map((occupancy) =>
+        property.extraGuests.get({
+          adults: occupancy.adults,
+          children: occupancy.children,
+          infants: occupancy.infants,
+          teenagers: occupancy.teenagers,
+          includedGuests: includedGuestsByRate,
+        }),
+      )
+
+      const result = property.extraGuests.surcharges({
+        nights,
+        extraGuests,
+        extraGuestSurcharge,
+      })
+
+      expect(result).to.eql({
+        applies: true,
+        cost: 175,
+        sell: 200,
+        costCurrency: 'AUD',
+        duration: {
+          applies: true,
+          cost: 525,
+          sell: 600,
+        },
+      })
+    })
+
+    it('should not include surcharges if extraGuests is empty', () => {
+      const nights = 3
+      const occupancies = [
+        { adults: 2, children: 1, infants: 1 },
+      ]
+
+      const includedGuestsByRate = [
+        { adults: 2, children: 1, infants: 1 },
+      ]
+
+      const extraGuestSurcharge = {
+        currency: 'AUD',
+        adult_cost: 100,
+        adult_amount: 120,
+        child_cost: 50,
+        child_amount: 60,
+        infant_cost: 10,
+        infant_amount: 12,
+      }
+
+      const extraGuests = occupancies.map((occupancy) =>
+        property.extraGuests.get({
+          adults: occupancy.adults,
+          children: occupancy.children,
+          infants: occupancy.infants,
+          includedGuests: includedGuestsByRate,
+        }),
+      )
+
+      const result = property.extraGuests.surcharges({
+        nights,
+        extraGuests,
+        extraGuestSurcharge,
+      })
+
+      expect(result).to.eql({
+        applies: false,
+        cost: 0,
+        sell: 0,
+        costCurrency: undefined,
+        duration: {
+          applies: false,
+          cost: 0,
+          sell: 0,
+        },
       })
     })
   })
